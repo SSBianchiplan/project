@@ -161,6 +161,32 @@ async def baixar_template(arquivo: str, inline: bool = False, _: Contexto = Depe
 
 # ---------------------------------------------------------- base de dados
 
+# A4 (auditoria 10/2026): o explorador só abre tabelas de CONTRATO, todas com RLS
+# forçada. Lista explícita: tabela nova não aparece sozinha, e as de identidade
+# (usuario, usuario_papel, sessao_login, login_falha, usuario_organizacao,
+# organizacao) nunca, porque ficam fora da RLS e mostrariam todas as organizações.
+TABELAS_EXPLORAVEIS = frozenset({
+    "alocacao", "apontamento", "atividade", "baseline", "baseline_atividade", "boletim_medicao",
+    "calculo_execucao", "contrato", "cronograma_calculo", "custo_item", "custo_realizado",
+    "documento_engenharia", "documento_evento", "eap_no", "excecao_contratual", "feriado",
+    "importacao", "lvp_avaliacao", "lvp_item", "medicao", "periodo_fechamento", "plano_acao",
+    "previsto_semanal", "rdo", "rdo_evento", "recurso", "vinculo",
+})
+
+
+async def _exigir_exploravel(s: AsyncSession, tabela: str) -> None:
+    """Recusa tabela fora da lista ou sem RLS forçada (dupla checagem no catálogo)."""
+    if not re.fullmatch(r"[a-z_][a-z0-9_]*", tabela):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "nome inválido")
+    if tabela not in TABELAS_EXPLORAVEIS:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "tabela não encontrada")
+    existe = (await s.execute(text("""
+        SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+         WHERE n.nspname = 'plan' AND c.relkind = 'r' AND c.relname = :t
+           AND c.relrowsecurity AND c.relforcerowsecurity"""), {"t": tabela})).first()
+    if not existe:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "tabela não encontrada")
+
 @router.get("/admin/tabelas")
 async def tabelas(ctx: Contexto = Depends(exigir("ADMIN")), s: AsyncSession = Depends(sessao_tenant, scope="function")) -> list[dict]:
     """Tabelas do schema plan com colunas, RLS e contagem visível na organização ativa."""
@@ -174,6 +200,8 @@ async def tabelas(ctx: Contexto = Depends(exigir("ADMIN")), s: AsyncSession = De
          WHERE n.nspname = 'plan' AND c.relkind = 'r' ORDER BY c.relname"""))).mappings().all()
     out = []
     for r in rows:
+        if r["tabela"] not in TABELAS_EXPLORAVEIS or not (r["rls"] and r["forcada"]):
+            continue
         try:
             cnt = (await s.execute(text(f'SELECT count(*) FROM plan."{r["tabela"]}"'))).scalar_one()
         except Exception:
@@ -188,13 +216,7 @@ async def exportar_tabela(
     tabela: str, ctx: Contexto = Depends(exigir("ADMIN")), s: AsyncSession = Depends(sessao_tenant, scope="function"),
 ) -> Response:
     """XLSX da tabela como a organização ativa a enxerga (RLS aplicada)."""
-    if not re.fullmatch(r"[a-z_][a-z0-9_]*", tabela):
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "nome inválido")
-    existe = (await s.execute(text("""
-        SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
-         WHERE n.nspname = 'plan' AND c.relkind = 'r' AND c.relname = :t"""), {"t": tabela})).first()
-    if not existe:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "tabela não encontrada")
+    await _exigir_exploravel(s, tabela)
     rows = (await s.execute(text(f'SELECT * FROM plan."{tabela}" LIMIT 50000'))).mappings().all()
     cabec = list(rows[0].keys()) if rows else []
     if not rows:
@@ -217,13 +239,7 @@ async def linhas_tabela(
     ctx: Contexto = Depends(exigir("ADMIN")), s: AsyncSession = Depends(sessao_tenant, scope="function"),
 ) -> dict:
     """Prévia paginada da tabela como a organização ativa a enxerga (RLS aplicada), para abrir dentro do sistema."""
-    if not re.fullmatch(r"[a-z_][a-z0-9_]*", tabela):
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "nome inválido")
-    existe = (await s.execute(text("""
-        SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
-         WHERE n.nspname = 'plan' AND c.relkind = 'r' AND c.relname = :t"""), {"t": tabela})).first()
-    if not existe:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "tabela não encontrada")
+    await _exigir_exploravel(s, tabela)
     cols = list((await s.execute(text("""
         SELECT a.attname FROM pg_attribute a JOIN pg_class c ON c.oid = a.attrelid JOIN pg_namespace n ON n.oid = c.relnamespace
          WHERE n.nspname = 'plan' AND c.relname = :t AND a.attnum > 0 AND NOT a.attisdropped ORDER BY a.attnum"""), {"t": tabela})).scalars().all())

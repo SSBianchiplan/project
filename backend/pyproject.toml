@@ -18,8 +18,9 @@ ignore = ["ANN401", "PLR2004", "RUF001", "RUF002", "RUF003", "UP042",
 "app/infra/tenancy.py" = ["B008", "ANN201", "E501"]
 "app/infra/auth.py" = ["E501"]
 "tests/test_recursos.py" = ["E501"]
-"tests/*" = ["ANN", "PLR0913", "S101", "B017", "PLC0415"]
-"alembic/*" = ["ANN", "E402"]
+"tests/*" = ["ANN", "PLR0913", "S101", "B017", "PLC0415", "E501"]
+"alembic/*" = ["ANN", "E402", "E501"]
+"app/main.py" = ["E501"]
 # E501: SQL literal e mensagens de invariante inteiras na mesma linha são mais legíveis
 # que quebradas; o módulo é fronteira, não domínio.
 "app/api/rotas_projeto.py" = ["E501"]

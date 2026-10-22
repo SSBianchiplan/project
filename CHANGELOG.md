@@ -4,6 +4,15 @@ Histórico resumido a partir das "ondas" de desenvolvimento (detalhes técnicos 
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
 ## [Não publicado]
+### Segurança
+- Administração de usuários restrita à organização ativa: ADMIN só altera, redefine senha ou concede papel a quem
+  já tem papel na organização; usuário que pertence a várias organizações só o admin master altera.
+- Explorador de tabelas com lista explícita de tabelas de contrato (todas com RLS forçada); as tabelas de identidade
+  ficam fora, e o papel `gps_app` perde o acesso a elas (migration `0011`).
+- Limite de tentativas de login por conta e por IP (`GPS_LOGIN_MAX_CONTA`, `GPS_LOGIN_MAX_IP`, `GPS_LOGIN_JANELA_MIN`).
+- Erros internos do Postgres deixam de ir ao cliente (só recusas de invariante, integridade e dado inválido).
+- Pillow fixado em 13.0.0; modelo do Caddy com HSTS, Permissions-Policy e teto de corpo da requisição.
+- Testes de integração em `backend/tests/` (exigem Postgres migrado; ver `tests/conftest.py`).
 ### Adicionado
 - Publicação do código no GitHub: README, capa, guias de contribuição, licença MIT, `.env.example`,
   `docker-compose.yml` (Postgres de desenvolvimento) e `scripts/servir_web.py` (servidor local que faz o papel do Caddy).

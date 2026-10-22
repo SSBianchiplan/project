@@ -12,6 +12,8 @@ openpyxl==3.1.5
 python-multipart==0.0.32
 email-validator==2.3.0
 reportlab==5.0.1
+# Dependência do reportlab, fixada por segurança (auditoria 10/2026: 28 avisos OSV na 12.3.0).
+pillow==13.0.0
 # Leitura de .mpp (MS Project binário): exige JVM no host (default-jre-headless).
 jpype1==1.7.1
 mpxj==16.7.0

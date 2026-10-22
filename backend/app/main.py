@@ -1,3 +1,4 @@
+import logging
 import os
 
 from fastapi import FastAPI, Request
@@ -66,13 +67,37 @@ async def saude() -> dict[str, str]:
     return {"status": "ok"}
 
 
+log = logging.getLogger("gplansis.db")
+
+# Classes de SQLSTATE cuja mensagem é a resposta ao usuário: RAISE das invariantes
+# (P0001, "INV-..."), integridade (23: CHECK, UNIQUE, FK) e dado inválido (22).
+# O resto (sintaxe, permissão, objeto inexistente, conexão) é defeito interno:
+# a mensagem do Postgres vai só para o log, não ao cliente (auditoria 10/2026).
+_SQLSTATE_EXPOSTO = ("P0001", "23", "22")
+
+
+def _sqlstate(exc: DBAPIError) -> str:
+    causa = getattr(exc, "orig", None)
+    for alvo in (causa, getattr(causa, "__cause__", None)):
+        codigo = getattr(alvo, "sqlstate", None) or getattr(alvo, "pgcode", None)
+        if codigo:
+            return str(codigo)
+    return ""
+
+
 @app.exception_handler(IntegrityError)
 @app.exception_handler(DBAPIError)
-async def invariante_violada(_: Request, exc: DBAPIError) -> JSONResponse:
+async def invariante_violada(request: Request, exc: DBAPIError) -> JSONResponse:
     """O banco é a última linha de defesa das invariantes. Quando ele recusa
     (RAISE EXCEPTION 'INV-...', CHECK, UNIQUE), a resposta é 422 com o motivo,
     não 500: o cliente errou, o sistema não quebrou."""
     causa = getattr(exc, "orig", None)
     mensagem = str(causa or exc).splitlines()[0] if (causa or exc) else "violação de invariante"
     mensagem = mensagem.split(">: ", 1)[-1]   # asyncpg embrulha em "<class '...'>: msg"
-    return JSONResponse(status_code=422, content={"detail": mensagem})
+    codigo = _sqlstate(exc)
+    if isinstance(exc, IntegrityError) or codigo.startswith(_SQLSTATE_EXPOSTO) or mensagem.startswith("INV-"):
+        return JSONResponse(status_code=422, content={"detail": mensagem})
+    log.error("erro do banco em %s %s [%s]: %s", request.method, request.url.path, codigo or "?", mensagem)
+    if codigo == "42501":
+        return JSONResponse(status_code=403, content={"detail": "operação não permitida"})
+    return JSONResponse(status_code=422, content={"detail": f"operação recusada pelo banco (SQLSTATE {codigo or 'desconhecido'})"})

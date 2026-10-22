@@ -11,6 +11,13 @@
 (gpsproject_app) {
 	# A API já publica tudo sob /api/v1 (e /docs, /openapi.json na raiz do app).
 	# `handle` NÃO remove o prefixo: o FastAPI vê /api/v1/... como em dev.
+	# M19 (auditoria 10/2026): teto do corpo antes de chegar ao uvicorn, que lê o
+	# upload inteiro na memória. A API aceita importação de até 64 MiB; 65MiB
+	# deixa folga para o envelope multipart (no Caddy, MB = 10^6 e MiB = 2^20).
+	request_body {
+		max_size 65MiB
+	}
+
 	handle /api/* {
 		reverse_proxy 127.0.0.1:__PORTA__ {
 			header_up X-Real-IP {remote_host}
@@ -34,6 +41,10 @@
 		X-Content-Type-Options "nosniff"
 		X-Frame-Options "SAMEORIGIN"
 		Referrer-Policy "strict-origin-when-cross-origin"
+		# M20 (auditoria 10/2026). Num hub com snippet comum (ex.: seguranca_hub),
+		# o snippet pode substituir estas duas linhas.
+		Strict-Transport-Security "max-age=31536000"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
 		-Server
 	}
 
