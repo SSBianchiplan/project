@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reportar e administrar · ações humanas</title>
+<meta name="description" content="Ações de leitura e exportação do GPlanSiS|Project e a administração de usuários, papéis, organizações e conta própria." />
+<!-- Sem script e sem rede: a CSP do sistema é script-src 'self'. O tema
+     acompanha o do aparelho e o data-theme do app. -->
+<style>
+:root{
+  --grafite:#2d3336; --aco:#7d8286; --claro:#edeff0; --papel:#f7f8f8; --fundo:#ffffff;
+  --linha:#dfe3e4; --texto:#17191b; --texto-2:#4a5054;
+  --em-dia:#2f7d4f; --atencao:#8a6d1f; --recuperacao:#b4560f; --acao:#a11d1d; --neutro:#7d8286;
+  --em-dia-f:#e7f3ec; --atencao-f:#f6efd9; --recuperacao-f:#f9e9dc; --acao-f:#f7e3e3; --neutro-f:#eef0f1;
+  --acento:#1f6f8b; --acento-f:#e4f0f4;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-4:#7a4fa3;
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --e-2:8px; --e-3:12px; --e-4:16px; --e-5:22px; --e-6:32px;
+  --r-1:3px; --r-2:6px; --r-3:10px; --r-pill:999px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+    --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+    --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+    --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+    --acento:#5aa9c6; --acento-f:#1d3038;
+    --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+  --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+  --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+  --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+  --acento:#5aa9c6; --acento-f:#1d3038;
+  --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--texto);
+  font:400 13px/1.5 var(--fonte);-webkit-text-size-adjust:100%}
+main{max-width:1000px;margin:0 auto;padding:26px var(--e-5) 72px}
+h1{font-size:28px;line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:16px;margin:var(--e-6) 0 var(--e-2);padding-top:var(--e-5);
+  border-top:1px solid var(--linha)}
+h3{font-size:14px;margin:var(--e-5) 0 var(--e-2)}
+p{margin:0 0 var(--e-3);max-width:74ch}
+a{color:var(--acento)}
+code,.mono{font-family:var(--mono);font-size:12px}
+code{background:var(--claro);border-radius:var(--r-1);padding:1px 5px}
+strong{font-weight:600}
+
+.cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--e-3);
+  margin-bottom:var(--e-2)}
+.cod{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--aco)}
+.lead{color:var(--texto-2);font-size:15px;max-width:72ch;margin:var(--e-3) 0 0}
+.selo{display:inline-block;font-family:var(--mono);font-size:11px;
+  border:1px solid var(--linha);border-radius:var(--r-pill);
+  padding:2px 9px;color:var(--aco);background:var(--fundo)}
+
+/* caminho na interface */
+.trilha{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-2);
+  font-family:var(--mono);font-size:12px;margin:var(--e-3) 0}
+.trilha span{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-1);padding:3px 9px}
+.trilha i{font-style:normal;color:var(--aco)}
+.trilha span.fim{border-color:var(--acento);background:var(--acento-f);
+  color:var(--acento);font-weight:500}
+
+/* blocos */
+.cx{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-3);padding:var(--e-5);margin:var(--e-4) 0}
+.cx > :last-child{margin-bottom:0}
+.cx h3{margin-top:0}
+.par{display:grid;gap:var(--e-4);grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.nota{border-left:3px solid var(--acento);background:var(--acento-f);
+  border-radius:0 var(--r-2) var(--r-2) 0;padding:var(--e-3) var(--e-4);
+  margin:var(--e-4) 0}
+.nota.alerta{border-left-color:var(--acao);background:var(--acao-f)}
+.nota > :last-child{margin-bottom:0}
+.nota b{display:block;margin-bottom:2px}
+
+/* passos */
+ol.passos{list-style:none;margin:var(--e-4) 0 0;padding:0;counter-reset:p}
+ol.passos > li{counter-increment:p;position:relative;
+  padding:0 0 var(--e-5) 34px;border-left:1px solid var(--linha);
+  margin-left:11px}
+ol.passos > li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.passos > li::before{content:counter(p);position:absolute;left:-11px;top:-2px;
+  width:22px;height:22px;border-radius:50%;background:var(--grafite);
+  color:var(--papel);font:500 11px/22px var(--mono);text-align:center}
+ol.passos b{display:block;margin-bottom:2px}
+ol.passos p{margin-bottom:var(--e-2)}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;margin:var(--e-3) 0;font-size:12.5px}
+caption{text-align:left;color:var(--aco);font-size:12px;padding-bottom:var(--e-2)}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--linha);
+  vertical-align:top}
+th{font-weight:600;color:var(--texto-2);font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+
+.farol{display:inline-block;border-radius:var(--r-pill);padding:1px 9px;
+  font-size:11px;font-weight:500;white-space:nowrap}
+.f-dia{background:var(--em-dia-f);color:var(--em-dia)}
+.f-at{background:var(--atencao-f);color:var(--atencao)}
+.f-rec{background:var(--recuperacao-f);color:var(--recuperacao)}
+.f-aco{background:var(--acao-f);color:var(--acao)}
+.f-nao{background:var(--neutro-f);color:var(--neutro)}
+
+ul.lista{margin:0 0 var(--e-3);padding-left:18px}
+ul.lista li{margin-bottom:5px}
+
+.criterios{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:var(--e-3) 0}
+.criterios div{font-family:var(--mono);font-size:11.5px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-1);padding:6px 9px}
+
+figure{margin:var(--e-4) 0}
+svg .d-lig{fill:none;stroke:var(--linha);stroke-width:1.5;marker-end:url(#seta)}
+svg .d-lig .d-tronco{marker-end:none}
+svg .d-cx rect,svg rect.d-ac{stroke-width:1}
+svg .d-cx rect{fill:var(--fundo);stroke:var(--linha)}
+svg rect.d-ac{fill:var(--acento-f);stroke:var(--acento)}
+svg .d-t text{font-family:var(--mono);font-size:11px;text-anchor:middle;
+  fill:var(--aco)}
+svg .d-t text.forte{font-size:12px;fill:var(--texto)}
+svg .d-t text.fraco{fill:var(--aco)}
+svg .d-t text.ac{fill:var(--acento)}
+svg .d-t text.ac.forte{font-weight:600}
+svg text.pe{font-family:var(--mono);font-size:10.5px;fill:var(--aco)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{color:var(--aco);font-size:11.5px;margin-top:var(--e-2)}
+
+.rodape{margin-top:var(--e-6);padding-top:var(--e-4);
+  border-top:1px solid var(--linha);color:var(--aco);font-size:11.5px}
+
+@media (max-width:560px){
+  main{padding:20px 16px 56px}
+  h1{font-size:23px}
+  table{font-size:12px}
+}
+@media print{
+  body{background:#fff}
+  .cx,.nota{break-inside:avoid}
+  h2{break-after:avoid}
+}
+
+.acao-bloco{border-top:1px solid var(--linha);padding-top:var(--e-5);
+  margin-top:var(--e-6)}
+.acao-bloco h3{margin-top:0;font-size:15px}
+.papel{display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;border-radius:var(--r-pill);
+  padding:2px 9px;background:var(--neutro-f);color:var(--neutro);
+  border:1px solid var(--linha);vertical-align:2px;margin-left:6px}
+.papel.pl{background:var(--acento-f);color:var(--acento);border-color:var(--acento)}
+.papel.ad{background:var(--recuperacao-f);color:var(--recuperacao);border-color:var(--recuperacao)}
+.papel.fi{background:var(--em-dia-f);color:var(--em-dia);border-color:var(--em-dia)}
+table.campos td:first-child{width:34%;font-family:var(--mono);font-size:11.5px;
+  color:var(--texto)}
+.indice{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:var(--e-4) 0}
+.indice a{display:block;padding:9px 12px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-2);text-decoration:none;
+  color:var(--texto)}
+.indice a b{display:block;font-size:13px}
+.indice a span{color:var(--aco);font-size:11.5px}
+.indice a:hover{border-color:var(--acento)}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="cab">
+    <span class="cod">GPS-ACT-3</span>
+    <span class="selo">GPS-ACT · grupos Reportar e conta</span>
+  </div>
+  <h1>Reportar e administrar</h1>
+  <p class="lead">O que a pessoa faz para tirar informação do sistema e para governar quem entra nele: cockpit, status report, modelos, usuários, organizações e conta.</p>
+</header>
+<h2>Dois assuntos diferentes no mesmo lugar</h2>
+<p><strong>Reportar</strong> é leitura: nenhuma tela deste grupo grava no
+projeto — elas leem o que medição, apontamento e cronograma já gravaram, e
+produzem documento. <strong>Administrar</strong> é o contrário: quase tudo
+grava, e o que grava mexe em quem pode fazer o quê.</p><h2>Reportar</h2><div class="acao-bloco" id="cockpit"><h3>Ler o cockpit<span class="papel ">leitor</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Reportar</span><i>→</i><span class="fim">Cockpit</span></div><p>A saúde do projeto em uma tela: prazo, tarefas, avanço e ritmo, na data de status escolhida.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Prazo</td><td>Término calculado contra o término contratual</td></tr><tr><td>Tarefas</td><td>Quantas em aberto, quantas vencidas, quantas no caminho crítico</td></tr><tr><td>Avanço</td><td>Realizado contra previsto, ponderado por peso</td></tr><tr><td>Ritmo (IDP)</td><td>Índice de desempenho de prazo: abaixo de 1 o projeto anda mais devagar do que planejou</td></tr></tbody></table><div class="nota"><b>A data de status muda tudo.</b>Ela fica no topo, ao lado do seletor de contrato, e é o instante que todas as contas retratam. Trocá-la não altera nenhum dado — só a pergunta que você está fazendo.</div></div><div class="acao-bloco" id="status-report"><h3>Emitir o Status Report<span class="papel ">leitor</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Reportar</span><i>→</i><span class="fim">Status Report</span></div><p>O relatório gerencial do projeto, exportável em PDF e XLSX. Traz as vencidas, as críticas em aberto e a leitura de desvio.</p><ol class="passos"><li><b>Escolha a data de corte</b><p>É o instante que o relatório retrata.</p></li><li><b>Exporte</b><p>PDF para circular, XLSX para quem vai continuar a conta. O mesmo par existe para cronograma, medições, EAP, recursos, custos, apontamentos e previsto × realizado.</p></li></ol><div class="nota"><b>O arquivo sai carimbado.</b>Código do contrato, tipo de relatório e data de corte entram no nome do arquivo, e o cabeçalho traz contratante, contratada e quem emitiu. Relatório sem data de corte no nome vira fonte de discussão três semanas depois.</div></div><div class="acao-bloco" id="modelos"><h3>Baixar modelos e manuais<span class="papel ">leitor</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Reportar</span><i>→</i><span class="fim">Modelos</span></div><p>Duas abas: <strong>Modelos e anexos</strong> — os anexos oficiais do procedimento, incluindo a máscara de cronograma que a Importação lê — e <strong>Manual de planejamento</strong>, com o procedimento e as três ondas.</p><div class="nota"><b>É aqui que esta série mora.</b>Os documentos GPS-ACT e o GPS-MED abrem nesta tela, na aba Modelos e anexos, junto do design system e do panorama do projeto demo.</div></div><h2>Administrar</h2><div class="acao-bloco" id="usuarios"><h3>Criar e alterar usuários<span class="papel ad">admin</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>menu da conta</span><i>→</i><span class="fim">Usuários e acesso</span></div><p>Cada pessoa tem um papel <strong>por organização</strong>. Quem administra uma não administra a outra.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>E-mail</td><td>É o login, e precisa ser único</td></tr><tr><td>Nome</td><td>O que aparece assinando medições, RDOs e apontamentos</td></tr><tr><td>Papel nesta organização</td><td>leitor, fiscal, planejador, admin — na escada de permissão</td></tr><tr><td>Senha inicial</td><td>Opcional, mínimo 8 caracteres. <strong>Vazio gera uma provisória</strong></td></tr></tbody></table><ol class="passos"><li><b>Crie o usuário</b><p>Com o menor papel que resolva o trabalho dele.</p></li><li><b>Revise os papéis</b><p>Revogar papel tira o acesso à organização sem apagar a pessoa nem o que ela assinou.</p></li><li><b>Redefina senha quando preciso</b><p>Gera uma nova credencial; a anterior deixa de valer.</p></li></ol><div class="nota"><b>O papel decide onde o botão funciona, não onde ele aparece.</b>A verificação é do servidor — <span class="mono">INV-ACL-002</span>. Dar planejador a quem só precisa ler é o jeito silencioso de perder rastreabilidade: tudo o que ele gravar vai levar o nome dele.</div></div><div class="acao-bloco" id="organizacao"><h3>Criar organização<span class="papel ad">admin master</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>menu da conta</span><i>→</i><span class="fim">Usuários e acesso</span></div><p>Organização é a fronteira dos dados: contratos, EAP, medições e usuários vivem dentro de uma, e o banco isola uma da outra por RLS.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Código</td><td>Curto, como <span class="mono">CLIENTE-X</span></td></tr><tr><td>Razão social</td><td>O nome formal, que sai nos relatórios</td></tr></tbody></table><div class="nota"><b>Só o admin master cria.</b>É o único ato acima de admin. Quem tem várias organizações troca entre elas pelo menu da conta — e a troca recarrega a tela, porque tudo o que está em cima muda de dono.</div></div><div class="acao-bloco" id="conta"><h3>Cuidar da própria conta<span class="papel ">leitor</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>menu da conta</span><i>→</i><span class="fim">Configurações</span></div><p>O que cada pessoa mexe sozinha, sem depender do admin.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Nome e e-mail</td><td>Leitura — quem muda é o admin</td></tr><tr><td>Papel na organização ativa</td><td>Leitura, para você saber o que pode fazer</td></tr><tr><td>Último login</td><td>Serve para notar acesso que não foi seu</td></tr><tr><td>Senha atual / Nova senha / Confirmar</td><td>Mínimo 8 caracteres; a troca invalida a anterior</td></tr><tr><td>Tema</td><td>sistema, claro ou escuro — inclusive nestes documentos</td></tr><tr><td>Menu lateral recolhido</td><td>Mais área útil para o Gantt</td></tr><tr><td>Data de status padrão</td><td>A data que já vem escolhida ao abrir o sistema</td></tr></tbody></table><div class="nota"><b>Sair encerra a sessão no servidor.</b>Não é só limpar a tela: o <em>token</em> deixa de valer. Em máquina compartilhada de obra, é a diferença entre o próximo apontamento sair com o seu nome ou com o dele.</div></div>
+<p class="rodape">GPlanSiS|Project · o cronograma é a fonte única: CPM, ponderação, curva S, EVM, recursos, custos, horas e coerência calculam no servidor e ficam gravados com memória de cálculo. O navegador só desenha. Série GPS-ACT: <b>0</b> mapa, <b>1</b> planejar, <b>2</b> controlar, <b>3</b> reportar e administrar.</p>
+</main>
+</body>
+</html>

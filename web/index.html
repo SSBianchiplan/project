@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>GPlanSiS|Project</title>
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="GPlanSiS|Project — planejamento e controle de projetos: cronograma, medição, recursos, custos, horas, RDO e relatórios." />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#2d3336" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1f21" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="GPlanSiS" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/icones/apple-touch-icon.png" />
+    <script>
+      try {
+        var t = localStorage.getItem("gps.tema");
+        var escuro = t === "escuro" || (t !== "claro" && matchMedia("(prefers-color-scheme: dark)").matches);
+        if (t === "claro") document.documentElement.dataset.theme = "light";
+        else if (t === "escuro") document.documentElement.dataset.theme = "dark";
+        document.documentElement.style.colorScheme = escuro ? "dark" : "light";
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bx2rFc5o.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CFK6luV-.css">
+  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Controlar · ações humanas</title>
+<meta name="description" content="Passo a passo das ações do grupo Controlar do GPlanSiS|Project: medição, estorno, boletim, RDO e apontamento de horas, com as regras de recusa." />
+<!-- Sem script e sem rede: a CSP do sistema é script-src 'self'. O tema
+     acompanha o do aparelho e o data-theme do app. -->
+<style>
+:root{
+  --grafite:#2d3336; --aco:#7d8286; --claro:#edeff0; --papel:#f7f8f8; --fundo:#ffffff;
+  --linha:#dfe3e4; --texto:#17191b; --texto-2:#4a5054;
+  --em-dia:#2f7d4f; --atencao:#8a6d1f; --recuperacao:#b4560f; --acao:#a11d1d; --neutro:#7d8286;
+  --em-dia-f:#e7f3ec; --atencao-f:#f6efd9; --recuperacao-f:#f9e9dc; --acao-f:#f7e3e3; --neutro-f:#eef0f1;
+  --acento:#1f6f8b; --acento-f:#e4f0f4;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-4:#7a4fa3;
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --e-2:8px; --e-3:12px; --e-4:16px; --e-5:22px; --e-6:32px;
+  --r-1:3px; --r-2:6px; --r-3:10px; --r-pill:999px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+    --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+    --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+    --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+    --acento:#5aa9c6; --acento-f:#1d3038;
+    --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+  --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+  --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+  --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+  --acento:#5aa9c6; --acento-f:#1d3038;
+  --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--texto);
+  font:400 13px/1.5 var(--fonte);-webkit-text-size-adjust:100%}
+main{max-width:1000px;margin:0 auto;padding:26px var(--e-5) 72px}
+h1{font-size:28px;line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:16px;margin:var(--e-6) 0 var(--e-2);padding-top:var(--e-5);
+  border-top:1px solid var(--linha)}
+h3{font-size:14px;margin:var(--e-5) 0 var(--e-2)}
+p{margin:0 0 var(--e-3);max-width:74ch}
+a{color:var(--acento)}
+code,.mono{font-family:var(--mono);font-size:12px}
+code{background:var(--claro);border-radius:var(--r-1);padding:1px 5px}
+strong{font-weight:600}
+
+.cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--e-3);
+  margin-bottom:var(--e-2)}
+.cod{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--aco)}
+.lead{color:var(--texto-2);font-size:15px;max-width:72ch;margin:var(--e-3) 0 0}
+.selo{display:inline-block;font-family:var(--mono);font-size:11px;
+  border:1px solid var(--linha);border-radius:var(--r-pill);
+  padding:2px 9px;color:var(--aco);background:var(--fundo)}
+
+/* caminho na interface */
+.trilha{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-2);
+  font-family:var(--mono);font-size:12px;margin:var(--e-3) 0}
+.trilha span{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-1);padding:3px 9px}
+.trilha i{font-style:normal;color:var(--aco)}
+.trilha span.fim{border-color:var(--acento);background:var(--acento-f);
+  color:var(--acento);font-weight:500}
+
+/* blocos */
+.cx{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-3);padding:var(--e-5);margin:var(--e-4) 0}
+.cx > :last-child{margin-bottom:0}
+.cx h3{margin-top:0}
+.par{display:grid;gap:var(--e-4);grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.nota{border-left:3px solid var(--acento);background:var(--acento-f);
+  border-radius:0 var(--r-2) var(--r-2) 0;padding:var(--e-3) var(--e-4);
+  margin:var(--e-4) 0}
+.nota.alerta{border-left-color:var(--acao);background:var(--acao-f)}
+.nota > :last-child{margin-bottom:0}
+.nota b{display:block;margin-bottom:2px}
+
+/* passos */
+ol.passos{list-style:none;margin:var(--e-4) 0 0;padding:0;counter-reset:p}
+ol.passos > li{counter-increment:p;position:relative;
+  padding:0 0 var(--e-5) 34px;border-left:1px solid var(--linha);
+  margin-left:11px}
+ol.passos > li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.passos > li::before{content:counter(p);position:absolute;left:-11px;top:-2px;
+  width:22px;height:22px;border-radius:50%;background:var(--grafite);
+  color:var(--papel);font:500 11px/22px var(--mono);text-align:center}
+ol.passos b{display:block;margin-bottom:2px}
+ol.passos p{margin-bottom:var(--e-2)}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;margin:var(--e-3) 0;font-size:12.5px}
+caption{text-align:left;color:var(--aco);font-size:12px;padding-bottom:var(--e-2)}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--linha);
+  vertical-align:top}
+th{font-weight:600;color:var(--texto-2);font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+
+.farol{display:inline-block;border-radius:var(--r-pill);padding:1px 9px;
+  font-size:11px;font-weight:500;white-space:nowrap}
+.f-dia{background:var(--em-dia-f);color:var(--em-dia)}
+.f-at{background:var(--atencao-f);color:var(--atencao)}
+.f-rec{background:var(--recuperacao-f);color:var(--recuperacao)}
+.f-aco{background:var(--acao-f);color:var(--acao)}
+.f-nao{background:var(--neutro-f);color:var(--neutro)}
+
+ul.lista{margin:0 0 var(--e-3);padding-left:18px}
+ul.lista li{margin-bottom:5px}
+
+.criterios{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:var(--e-3) 0}
+.criterios div{font-family:var(--mono);font-size:11.5px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-1);padding:6px 9px}
+
+figure{margin:var(--e-4) 0}
+svg .d-lig{fill:none;stroke:var(--linha);stroke-width:1.5;marker-end:url(#seta)}
+svg .d-lig .d-tronco{marker-end:none}
+svg .d-cx rect,svg rect.d-ac{stroke-width:1}
+svg .d-cx rect{fill:var(--fundo);stroke:var(--linha)}
+svg rect.d-ac{fill:var(--acento-f);stroke:var(--acento)}
+svg .d-t text{font-family:var(--mono);font-size:11px;text-anchor:middle;
+  fill:var(--aco)}
+svg .d-t text.forte{font-size:12px;fill:var(--texto)}
+svg .d-t text.fraco{fill:var(--aco)}
+svg .d-t text.ac{fill:var(--acento)}
+svg .d-t text.ac.forte{font-weight:600}
+svg text.pe{font-family:var(--mono);font-size:10.5px;fill:var(--aco)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{color:var(--aco);font-size:11.5px;margin-top:var(--e-2)}
+
+.rodape{margin-top:var(--e-6);padding-top:var(--e-4);
+  border-top:1px solid var(--linha);color:var(--aco);font-size:11.5px}
+
+@media (max-width:560px){
+  main{padding:20px 16px 56px}
+  h1{font-size:23px}
+  table{font-size:12px}
+}
+@media print{
+  body{background:#fff}
+  .cx,.nota{break-inside:avoid}
+  h2{break-after:avoid}
+}
+
+.acao-bloco{border-top:1px solid var(--linha);padding-top:var(--e-5);
+  margin-top:var(--e-6)}
+.acao-bloco h3{margin-top:0;font-size:15px}
+.papel{display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;border-radius:var(--r-pill);
+  padding:2px 9px;background:var(--neutro-f);color:var(--neutro);
+  border:1px solid var(--linha);vertical-align:2px;margin-left:6px}
+.papel.pl{background:var(--acento-f);color:var(--acento);border-color:var(--acento)}
+.papel.ad{background:var(--recuperacao-f);color:var(--recuperacao);border-color:var(--recuperacao)}
+.papel.fi{background:var(--em-dia-f);color:var(--em-dia);border-color:var(--em-dia)}
+table.campos td:first-child{width:34%;font-family:var(--mono);font-size:11.5px;
+  color:var(--texto)}
+.indice{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:var(--e-4) 0}
+.indice > *{display:block;padding:9px 12px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-2);text-decoration:none;
+  color:var(--texto)}
+.indice b{display:block;font-size:13px}
+.indice span{color:var(--aco);font-size:11.5px}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="cab">
+    <span class="cod">GPS-ACT-2</span>
+    <span class="selo">GPS-ACT · grupo Controlar</span>
+  </div>
+  <h1>Controlar</h1>
+  <p class="lead">O que a pessoa faz para registrar o que aconteceu: medição, boletim, RDO, horas e a leitura do desvio — campo a campo.</p>
+</header>
+<h2>A diferença entre este grupo e o anterior</h2>
+<p><strong>Planejar</strong> registra o que se pretende; <strong>Controlar</strong>
+registra o que aconteceu. Por isso quase tudo aqui é
+<strong>append-only</strong>: medição, horas e custo real entram e não saem —
+corrigir é estornar, com justificativa, e a cadeia de hash continua
+conferindo.</p>
+<div class="nota"><b>Uma data de corte, um estado do mundo.</b>
+Quase toda ação deste grupo tem data de corte. É ela que define o instante que
+está sendo retratado — e é por isso que curva S, EVM e desvio mudam de resposta
+quando você muda a data de status no topo da tela.</div><h2>Medição</h2><div class="acao-bloco" id="medir"><h3>Lançar avanço físico<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Controlar</span><i>→</i><span class="fim">Medição</span></div><p>São três caminhos — etapas, boletim e planilha em lote —, e o assunto tem documento próprio nesta mesma tela: <b>GPS-MED-v1 · Avanço de tarefa, passo a passo</b>. O resumo:</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Atividade</td><td>Só folha da EAP; resumo tem o avanço calculado a partir das folhas</td></tr><tr><td>Critério</td><td>Sete listas de etapas, todas de execução física</td></tr><tr><td>Etapas concluídas</td><td>Etapa parcial <strong>não pontua</strong> — é o que impede a medição de virar negociação</td></tr><tr><td>Data corte</td><td>O instante retratado</td></tr><tr><td>Evidência</td><td>Obrigatória — <span class="mono">RDO 142, relatório de END 09/02, romaneio 3312</span></td></tr></tbody></table><table><caption>Quando o sistema recusa</caption><thead><tr><th>Regra</th><th>Motivo e saída</th></tr></thead><tbody><tr><td class="mono">INV-MED-003</td><td>Acumulado menor que o já medido: medição não retrocede. Use “Estornar última” com justificativa</td></tr><tr><td class="mono">INV-MED-004</td><td>Na planilha em lote, a data de corte precisa ser sábado</td></tr></tbody></table></div><div class="acao-bloco" id="estornar-medicao"><h3>Estornar uma medição<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Controlar</span><i>→</i><span>Medição</span><i>→</i><span class="fim">Estornar última</span></div><p>O caminho de volta. Não apaga: cria um lançamento contrário, amarrado ao original.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Justificativa</td><td>Obrigatória — <span class="mono">recontagem de etapas após auditoria</span></td></tr></tbody></table><div class="nota"><b>É isto que faz a medição sobreviver a uma auditoria.</b>Quem olha depois vê o que foi medido, o que foi estornado, por quem e por quê. Um sistema que deixasse editar o número apagaria justamente a parte interessante.</div></div><div class="acao-bloco" id="boletim"><h3>Emitir o boletim de medição<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Controlar</span><i>→</i><span>Medição</span><i>→</i><span class="fim">Boletim de medição</span></div><p>O BM consolida o período e vira o documento comercial: o que foi medido, o que é saldo e quanto há a receber.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Período de referência</td><td>Início e fim do que está sendo medido</td></tr><tr><td>Periodicidade</td><td>Mensal, quinzenal ou semanal — na semanal toda semana termina em sábado (<span class="mono">INV-PRV-002</span>)</td></tr><tr><td>Valor total do contrato</td><td>Base do cálculo financeiro do boletim</td></tr><tr><td>Tipo</td><td>A natureza do boletim emitido</td></tr><tr><td>Total a receber</td><td>Calculado a partir do avanço do período</td></tr><tr><td>Condições comerciais</td><td>Opcional, e <strong>sai impresso no PDF</strong> — é texto de contrato, não recado interno</td></tr></tbody></table><ol class="passos"><li><b>Confira as linhas</b><p>Cada EDT com anterior, atual, acumulado e saldo.</p></li><li><b>Meça o que faltar</b><p>Dá para digitar o acumulado direto na linha; o sistema pede confirmação mostrando o avanço anterior e a data de corte.</p></li><li><b>Emita</b><p>O boletim é numerado e a evidência das medições feitas por ele fica com o número do BM e o período.</p></li></ol></div><h2>RDO — diário de obra</h2><div class="acao-bloco" id="rdo"><h3>Emitir o RDO do dia<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Controlar</span><i>→</i><span class="fim">RDO</span></div><p>Segue o Anexo V do procedimento. É o documento que sustenta a medição: quando alguém pergunta “onde está a evidência”, a resposta costuma ser um RDO.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Data</td><td>O dia retratado; um RDO por dia</td></tr><tr><td>Local / área</td><td>Onde o trabalho aconteceu</td></tr><tr><td>Escopo</td><td>O que estava previsto para o dia</td></tr><tr><td>Tema do DDS</td><td>Diálogo diário de segurança — o assunto tratado com a equipe</td></tr><tr><td>Responsável técnico</td><td>Quem responde tecnicamente pelo dia</td></tr><tr><td>Encarregado geral</td><td>Quem tocou a frente em campo</td></tr><tr><td>Turnos</td><td>Os períodos trabalhados</td></tr><tr><td>Pluviometria (mm)</td><td>Chuva do dia — é o que sustenta pleito de chuva depois</td></tr><tr><td>MOD / MOI / Equipamentos</td><td>Efetivo direto, indireto e máquinas em campo</td></tr><tr><td>Serviços</td><td>O que foi executado</td></tr><tr><td>Ocorrências</td><td>O que saiu do previsto: prazo, custo, escopo, HSE</td></tr><tr><td>Observações</td><td>O resto — foto, boletim, status</td></tr></tbody></table><ol class="passos"><li><b>Preencha ao fim do turno</b><p>O sistema oferece sugestão a partir do que está programado para aquele dia no cronograma.</p></li><li><b>Registre as ocorrências</b><p>Cada evento fica com natureza e horário. É daqui que sai a base de um pleito.</p></li><li><b>Emita</b><p>O RDO emitido segue para aprovação do planejamento e da gerência, como manda o Anexo V. Editar depois é possível e fica registrado.</p></li></ol></div><h2>Apontamento de horas</h2><div class="acao-bloco" id="horas"><h3>Apontar horas<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Controlar</span><i>→</i><span class="fim">Apontamentos</span></div><p>Terceiro registro append-only. Alimenta custo de mão de obra, carga de recurso e a comparação entre hh previsto e realizado.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Tarefa</td><td>A atividade que consumiu as horas. Marco não recebe horas</td></tr><tr><td>Data</td><td>O dia trabalhado</td></tr><tr><td>Horas</td><td>Quantas, no dia, naquela tarefa</td></tr><tr><td>Recurso</td><td>Quem — do catálogo de recursos do contrato</td></tr><tr><td>Descrição</td><td>Frente, turno, o que foi feito</td></tr></tbody></table><table><caption>Quando o sistema recusa</caption><thead><tr><th>Regra</th><th>Motivo e saída</th></tr></thead><tbody><tr><td class="mono">INV-APT-004</td><td>Data no futuro: não se aponta hora que ainda não aconteceu</td></tr><tr><td class="mono">INV-APT-002</td><td>Tentativa de editar ou apagar: só inclusão. Corrija com estorno</td></tr></tbody></table><div class="nota"><b>Horas paradas contam.</b>O sistema tem lugar para hora parada e para o motivo. Apontar só a hora produtiva faz o custo parecer melhor do que é — e some com a informação que explicaria o atraso.</div></div><h2>Previsto × realizado</h2><div class="acao-bloco" id="previsto"><h3>Ler o desvio<span class="papel ">leitor</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Controlar</span><i>→</i><span class="fim">Previsto × realizado</span></div><p>Esta tela não grava nada: ela confronta o que a linha de base prometeu com o que as medições dizem, na data de status escolhida no topo.</p><div class="nota"><b>O farol tem regra escrita.</b>Realizado igual ou acima do previsto é <em>em dia</em>. Abaixo, entra em <em>atenção</em> — e vira <em>plano de recuperação</em> acima de 4% de desvio relativo, ou <em>plano de ação</em> acima de 5% de desvio absoluto, que é a mais grave e é verificada primeiro. Nó sem peso não recebe farol: devolver 0% mentiria sobre uma frente que não existe.</div></div>
+<p class="rodape">GPlanSiS|Project · o cronograma é a fonte única: CPM, ponderação, curva S, EVM, recursos, custos, horas e coerência calculam no servidor e ficam gravados com memória de cálculo. O navegador só desenha. Série GPS-ACT: <b>0</b> mapa, <b>1</b> planejar, <b>2</b> controlar, <b>3</b> reportar e administrar.</p>
+</main>
+</body>
+</html>

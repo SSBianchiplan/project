@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Planejar · ações humanas</title>
+<meta name="description" content="Passo a passo das ações do grupo Planejar do GPlanSiS|Project, com o que preencher em cada campo e as regras que recusam a gravação." />
+<!-- Sem script e sem rede: a CSP do sistema é script-src 'self'. O tema
+     acompanha o do aparelho e o data-theme do app. -->
+<style>
+:root{
+  --grafite:#2d3336; --aco:#7d8286; --claro:#edeff0; --papel:#f7f8f8; --fundo:#ffffff;
+  --linha:#dfe3e4; --texto:#17191b; --texto-2:#4a5054;
+  --em-dia:#2f7d4f; --atencao:#8a6d1f; --recuperacao:#b4560f; --acao:#a11d1d; --neutro:#7d8286;
+  --em-dia-f:#e7f3ec; --atencao-f:#f6efd9; --recuperacao-f:#f9e9dc; --acao-f:#f7e3e3; --neutro-f:#eef0f1;
+  --acento:#1f6f8b; --acento-f:#e4f0f4;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-4:#7a4fa3;
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --e-2:8px; --e-3:12px; --e-4:16px; --e-5:22px; --e-6:32px;
+  --r-1:3px; --r-2:6px; --r-3:10px; --r-pill:999px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+    --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+    --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+    --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+    --acento:#5aa9c6; --acento-f:#1d3038;
+    --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+  --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+  --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+  --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+  --acento:#5aa9c6; --acento-f:#1d3038;
+  --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--texto);
+  font:400 13px/1.5 var(--fonte);-webkit-text-size-adjust:100%}
+main{max-width:1000px;margin:0 auto;padding:26px var(--e-5) 72px}
+h1{font-size:28px;line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:16px;margin:var(--e-6) 0 var(--e-2);padding-top:var(--e-5);
+  border-top:1px solid var(--linha)}
+h3{font-size:14px;margin:var(--e-5) 0 var(--e-2)}
+p{margin:0 0 var(--e-3);max-width:74ch}
+a{color:var(--acento)}
+code,.mono{font-family:var(--mono);font-size:12px}
+code{background:var(--claro);border-radius:var(--r-1);padding:1px 5px}
+strong{font-weight:600}
+
+.cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--e-3);
+  margin-bottom:var(--e-2)}
+.cod{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--aco)}
+.lead{color:var(--texto-2);font-size:15px;max-width:72ch;margin:var(--e-3) 0 0}
+.selo{display:inline-block;font-family:var(--mono);font-size:11px;
+  border:1px solid var(--linha);border-radius:var(--r-pill);
+  padding:2px 9px;color:var(--aco);background:var(--fundo)}
+
+/* caminho na interface */
+.trilha{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-2);
+  font-family:var(--mono);font-size:12px;margin:var(--e-3) 0}
+.trilha span{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-1);padding:3px 9px}
+.trilha i{font-style:normal;color:var(--aco)}
+.trilha span.fim{border-color:var(--acento);background:var(--acento-f);
+  color:var(--acento);font-weight:500}
+
+/* blocos */
+.cx{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-3);padding:var(--e-5);margin:var(--e-4) 0}
+.cx > :last-child{margin-bottom:0}
+.cx h3{margin-top:0}
+.par{display:grid;gap:var(--e-4);grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.nota{border-left:3px solid var(--acento);background:var(--acento-f);
+  border-radius:0 var(--r-2) var(--r-2) 0;padding:var(--e-3) var(--e-4);
+  margin:var(--e-4) 0}
+.nota.alerta{border-left-color:var(--acao);background:var(--acao-f)}
+.nota > :last-child{margin-bottom:0}
+.nota b{display:block;margin-bottom:2px}
+
+/* passos */
+ol.passos{list-style:none;margin:var(--e-4) 0 0;padding:0;counter-reset:p}
+ol.passos > li{counter-increment:p;position:relative;
+  padding:0 0 var(--e-5) 34px;border-left:1px solid var(--linha);
+  margin-left:11px}
+ol.passos > li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.passos > li::before{content:counter(p);position:absolute;left:-11px;top:-2px;
+  width:22px;height:22px;border-radius:50%;background:var(--grafite);
+  color:var(--papel);font:500 11px/22px var(--mono);text-align:center}
+ol.passos b{display:block;margin-bottom:2px}
+ol.passos p{margin-bottom:var(--e-2)}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;margin:var(--e-3) 0;font-size:12.5px}
+caption{text-align:left;color:var(--aco);font-size:12px;padding-bottom:var(--e-2)}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--linha);
+  vertical-align:top}
+th{font-weight:600;color:var(--texto-2);font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+
+.farol{display:inline-block;border-radius:var(--r-pill);padding:1px 9px;
+  font-size:11px;font-weight:500;white-space:nowrap}
+.f-dia{background:var(--em-dia-f);color:var(--em-dia)}
+.f-at{background:var(--atencao-f);color:var(--atencao)}
+.f-rec{background:var(--recuperacao-f);color:var(--recuperacao)}
+.f-aco{background:var(--acao-f);color:var(--acao)}
+.f-nao{background:var(--neutro-f);color:var(--neutro)}
+
+ul.lista{margin:0 0 var(--e-3);padding-left:18px}
+ul.lista li{margin-bottom:5px}
+
+.criterios{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:var(--e-3) 0}
+.criterios div{font-family:var(--mono);font-size:11.5px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-1);padding:6px 9px}
+
+figure{margin:var(--e-4) 0}
+svg .d-lig{fill:none;stroke:var(--linha);stroke-width:1.5;marker-end:url(#seta)}
+svg .d-lig .d-tronco{marker-end:none}
+svg .d-cx rect,svg rect.d-ac{stroke-width:1}
+svg .d-cx rect{fill:var(--fundo);stroke:var(--linha)}
+svg rect.d-ac{fill:var(--acento-f);stroke:var(--acento)}
+svg .d-t text{font-family:var(--mono);font-size:11px;text-anchor:middle;
+  fill:var(--aco)}
+svg .d-t text.forte{font-size:12px;fill:var(--texto)}
+svg .d-t text.fraco{fill:var(--aco)}
+svg .d-t text.ac{fill:var(--acento)}
+svg .d-t text.ac.forte{font-weight:600}
+svg text.pe{font-family:var(--mono);font-size:10.5px;fill:var(--aco)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{color:var(--aco);font-size:11.5px;margin-top:var(--e-2)}
+
+.rodape{margin-top:var(--e-6);padding-top:var(--e-4);
+  border-top:1px solid var(--linha);color:var(--aco);font-size:11.5px}
+
+@media (max-width:560px){
+  main{padding:20px 16px 56px}
+  h1{font-size:23px}
+  table{font-size:12px}
+}
+@media print{
+  body{background:#fff}
+  .cx,.nota{break-inside:avoid}
+  h2{break-after:avoid}
+}
+
+.acao-bloco{border-top:1px solid var(--linha);padding-top:var(--e-5);
+  margin-top:var(--e-6)}
+.acao-bloco h3{margin-top:0;font-size:15px}
+.papel{display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;border-radius:var(--r-pill);
+  padding:2px 9px;background:var(--neutro-f);color:var(--neutro);
+  border:1px solid var(--linha);vertical-align:2px;margin-left:6px}
+.papel.pl{background:var(--acento-f);color:var(--acento);border-color:var(--acento)}
+.papel.ad{background:var(--recuperacao-f);color:var(--recuperacao);border-color:var(--recuperacao)}
+.papel.fi{background:var(--em-dia-f);color:var(--em-dia);border-color:var(--em-dia)}
+table.campos td:first-child{width:34%;font-family:var(--mono);font-size:11.5px;
+  color:var(--texto)}
+.indice{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:var(--e-4) 0}
+.indice a{display:block;padding:9px 12px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-2);text-decoration:none;
+  color:var(--texto)}
+.indice a b{display:block;font-size:13px}
+.indice a span{color:var(--aco);font-size:11.5px}
+.indice a:hover{border-color:var(--acento)}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="cab">
+    <span class="cod">GPS-ACT-1</span>
+    <span class="selo">GPS-ACT · grupo Planejar</span>
+  </div>
+  <h1>Planejar</h1>
+  <p class="lead">O que a pessoa faz para montar o plano: contrato, estrutura, pesos, datas, rede, recursos, custos e importação — campo a campo.</p>
+</header>
+<h2>Onde cada coisa se faz</h2>
+<p>O grupo <strong>Planejar</strong> responde por tudo o que o projeto
+<em>pretende</em>: o contrato, a estrutura que o divide, o peso de cada parte,
+as datas, a rede que as amarra, quem executa e quanto custa. O que o projeto
+<em>realizou</em> mora no grupo Controlar.</p>
+<div class="nota"><b>A ordem importa.</b>
+Contrato → estrutura da EAP → pesos → durações e rede → linha de base. Pular
+um degrau não trava o sistema, mas produz um plano que não fecha: peso que não
+soma na base, rede sem raiz, linha de base aprovada sobre cronograma vazio.</div><h2>Projeto novo</h2><div class="acao-bloco" id="criar-contrato"><h3>Criar o contrato<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span class="fim">Projeto novo</span></div><p>Abre o projeto e fixa a base de ponderação — o total de pontos que a EAP inteira terá de somar. É a primeira decisão e a mais difícil de mudar depois.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Código do contrato</td><td>Identificador curto e único, como <span class="mono">CT-100-ETANOL</span></td></tr><tr><td>Modalidade</td><td>Como o contrato remunera: preço global, preço unitário, administração</td></tr><tr><td>Empreendimento</td><td>O nome que aparece nos relatórios — <span class="mono">ÁREA 100 — ETANOL DE MILHO</span></td></tr><tr><td>Contratante / Contratada</td><td>Quem paga e quem executa; saem no cabeçalho de todo PDF</td></tr><tr><td>Data de início</td><td>Primeiro dia útil do cronograma</td></tr><tr><td>Término contratual</td><td>A data do contrato, não a calculada. O sistema compara as duas e é dessa diferença que nasce o desvio de prazo</td></tr><tr><td>Base de ponderação</td><td>O total de pontos do projeto. Costuma ser 1.000, 10.000 ou o total de hh. A soma das folhas terá de fechar exatamente nesse número</td></tr></tbody></table><ol class="passos"><li><b>Escolha o modo</b><p>Dois caminhos: <strong>Continuar com o modelo do Anexo I</strong>, que traz a EAP de referência do procedimento já montada, ou <strong>Começar em branco</strong>.</p></li><li><b>Preencha a identificação</b><p>O código é o que você vai ver no seletor de contratos, no topo de toda tela.</p></li><li><b>Defina a base de ponderação</b><p>Pense no denominador antes de distribuir. Mudar a base depois obriga a reponderar a EAP inteira, porque <span class="mono">INV-EAP-001</span> exige que as folhas fechem nela.</p></li></ol><div class="nota"><b>O que o sistema exige de um projeto novo</b>A própria tela lista os requisitos ao lado do formulário: EAP com raiz única, folhas ponderadas somando a base, rede sem ciclo e linha de base aprovada. Enquanto faltar algo, o projeto existe mas não serve para medir.</div></div><div class="acao-bloco" id="estrutura"><h3>Montar e gravar a estrutura da EAP<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span>Projeto novo</span><i>→</i><span class="fim">Estrutura</span></div><p>A EAP é a espinha: cada nó é um pedaço do escopo, e só as folhas recebem peso, recurso, custo, hora e medição.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Descrição</td><td>O que aquele pedaço entrega, não o que a equipe faz</td></tr><tr><td>Dur.</td><td>Dias úteis. Marco é sempre 0</td></tr><tr><td>Pontos</td><td>Só em folha. Nó de resumo com ponto é recusado</td></tr><tr><td>Peso</td><td>Calculado: pontos ÷ base</td></tr><tr><td>Memória do peso</td><td>De onde saiu o número — <span class="mono">400 hh a 100 pontos/hh</span></td></tr><tr><td>Critério</td><td>A lista de etapas que vai medir essa folha</td></tr><tr><td>Disciplina</td><td>Processo, Civil, Mecânica, Tubulação, Elétrica, Instrumentação, Automação, Suprimentos, Logística, Comissionamento ou Gerenciamento</td></tr><tr><td>Tipo</td><td><span class="mono">atividade</span>, <span class="mono">marco</span> ou <span class="mono">resumo</span></td></tr></tbody></table><ol class="passos"><li><b>Monte a árvore</b><p>Os botões <span class="mono">+ ativ.</span> e <span class="mono">+ marco</span> acrescentam linhas; a hierarquia se ajusta indentando e recuando.</p></li><li><b>Valide antes de gravar</b><p>A validação roda no servidor e devolve os achados por invariante. É barata — use sempre que mexer em vários nós.</p></li><li><b>Grave a estrutura</b><p>A gravação é tudo ou nada: com um achado bloqueante, nenhum nó é escrito.</p></li></ol><table><caption>Quando o sistema recusa</caption><thead><tr><th>Regra</th><th>Motivo e saída</th></tr></thead><tbody><tr><td class="mono">INV-EAP-001</td><td>A soma dos pontos das folhas não fecha na base do contrato</td></tr><tr><td class="mono">INV-EAP-002</td><td>Nó com filhos precisa ser resumo, e resumo não pode ter pontos</td></tr><tr><td class="mono">INV-EAP-003</td><td>Marco tem de ficar com peso zero</td></tr><tr><td class="mono">INV-EAP-004</td><td>EDT duplicado, ou nó sem o pai correspondente na estrutura</td></tr><tr><td class="mono">INV-EAP-005</td><td>A EAP precisa de exatamente uma raiz, e o nível vai de 1 a 7</td></tr></tbody></table></div><div class="acao-bloco" id="baseline"><h3>Aprovar a linha de base (BL0)<span class="papel fi">fiscal</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span>Projeto novo</span><i>→</i><span class="fim">Linha de base</span></div><p>Congela o plano aprovado. Daí em diante toda data tem um "antes" para ser comparada, e o desvio passa a existir.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Emissão</td><td>Data da aprovação formal</td></tr><tr><td>Nota da LVP</td><td>Lista de verificação do plano. O procedimento pede <strong>≥ 0,85</strong></td></tr><tr><td>Avaliada por</td><td>Quem assinou a verificação</td></tr></tbody></table><div class="nota alerta"><b>Este é o único ato que não é do planejador.</b>Aprovar linha de base é de <strong>fiscal</strong> ou <strong>admin</strong> — <span class="mono">INV-ACL-003</span>. Quem faz o plano não aprova o próprio plano.</div></div><h2>Cronograma</h2><div class="acao-bloco" id="simular"><h3>Simular e efetivar<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span class="fim">Cronograma</span></div><p>Toda alteração no cronograma nasce como simulação. Nada é gravado enquanto você não mandar — e, antes de mandar, dá para ver o estrago.</p><ol class="passos"><li><b>Altere o que quiser</b><p>Datas, duração, restrição, vínculo, recurso. A faixa no topo passa a avisar <em>«simulação ativa — nada gravado»</em>.</p></li><li><b>Abra a aba Impacto</b><p>Ela mostra o término do projeto antes e depois, o delta em dias, e quais atividades <strong>entraram ou saíram do caminho crítico</strong>.</p></li><li><b>Efetivar ou Descartar</b><p><strong>Efetivar</strong> grava com memória de cálculo. <strong>Descartar</strong> abandona só aquela tarefa; <em>reverter ao plano</em>, na faixa do topo, abandona tudo.</p></li></ol><div class="nota"><b>Por que o botão se chama Simular e não Salvar.</b>O CPM é uma rede: mexer numa data move o que vem depois. Simular primeiro é o que separa ajustar um plano de descobrir na segunda-feira que o término mudou.</div></div><div class="acao-bloco" id="tarefa"><h3>Editar uma tarefa<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span>Cronograma</span><i>→</i><span class="fim">clique na linha</span></div><p>A gaveta da tarefa tem nove abas. Cada uma governa um aspecto, e todas obedecem ao ciclo simular → efetivar.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Geral · Tipo</td><td><span class="mono">Atividade</span> ou <span class="mono">Marco (duração 0, peso 0)</span></td></tr><tr><td>Geral · Duração</td><td>Dias úteis, segundo o calendário escolhido</td></tr><tr><td>Geral · Calendário</td><td>Define os dias úteis — <span class="mono">5x8 — seg a sex, 8 h/dia</span> e afins</td></tr><tr><td>Geral · Responsável</td><td>Encarregado ou fornecedor; texto livre</td></tr><tr><td>Geral · Prioridade</td><td>Usada no nivelamento de recursos: maior prioridade segura o recurso primeiro</td></tr><tr><td>Geral · Notas de planejamento</td><td>Premissa, produtividade adotada, fonte do quantitativo — o porquê da duração</td></tr><tr><td>Geral · Situação declarada</td><td>não iniciada, em andamento, concluída ou suspensa. É declaração, não medição</td></tr><tr><td>Datas · Início cedo</td><td>Digitar aqui <strong>vira restrição</strong> do tipo “não iniciar antes de”</td></tr><tr><td>Datas · Término cedo</td><td>Digitar aqui <strong>recalcula a duração</strong></td></tr><tr><td>Datas · Folga total</td><td>Editar desloca a atividade; zero significa caminho crítico</td></tr><tr><td>Restrições · Tipo</td><td>“O mais breve possível” (padrão), “Não iniciar antes de” ou “Deve iniciar em” — este último <strong>reprova a LVP</strong></td></tr><tr><td>Restrições · Justificativa</td><td>O motivo apresentado à fiscalização; sem ele a restrição não se sustenta numa auditoria</td></tr><tr><td>Recursos · HH estimadas</td><td>Homem-hora da atividade; o sistema divide pela duração e mostra hh/dia</td></tr><tr><td>Recursos · MOD / MOI</td><td>Mão de obra direta e indireta alocadas</td></tr><tr><td>Peso e medição</td><td>Pontos, critério, unidade e quantitativo. <strong>O avanço aqui é só leitura</strong></td></tr></tbody></table><div class="nota"><b>Arrastar a barra no Gantt cria restrição.</b>Mover a barra com o mouse equivale a digitar uma data de início: vira um “não iniciar antes de”. Redimensionar muda a duração. É rápido, e é por isso que convém olhar a aba Impacto depois.</div></div><div class="acao-bloco" id="estrutura-viva"><h3>Criar, indentar, recuar e excluir tarefas<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span>Cronograma</span><i>→</i><span class="fim">menu da linha</span></div><p>A estrutura continua editável depois de criada — inclusive por teclado, sem sair da lista.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Nova tarefa abaixo</td><td>Irmã da linha atual, no mesmo nível</td></tr><tr><td>Nova subtarefa</td><td>Filha da linha atual, que vira resumo</td></tr><tr><td>Indentar</td><td>A linha vira filha do irmão de cima</td></tr><tr><td>Recuar</td><td>A linha sobe um nível</td></tr><tr><td>Excluir tarefa</td><td>Pede confirmação; leva junto a programação do nó</td></tr></tbody></table><div class="nota alerta"><b>Indentar muda o peso de lugar.</b>Quando uma folha ganha filhos ela vira resumo — e resumo não pode ter pontos (<span class="mono">INV-EAP-002</span>). O peso precisa descer para as novas folhas, ou a soma deixa de fechar na base.</div></div><div class="acao-bloco" id="rede"><h3>Gravar a rede de precedência<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span>Cronograma</span><i>→</i><span class="fim">Rede</span></div><p>É a rede que faz o CPM existir: sem vínculo, tudo começa no primeiro dia e não há caminho crítico.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Predecessora / Sucessora</td><td>As duas pontas do vínculo, por EDT</td></tr><tr><td>Tipo</td><td><span class="mono">TI</span> término→início (o comum), <span class="mono">II</span> início→início, <span class="mono">TT</span> término→término, <span class="mono">IT</span> início→término</td></tr><tr><td>Lag</td><td>Espera em dias entre as duas. Negativo é recusado</td></tr></tbody></table><table><caption>Quando o sistema recusa</caption><thead><tr><th>Regra</th><th>Motivo e saída</th></tr></thead><tbody><tr><td class="mono">INV-CRN-002</td><td>Lag negativo, ou acima do máximo permitido</td></tr><tr><td class="mono">INV-CRN-006</td><td>Ciclo de precedência — A depende de B que depende de A, inclusive indiretamente</td></tr><tr><td class="mono">INV-CRN-004</td><td>Marco com duração diferente de zero</td></tr></tbody></table></div><h2>EAP e ponderação</h2><div class="acao-bloco" id="ponderar"><h3>Distribuir os pontos<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span class="fim">EAP e ponderação</span></div><p>A tela mostra a base, a soma das folhas e quantas folhas estão sem memória do peso. Enquanto os dois primeiros números diferirem, o projeto não fecha.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Pontos</td><td>Quanto a folha vale. Só folha recebe</td></tr><tr><td>Peso</td><td>Calculado: pontos ÷ base de ponderação</td></tr><tr><td>Memória do peso</td><td>A conta que gerou os pontos — <span class="mono">400 hh a 100 pontos/hh</span></td></tr></tbody></table><ol class="passos"><li><b>Distribua</b><p>Há um atalho de distribuição sugerida por fase quando você não tem ainda o quantitativo fechado. Serve para destravar, não para ficar.</p></li><li><b>Escreva a memória</b><p>A tela conta quantas folhas estão sem memória. Peso sem memória é número que ninguém consegue defender depois.</p></li><li><b>Grave a ponderação</b><p>A soma tem de bater com a base, exatamente.</p></li></ol><div class="nota"><b>Documentos do nó.</b>Uma folha pode ser detalhada em documentos com pontos próprios — e aí <span class="mono">INV-DOC-001</span> exige que a soma dos documentos feche nos pontos da folha. Cada documento percorre estágios, e registrar estágio é outra ação humana.</div></div><h2>Recursos</h2><div class="acao-bloco" id="recurso"><h3>Cadastrar e alocar recursos<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span class="fim">Recursos</span></div><p>O catálogo é do contrato. A alocação é da atividade — e é ela que produz o histograma, a carga e o custo de mão de obra.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Código</td><td>Curto e único, como <span class="mono">SOLD</span></td></tr><tr><td>Nome</td><td>O que se lê no histograma — <span class="mono">Soldador qualificado</span></td></tr><tr><td>Tipo</td><td>Mão de obra, equipamento, máquina e afins</td></tr><tr><td>Unidade</td><td>Como se conta esse recurso</td></tr><tr><td>Capacidade por dia</td><td>Quantos cabem por dia. <strong>0 = não controla</strong>, e aí ele nunca acusa superalocação</td></tr><tr><td>Custo por hora</td><td>Alimenta o custo de mão de obra e o valor agregado</td></tr><tr><td>Horas por dia</td><td>Jornada considerada no cálculo de hh</td></tr><tr><td>ativo</td><td>Desmarcar tira do catálogo sem apagar o histórico</td></tr></tbody></table><ol class="passos"><li><b>Cadastre o recurso</b><p>Uma vez por contrato.</p></li><li><b>Aloque na atividade</b><p>Na aba <span class="mono">Recursos</span> da tarefa. Marco não recebe recurso — <span class="mono">INV-REC-003</span>.</p></li><li><b>Olhe o histograma</b><p>A tela mostra os recursos mais carregados e as superalocações.</p></li></ol></div><div class="acao-bloco" id="nivelar"><h3>Nivelar e tratar superalocação<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span class="fim">Recursos</span></div><p>Superalocação é o recurso passando da capacidade num dia. O sistema não a esconde nem a resolve sozinho: ele mostra, e você decide.</p><ol class="passos"><li><b>Nivelar</b><p>O servidor desloca atividades dentro da folga para caber na capacidade, respeitando a prioridade de cada uma. O resultado vem como proposta — o cronograma só muda ao efetivar.</p></li><li><b>Aceitar a superalocação</b><p>Quando a equipe vai mesmo fazer hora extra ou entrar mais gente, aceite: o alerta silencia com registro de quem aceitou.</p></li><li><b>Reabrir</b><p>Se a premissa caiu, reabrir devolve o alerta à lista.</p></li></ol></div><h2>Custos</h2><div class="acao-bloco" id="orcamento"><h3>Orçar a atividade<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span>Cronograma</span><i>→</i><span>tarefa</span><i>→</i><span class="fim">Custos</span></div><p>O orçamento é por atividade e por categoria. É o "previsto" do valor agregado.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Categoria</td><td>Material, equipamento, máquina, serviço, subcontrato, mão de obra, logística ou outro</td></tr><tr><td>Fornecedor</td><td>Quem entrega — <span class="mono">Trocador de calor TC-101</span></td></tr><tr><td>Recursos alocados</td><td>Calculado: hh × R$/h, vindo da aba Recursos</td></tr><tr><td>Orçamento da atividade</td><td>A soma dos itens que você lançou</td></tr><tr><td>Valor agregado</td><td>Calculado: orçamento × avanço medido</td></tr><tr><td>Custo real lançado</td><td>O que já foi gasto, do registro de custo real</td></tr></tbody></table><div class="nota"><b>Marco não carrega custo.</b><span class="mono">INV-CST-001</span> — aloque na atividade que executa o trabalho. Marco é data, não esforço.</div></div><div class="acao-bloco" id="custo-real"><h3>Lançar custo realizado<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span class="fim">Custos</span></div><p>Registro append-only: entra nota por nota, e correção é linha nova com valor negativo.</p><table class="campos"><caption>O que vai em cada campo</caption><tbody><tr><td>Atividade</td><td>A folha que consumiu; precisa existir na EAP</td></tr><tr><td>Categoria</td><td>A mesma lista do orçamento, para comparar igual com igual</td></tr><tr><td>Data</td><td>Competência do gasto</td></tr><tr><td>Valor (R$)</td><td><strong>Negativo é ajuste</strong> — é assim que se estorna</td></tr><tr><td>Documento</td><td>NF, boletim, medição — o comprovante</td></tr><tr><td>Descrição</td><td>O que foi comprado ou executado</td></tr></tbody></table><table><caption>Quando o sistema recusa</caption><thead><tr><th>Regra</th><th>Motivo e saída</th></tr></thead><tbody><tr><td class="mono">INV-CST-002</td><td>Tentativa de editar ou apagar lançamento: só inclusão. Corrija com valor negativo em nova linha</td></tr><tr><td class="mono">INV-CST-001</td><td>Custo lançado em marco</td></tr></tbody></table></div><h2>Importação</h2><div class="acao-bloco" id="importar"><h3>Trazer um cronograma de fora<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span class="fim">Importação</span></div><p>Lê MPP, XER, XML do MS Project e a máscara XLSX do Anexo IV. O arquivo passa por um validador antes de encostar no seu plano.</p><ol class="passos"><li><b>Envie e processe</b><p>O conteúdo do arquivo aparece <strong>editável</strong> na tela, com os percentuais de tarefas, fases e rede reconhecidos.</p></li><li><b>Leia os achados</b><p>Cada achado traz invariante, severidade, referência e detalhe. Com bloqueio, o botão de aplicar fica desabilitado — e, mesmo que a API falhasse, o banco recusa pela constraint <span class="mono">ck_importacao_achados</span>.</p></li><li><b>Aplique ao cronograma</b><p>Atualiza duração e vínculos das atividades cujo EDT já existe na EAP, e recalcula o CPM.</p></li></ol><div class="nota alerta"><b>Importar cronograma não importa avanço.</b>O percentual concluído do arquivo é <strong>descartado</strong>. Quem manda no realizado é o registro de medição, não a planilha que alguém mandou por e-mail.</div></div><div class="acao-bloco" id="modelos-lote"><h3>Criar e atualizar em lote por planilha<span class="papel pl">planejador</span></h3><div class="trilha"><span>Menu</span><i>→</i><span>Planejar</span><i>→</i><span>Importação</span><i>→</i><span class="fim">Modelos por módulo</span></div><p>Cada módulo tem um modelo XLSX. Baixar traz a aba Dados já preenchida com o que está no banco, mais a aba Instruções.</p><ol class="passos"><li><b>Baixe o modelo do módulo</b><p>Ele vem com o que já existe — é também a forma de exportar para conferir fora do sistema.</p></li><li><b>Edite e envie</b><p>O servidor valida linha a linha e aplica em <strong>uma transação</strong>: com erro em qualquer linha, nada é gravado.</p></li><li><b>Confira o modo</b><p><span class="mono">substituir</span> troca o conteúdo do módulo; <span class="mono">anexar</span> só acrescenta. Os registros — medição, custo real, horas — são sempre anexar.</p></li></ol></div>
+<p class="rodape">GPlanSiS|Project · o cronograma é a fonte única: CPM, ponderação, curva S, EVM, recursos, custos, horas e coerência calculam no servidor e ficam gravados com memória de cálculo. O navegador só desenha. Série GPS-ACT: <b>0</b> mapa, <b>1</b> planejar, <b>2</b> controlar, <b>3</b> reportar e administrar.</p>
+</main>
+</body>
+</html>

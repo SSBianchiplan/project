@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+#  GPlanSiS|Project — __DOMINIO__
+#
+#  Arquivo SEPARADO, importado pelo Caddyfile principal do hub. Não mexe nos
+#  demais blocos (gpsml.caddy, gplansis.caddy, fluxoai.caddy ...).
+#
+#  Modelo: instalar.sh troca __DOMINIO__, __PORTA__ e __WEB__.
+#  O certificado sai quando o A de __DOMINIO__ apontar para este VPS.
+# ---------------------------------------------------------------------------
+
+(gpsproject_app) {
+	# A API já publica tudo sob /api/v1 (e /docs, /openapi.json na raiz do app).
+	# `handle` NÃO remove o prefixo: o FastAPI vê /api/v1/... como em dev.
+	handle /api/* {
+		reverse_proxy 127.0.0.1:__PORTA__ {
+			header_up X-Real-IP {remote_host}
+		}
+	}
+	handle /saude {
+		reverse_proxy 127.0.0.1:__PORTA__
+	}
+
+	# O resto é a SPA (Vite + PWA). Rotas são client-side (?aba=...).
+	handle {
+		root * __WEB__
+		try_files {path} /index.html
+		file_server
+	}
+
+	# O bundle não usa CDN nem fonte externa; o navegador também não deixa.
+	# blob: é para PDF/XLSX gerados e abertos inline (iframe) e para o service worker.
+	header {
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-src 'self' blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	# O service worker do PWA precisa ver o index sempre fresco.
+	@sw path /sw.js /registerSW.js /manifest.webmanifest /index.html
+	header @sw Cache-Control "no-cache"
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+
+	encode gzip zstd
+
+	log {
+		output file /var/log/caddy/gpsproject.log
+	}
+}
+
+__DOMINIO__ {
+	import gpsproject_app
+}

@@ -1,0 +1,54 @@
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF", "ANN", "PL"]
+# ANN401: Any na fronteira do SQLAlchemy. PLR2004: constante em teste.
+# RUF00x: acentuação em PT-BR é o idioma do domínio, não ambiguidade.
+# UP042: StrEnum trocaria o valor serializado dos enums já gravados no banco.
+ignore = ["ANN401", "PLR2004", "RUF001", "RUF002", "RUF003", "UP042",
+          "PLR0912", "PLR0913", "PLR0917"]
+
+[tool.ruff.lint.per-file-ignores]
+# B008: Depends()/File()/Form() no default é o contrato do FastAPI.
+# PLC0415: import tardio é deliberado — o parser só carrega o formato pedido.
+"app/api/*" = ["B008"]
+"app/importacao/detector.py" = ["PLC0415"]
+"app/infra/tenancy.py" = ["B008", "ANN201", "E501"]
+"app/infra/auth.py" = ["E501"]
+"tests/test_recursos.py" = ["E501"]
+"tests/*" = ["ANN", "PLR0913", "S101", "B017", "PLC0415"]
+"alembic/*" = ["ANN", "E402"]
+# E501: SQL literal e mensagens de invariante inteiras na mesma linha são mais legíveis
+# que quebradas; o módulo é fronteira, não domínio.
+"app/api/rotas_projeto.py" = ["E501"]
+"app/api/rotas.py" = ["E501"]
+"app/api/rotas_importacao.py" = ["E501"]
+"app/api/rotas_auth.py" = ["E501", "B008"]
+"app/api/rotas_recursos.py" = ["E501", "PLR0914", "PLR0915", "PLR0912", "PLR1702"]
+"app/api/rotas_custos.py" = ["E501"]
+"app/api/rotas_apontamentos.py" = ["E501", "PLR0914", "PLR0915", "PLC0415"]
+"app/api/rotas_estrutura.py" = ["E501", "PLR0914", "PLR0915"]
+"app/api/rotas_rdo.py" = ["E501", "PLR0914", "PLR0915", "PLR0912", "PLC0415"]
+"app/api/rotas_boletim.py" = ["E501", "PLR0914", "PLR0915", "PLR0912", "PLR0913", "PLC0415", "C901"]
+"app/api/rotas_modelos.py" = ["E501", "PLR0914", "PLR0915", "PLR0912", "PLR0911", "PLC0415", "C901", "PLR1702"]
+"app/dominio/apontamentos.py" = ["E501"]
+"app/dominio/coerencia.py" = ["E501"]
+"tests/test_apontamentos.py" = ["E501"]
+"app/api/rotas_relatorios.py" = ["E501", "PLR0911"]
+"app/api/relatorios.py" = ["E501"]
+"app/infra/exportar.py" = ["E501", "PLR0911", "PLR0915", "RUF005", "RUF046"]
+"app/api/rotas_cronograma.py" = ["E501"]
+"app/dominio/custos.py" = ["E501"]
+"tests/test_custos.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unreachable = true
+disallow_any_explicit = false
+
+[[tool.mypy.overrides]]
+module = ["jpype.*", "mpxj.*", "net.sf.mpxj.*", "openpyxl.*"]
+ignore_missing_imports = true

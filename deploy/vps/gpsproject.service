@@ -1,0 +1,45 @@
+# GPlanSiS|Project — uvicorn no loopback, atrás do Caddy.
+#
+# Estado nenhum em memória: sessões, ledgers e memória de cálculo estão no
+# Postgres; crescer é subir GPS_WORKERS no .env.
+#
+# Modelo: instalar.sh troca __APP__, __DADOS__ e __USUARIO__.
+[Unit]
+Description=GPlanSiS|Project (planejamento e controle de projetos)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=__USUARIO__
+Group=__USUARIO__
+WorkingDirectory=__APP__/backend
+EnvironmentFile=__APP__/.env
+Environment=PYTHONUTF8=1
+ExecStart=__APP__/.venv/bin/uvicorn app.main:app \
+  --host 127.0.0.1 --port ${GPS_PORT} --workers ${GPS_WORKERS} \
+  --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=on-failure
+RestartSec=5
+
+# Endurecimento: código em /opt somente leitura para o serviço.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=__DADOS__
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+# A JVM (leitura de .mpp) precisa de páginas W+X.
+MemoryDenyWriteExecute=no
+
+# Teto para não derrubar o resto do hub. Com JVM carregada um worker fica ~400 MB.
+MemoryMax=3G
+MemoryHigh=2G
+
+[Install]
+WantedBy=multi-user.target

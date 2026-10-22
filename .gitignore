@@ -1,0 +1,58 @@
+# Segredos — nunca versionar (só .env.example)
+.env
+.env.*
+!.env.example
+frontend/.env.local
+
+# Dados, bancos e backups
+dados/
+data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.dump
+*.bak
+*.bak*
+*-bak-*
+backups/
+
+# Saídas do roteiro de demonstração (scripts/demo_v2.py)
+demo_v2_exportacoes/
+demo_v2_resultado.json
+panorama_demo.html
+*.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.python/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / build do frontend
+node_modules/
+frontend/dist/
+frontend/dev-dist/
+
+# Logs e temporários
+*.log
+*.tmp
+tmp/
+
+# Chaves e certificados
+*.pem
+*.key
+*.crt
+*.p12
+
+# SO / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

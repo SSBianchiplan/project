@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dicionário das recusas · GPlanSiS|Project</title>
+<meta name="description" content="Dicionário das invariantes do GPlanSiS|Project: o significado de cada código de recusa, a saída prática e a razão da regra." />
+<!-- Sem script e sem rede: a CSP do sistema é script-src 'self'. O tema
+     acompanha o do aparelho e o data-theme do app. -->
+<style>
+:root{
+  --grafite:#2d3336; --aco:#7d8286; --claro:#edeff0; --papel:#f7f8f8; --fundo:#ffffff;
+  --linha:#dfe3e4; --texto:#17191b; --texto-2:#4a5054;
+  --em-dia:#2f7d4f; --atencao:#8a6d1f; --recuperacao:#b4560f; --acao:#a11d1d; --neutro:#7d8286;
+  --em-dia-f:#e7f3ec; --atencao-f:#f6efd9; --recuperacao-f:#f9e9dc; --acao-f:#f7e3e3; --neutro-f:#eef0f1;
+  --acento:#1f6f8b; --acento-f:#e4f0f4;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-4:#7a4fa3;
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --e-2:8px; --e-3:12px; --e-4:16px; --e-5:22px; --e-6:32px;
+  --r-1:3px; --r-2:6px; --r-3:10px; --r-pill:999px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+    --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+    --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+    --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+    --acento:#5aa9c6; --acento-f:#1d3038;
+    --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+  --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+  --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+  --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+  --acento:#5aa9c6; --acento-f:#1d3038;
+  --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--texto);
+  font:400 13px/1.5 var(--fonte);-webkit-text-size-adjust:100%}
+main{max-width:1000px;margin:0 auto;padding:26px var(--e-5) 72px}
+h1{font-size:28px;line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:16px;margin:var(--e-6) 0 var(--e-2);padding-top:var(--e-5);
+  border-top:1px solid var(--linha)}
+h3{font-size:14px;margin:var(--e-5) 0 var(--e-2)}
+p{margin:0 0 var(--e-3);max-width:74ch}
+a{color:var(--acento)}
+code,.mono{font-family:var(--mono);font-size:12px}
+code{background:var(--claro);border-radius:var(--r-1);padding:1px 5px}
+strong{font-weight:600}
+
+.cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--e-3);
+  margin-bottom:var(--e-2)}
+.cod{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--aco)}
+.lead{color:var(--texto-2);font-size:15px;max-width:72ch;margin:var(--e-3) 0 0}
+.selo{display:inline-block;font-family:var(--mono);font-size:11px;
+  border:1px solid var(--linha);border-radius:var(--r-pill);
+  padding:2px 9px;color:var(--aco);background:var(--fundo)}
+
+/* caminho na interface */
+.trilha{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-2);
+  font-family:var(--mono);font-size:12px;margin:var(--e-3) 0}
+.trilha span{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-1);padding:3px 9px}
+.trilha i{font-style:normal;color:var(--aco)}
+.trilha span.fim{border-color:var(--acento);background:var(--acento-f);
+  color:var(--acento);font-weight:500}
+
+/* blocos */
+.cx{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-3);padding:var(--e-5);margin:var(--e-4) 0}
+.cx > :last-child{margin-bottom:0}
+.cx h3{margin-top:0}
+.par{display:grid;gap:var(--e-4);grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.nota{border-left:3px solid var(--acento);background:var(--acento-f);
+  border-radius:0 var(--r-2) var(--r-2) 0;padding:var(--e-3) var(--e-4);
+  margin:var(--e-4) 0}
+.nota.alerta{border-left-color:var(--acao);background:var(--acao-f)}
+.nota > :last-child{margin-bottom:0}
+.nota b{display:block;margin-bottom:2px}
+
+/* passos */
+ol.passos{list-style:none;margin:var(--e-4) 0 0;padding:0;counter-reset:p}
+ol.passos > li{counter-increment:p;position:relative;
+  padding:0 0 var(--e-5) 34px;border-left:1px solid var(--linha);
+  margin-left:11px}
+ol.passos > li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.passos > li::before{content:counter(p);position:absolute;left:-11px;top:-2px;
+  width:22px;height:22px;border-radius:50%;background:var(--grafite);
+  color:var(--papel);font:500 11px/22px var(--mono);text-align:center}
+ol.passos b{display:block;margin-bottom:2px}
+ol.passos p{margin-bottom:var(--e-2)}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;margin:var(--e-3) 0;font-size:12.5px}
+caption{text-align:left;color:var(--aco);font-size:12px;padding-bottom:var(--e-2)}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--linha);
+  vertical-align:top}
+th{font-weight:600;color:var(--texto-2);font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+
+.farol{display:inline-block;border-radius:var(--r-pill);padding:1px 9px;
+  font-size:11px;font-weight:500;white-space:nowrap}
+.f-dia{background:var(--em-dia-f);color:var(--em-dia)}
+.f-at{background:var(--atencao-f);color:var(--atencao)}
+.f-rec{background:var(--recuperacao-f);color:var(--recuperacao)}
+.f-aco{background:var(--acao-f);color:var(--acao)}
+.f-nao{background:var(--neutro-f);color:var(--neutro)}
+
+ul.lista{margin:0 0 var(--e-3);padding-left:18px}
+ul.lista li{margin-bottom:5px}
+
+.criterios{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:var(--e-3) 0}
+.criterios div{font-family:var(--mono);font-size:11.5px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-1);padding:6px 9px}
+
+figure{margin:var(--e-4) 0}
+svg .d-lig{fill:none;stroke:var(--linha);stroke-width:1.5;marker-end:url(#seta)}
+svg .d-lig .d-tronco{marker-end:none}
+svg .d-cx rect,svg rect.d-ac{stroke-width:1}
+svg .d-cx rect{fill:var(--fundo);stroke:var(--linha)}
+svg rect.d-ac{fill:var(--acento-f);stroke:var(--acento)}
+svg .d-t text{font-family:var(--mono);font-size:11px;text-anchor:middle;
+  fill:var(--aco)}
+svg .d-t text.forte{font-size:12px;fill:var(--texto)}
+svg .d-t text.fraco{fill:var(--aco)}
+svg .d-t text.ac{fill:var(--acento)}
+svg .d-t text.ac.forte{font-weight:600}
+svg text.pe{font-family:var(--mono);font-size:10.5px;fill:var(--aco)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{color:var(--aco);font-size:11.5px;margin-top:var(--e-2)}
+
+.rodape{margin-top:var(--e-6);padding-top:var(--e-4);
+  border-top:1px solid var(--linha);color:var(--aco);font-size:11.5px}
+
+@media (max-width:560px){
+  main{padding:20px 16px 56px}
+  h1{font-size:23px}
+  table{font-size:12px}
+}
+@media print{
+  body{background:#fff}
+  .cx,.nota{break-inside:avoid}
+  h2{break-after:avoid}
+}
+
+.acao-bloco{border-top:1px solid var(--linha);padding-top:var(--e-5);
+  margin-top:var(--e-6)}
+.acao-bloco h3{margin-top:0;font-size:15px}
+.papel{display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;border-radius:var(--r-pill);
+  padding:2px 9px;background:var(--neutro-f);color:var(--neutro);
+  border:1px solid var(--linha);vertical-align:2px;margin-left:6px}
+.papel.pl{background:var(--acento-f);color:var(--acento);border-color:var(--acento)}
+.papel.ad{background:var(--recuperacao-f);color:var(--recuperacao);border-color:var(--recuperacao)}
+.papel.fi{background:var(--em-dia-f);color:var(--em-dia);border-color:var(--em-dia)}
+table.campos td:first-child{width:34%;font-family:var(--mono);font-size:11.5px;
+  color:var(--texto)}
+.indice{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:var(--e-4) 0}
+.indice a{display:block;padding:9px 12px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-2);text-decoration:none;
+  color:var(--texto)}
+.indice a b{display:block;font-size:13px}
+.indice a span{color:var(--aco);font-size:11.5px}
+.indice a:hover{border-color:var(--acento)}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="cab">
+    <span class="cod">GPS-INV-v1</span>
+    <span class="selo">INV-ACL · EAP · CRN · MED · CST · APT · REC · IMP</span>
+  </div>
+  <h1>Quando o sistema recusa</h1>
+  <p class="lead">Cada código de invariante traduzido: o que ela protege, como sair dela, e por que ela existe.</p>
+</header>
+
+<style>
+.verbete{border-top:1px solid var(--linha);padding:var(--e-4) 0 var(--e-2);
+  display:grid;grid-template-columns:150px 1fr;gap:var(--e-4)}
+.verbete .cod-inv{font-family:var(--mono);font-size:12px;font-weight:600;
+  color:var(--texto)}
+.verbete .sev{display:block;margin-top:5px;font-family:var(--mono);
+  font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.sev.bloq{color:var(--acao)}
+.sev.al{color:var(--atencao)}
+.sev.inf{color:var(--aco)}
+.verbete p{margin:0 0 var(--e-2)}
+.verbete p:last-child{margin-bottom:0}
+.verbete .saida{color:var(--texto-2);font-size:12.5px}
+.verbete .saida b{color:var(--texto)}
+@media (max-width:620px){.verbete{grid-template-columns:1fr;gap:var(--e-2)}}
+.fam{margin:var(--e-6) 0 0;font-size:15px;padding-top:var(--e-5);
+  border-top:2px solid var(--linha)}
+.fam span{font-family:var(--mono);font-size:11px;color:var(--aco);
+  font-weight:400;margin-left:8px}
+</style><p>Procure pelo código que apareceu na mensagem. Cada verbete
+diz primeiro o que fazer — a linha <b>Saída</b> — e só depois a razão da
+regra, para quando você quiser discutir o mérito dela.</p>
+
+<div class="nota"><b>Três severidades.</b>
+<strong>Bloqueante</strong> impede a gravação. <strong>Alerta</strong> passa,
+mas fica registrado e aparece no relatório. <strong>Informativo</strong> só
+conta o que aconteceu — o caso clássico é o avanço que veio num arquivo
+importado e foi ignorado.</div><h2 class="fam">Acesso<span>INV-ACL</span></h2><div class="verbete"><div><span class="cod-inv">INV-ACL-002</span><span class="sev bloq">bloqueante</span></div><div><p>O seu papel não alcança essa ação. Gravar qualquer coisa exige <strong>planejador</strong>; algumas ações exigem mais.</p><p class="saida"><b>Saída:</b> Peça ao admin da organização o papel adequado — ou peça a quem tem o papel que execute. <b>Não</b> peça papel maior “por enquanto”: tudo o que você gravar leva o seu nome.</p><p class="saida" style="color:var(--aco)">A verificação é do servidor, não da tela: esconder o botão daria a impressão de segurança sem a segurança.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-ACL-003</span><span class="sev bloq">bloqueante</span></div><div><p>Aprovar linha de base é ato de <strong>fiscal</strong> ou <strong>admin</strong>. Planejador não aprova.</p><p class="saida"><b>Saída:</b> Chame o fiscal do contrato. Se não houver um, é o admin que aprova.</p><p class="saida" style="color:var(--aco)">Quem faz o plano não aprova o próprio plano. É separação de função, não desconfiança.</p></div></div><h2 class="fam">Estrutura e ponderação<span>INV-EAP · INV-DOC</span></h2><div class="verbete"><div><span class="cod-inv">INV-EAP-001</span><span class="sev bloq">bloqueante</span></div><div><p>A soma dos pontos das folhas não fecha na base de ponderação do contrato.</p><p class="saida"><b>Saída:</b> Abra <b>EAP e ponderação</b>: a tela mostra a base e a soma lado a lado. Ajuste os pontos até os dois números serem iguais — ou mude a base, se foi ela que ficou errada.</p><p class="saida" style="color:var(--aco)">O avanço do projeto é média ponderada das folhas. Se a soma não fecha, o denominador está errado e todo percentual mente.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-EAP-002</span><span class="sev bloq">bloqueante</span></div><div><p>Nó de resumo com pontos, ou nó com filhos ainda marcado como folha.</p><p class="saida"><b>Saída:</b> Mova os pontos do resumo para as folhas abaixo dele. Se a intenção era manter o nó como folha, então ele não pode ter filhos.</p><p class="saida" style="color:var(--aco)">Resumo é soma dos filhos. Se ele tivesse peso próprio, esse peso seria contado duas vezes.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-EAP-003</span><span class="sev bloq">bloqueante</span></div><div><p>Marco com peso diferente de zero.</p><p class="saida"><b>Saída:</b> Zere os pontos do marco e distribua esse peso nas atividades que executam o trabalho que leva até ele.</p><p class="saida" style="color:var(--aco)">Marco é uma data, não um trabalho. Dar peso a ele seria medir avanço de algo que não tem esforço.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-EAP-004</span><span class="sev bloq">bloqueante</span></div><div><p>EDT repetido, ou nó cujo pai não existe na estrutura.</p><p class="saida"><b>Saída:</b> Renumere o duplicado, ou crie o nó pai que falta antes de gravar o filho.</p><p class="saida" style="color:var(--aco)">O EDT é o endereço do escopo — medição, custo, hora e importação encontram a atividade por ele.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-EAP-005</span><span class="sev bloq">bloqueante</span></div><div><p>A EAP não tem exatamente uma raiz, ou há nó em nível fora de 1 a 7.</p><p class="saida"><b>Saída:</b> Deixe um único nó de nível 1 e pendure o resto abaixo dele.</p><p class="saida" style="color:var(--aco)">Uma árvore com duas raízes são dois projetos; sem raiz, não há o que agregar.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-DOC-001</span><span class="sev bloq">bloqueante</span></div><div><p>Os documentos de uma folha somam pontos diferentes do que a folha vale.</p><p class="saida"><b>Saída:</b> Ajuste os pontos dos documentos até somarem o valor da folha.</p><p class="saida" style="color:var(--aco)">Quando a folha é detalhada em documentos, eles passam a ser a unidade de medição — e precisam fechar no todo.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-DOC-002</span><span class="sev al">alerta</span></div><div><p>Peso sem memória de cálculo.</p><p class="saida"><b>Saída:</b> Escreva de onde saiu: <span class="mono">400 hh a 100 pontos/hh</span>. Passa sem isso, mas fica na lista.</p><p class="saida" style="color:var(--aco)">Peso sem memória é número que ninguém consegue defender numa reunião de medição — e é o primeiro que a fiscalização questiona.</p></div></div><h2 class="fam">Cronograma e rede<span>INV-CRN</span></h2><div class="verbete"><div><span class="cod-inv">INV-CRN-001</span><span class="sev bloq">bloqueante</span></div><div><p>Atividade com duração acima de <strong>15 dias úteis</strong>.</p><p class="saida"><b>Saída:</b> Divida a atividade — ou registre uma <b>exceção contratual</b>, com justificativa e quem autorizou, que fica auditável.</p><p class="saida" style="color:var(--aco)">Pacote longo demais esconde avanço: por três semanas ninguém sabe se está em dia. O limite força o escopo a ser quebrado.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CRN-002</span><span class="sev bloq">bloqueante</span></div><div><p>Lag negativo, ou acima de <strong>21 dias</strong>.</p><p class="saida"><b>Saída:</b> Use lag só para espera real, como cura de concreto. Para sobreposição, o vínculo certo é <span class="mono">II</span> ou <span class="mono">TT</span>.</p><p class="saida" style="color:var(--aco)">Lag negativo é sobreposição disfarçada de sequência; lag enorme é quase sempre uma atividade que falta no meio.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CRN-003</span><span class="sev bloq">bloqueante</span></div><div><p>Atividade sem predecessora, ou sem sucessora.</p><p class="saida"><b>Saída:</b> Ligue as duas pontas. As únicas exceções são os marcos de início e de término do projeto.</p><p class="saida" style="color:var(--aco)">Atividade solta não participa do CPM: ela não empurra nada e nada a empurra. O término do projeto passa a ignorá-la.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CRN-004</span><span class="sev bloq">bloqueante</span></div><div><p>Marco com duração diferente de zero.</p><p class="saida"><b>Saída:</b> Zere a duração, ou mude o tipo para atividade e dê peso a ela.</p><p class="saida" style="color:var(--aco)">Marco é instante. Duração faria dele uma atividade sem peso — o pior dos dois mundos.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CRN-005</span><span class="sev al">alerta</span></div><div><p>Restrição fora das permitidas, vinda de um arquivo importado.</p><p class="saida"><b>Saída:</b> Converta a restrição do arquivo para uma das três antes de aplicar.</p><p class="saida" style="color:var(--aco)">O sistema trabalha com três: <span class="mono">ASAP</span> (o mais breve possível), <span class="mono">SNET</span> (não iniciar antes de) e <span class="mono">MSO</span> (deve iniciar em). Outras ferramentas têm mais.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CRN-006</span><span class="sev bloq">bloqueante</span></div><div><p>Ciclo de precedência: A depende de B que depende de A — inclusive por caminho indireto.</p><p class="saida"><b>Saída:</b> A mensagem nomeia as atividades envolvidas. Quebre o elo que não corresponde à realidade da obra.</p><p class="saida" style="color:var(--aco)">Rede com ciclo não tem solução: o CPM não consegue dizer quando nada começa.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CRN-007</span><span class="sev al">alerta</span></div><div><p>Restrição “deve iniciar em” travando a atividade contra a rede.</p><p class="saida"><b>Saída:</b> Prefira “não iniciar antes de”. Se a data é contratual mesmo, mantenha — mas saiba que isso <b>reprova a verificação do plano</b>.</p><p class="saida" style="color:var(--aco)">É o <strong>item 7 da LVP</strong>: data fixa sobrepõe a lógica de precedência e esconde o caminho crítico real.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CRN-008</span><span class="sev al">alerta</span></div><div><p>Término calculado passa da data limite da atividade.</p><p class="saida"><b>Saída:</b> Reduza duração, remova lag, antecipe predecessora — ou renegocie a data limite.</p><p class="saida" style="color:var(--aco)">O plano está prometendo o que a própria rede diz que não cabe.</p></div></div><h2 class="fam">Medição e previsão<span>INV-MED · INV-PRV</span></h2><div class="verbete"><div><span class="cod-inv">INV-MED-003</span><span class="sev bloq">bloqueante</span></div><div><p>O acumulado informado é menor que o já medido. Medição não retrocede.</p><p class="saida"><b>Saída:</b> Use <b>Estornar última</b>, com justificativa — o estorno é lançamento contrário e vinculado. Depois lance o valor correto.</p><p class="saida" style="color:var(--aco)">Medição é registro do que foi constatado. Baixar o número sem rastro apagaria a constatação anterior.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-MED-004</span><span class="sev bloq">bloqueante</span></div><div><p>Data de corte que não cai num sábado, na planilha de medição em lote.</p><p class="saida"><b>Saída:</b> Ajuste a data para o sábado do período medido.</p><p class="saida" style="color:var(--aco)">A semana de controle fecha no sábado. Cortes em dias diferentes tornam duas medições incomparáveis.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-PRV-002</span><span class="sev bloq">bloqueante</span></div><div><p>Período semanal que não termina em sábado.</p><p class="saida"><b>Saída:</b> Feche a semana no sábado.</p><p class="saida" style="color:var(--aco)">Mesma razão do corte: a curva S precisa de intervalos iguais para que a inclinação signifique alguma coisa.</p></div></div><h2 class="fam">Custo, horas e recursos<span>INV-CST · INV-APT · INV-REC</span></h2><div class="verbete"><div><span class="cod-inv">INV-CST-001</span><span class="sev bloq">bloqueante</span></div><div><p>Custo lançado em marco.</p><p class="saida"><b>Saída:</b> Aloque na atividade que executa o trabalho que leva ao marco.</p><p class="saida" style="color:var(--aco)">Marco não executa trabalho, logo não consome dinheiro. Custo ali não teria a quem ser atribuído no valor agregado.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-CST-002</span><span class="sev bloq">bloqueante</span></div><div><p>Tentativa de editar ou apagar custo já lançado.</p><p class="saida"><b>Saída:</b> Lance uma <b>linha nova com valor negativo</b>, descrevendo a correção.</p><p class="saida" style="color:var(--aco)">Custo realizado é registro: o que foi gasto foi gasto. Editar apagaria o histórico do gasto.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-APT-002</span><span class="sev bloq">bloqueante</span></div><div><p>Tentativa de editar ou apagar apontamento de horas — ou horas lançadas em marco.</p><p class="saida"><b>Saída:</b> Estorne com lançamento negativo vinculado ao original.</p><p class="saida" style="color:var(--aco)">Mesma lógica do custo: hora trabalhada é fato.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-APT-004</span><span class="sev bloq">bloqueante</span></div><div><p>Apontamento com data no futuro.</p><p class="saida"><b>Saída:</b> Corrija a data. Para hora planejada, o lugar é a alocação de recurso na atividade.</p><p class="saida" style="color:var(--aco)">Não se registra hora que ainda não aconteceu. Isso seria previsão disfarçada de realizado.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-REC-003</span><span class="sev bloq">bloqueante</span></div><div><p>Recurso alocado em marco.</p><p class="saida"><b>Saída:</b> Aloque nas atividades que produzem a entrega do marco.</p><p class="saida" style="color:var(--aco)">Marco não consome esforço.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-REC-001</span><span class="sev al">alerta</span></div><div><p>Superalocação: o recurso passa da capacidade diária em alguma semana.</p><p class="saida"><b>Saída:</b> Duas saídas — <b>nivelar</b>, e o servidor desloca atividades dentro da folga; ou <b>aceitar</b>, com justificativa, e o aceite fica registrado como exceção contratual auditável.</p><p class="saida" style="color:var(--aco)">É <strong>achado, não bloqueio</strong>: às vezes a equipe vai mesmo fazer hora extra. Quem decide é o planejador, não o sistema.</p></div></div><h2 class="fam">Importação<span>INV-IMP</span></h2><div class="verbete"><div><span class="cod-inv">INV-IMP-003</span><span class="sev inf">informativo</span></div><div><p>O arquivo traz percentual concluído — e ele foi ignorado.</p><p class="saida"><b>Saída:</b> Nada a fazer: é aviso. O avanço entra por <b>Controlar → Medição</b>.</p><p class="saida" style="color:var(--aco)">Quem manda no realizado é o registro de medição. Aceitar avanço de um arquivo seria deixar entrar número sem evidência e sem hash.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-IMP-004</span><span class="sev bloq">bloqueante</span></div><div><p>Vínculo apontando para atividade que não existe no arquivo.</p><p class="saida"><b>Saída:</b> Corrija a exportação na ferramenta de origem, ou remova o vínculo órfão antes de aplicar.</p><p class="saida" style="color:var(--aco)">Rede incompleta produz CPM errado sem parecer errado.</p></div></div><div class="verbete"><div><span class="cod-inv">INV-IMP-005</span><span class="sev al">alerta</span></div><div><p>EDT do arquivo não existe na EAP aprovada do contrato.</p><p class="saida"><b>Saída:</b> Crie o nó na EAP antes — ou aceite que aquela linha do arquivo será ignorada.</p><p class="saida" style="color:var(--aco)">A importação só atualiza o que já existe: ela não cria escopo pela porta dos fundos.</p></div></div><div class="nota"><b>A constraint do banco é a última palavra.</b>Mesmo que a API falhasse, a importação com achado bloqueante é recusada pelo banco, pela constraint <span class="mono">ck_importacao_achados</span>. As invariantes não são validação de formulário: são regras do dado.</div>
+<p class="rodape">GPlanSiS|Project · o cronograma é a fonte única: CPM, ponderação, curva S, EVM, recursos, custos, horas e coerência calculam no servidor e ficam gravados com memória de cálculo. O navegador só desenha. Série GPS-ACT: <b>0</b> mapa, <b>1</b> planejar, <b>2</b> controlar, <b>3</b> reportar e administrar.</p>
+</main>
+</body>
+</html>

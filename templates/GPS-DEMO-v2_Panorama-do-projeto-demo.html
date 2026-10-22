@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Panorama · Projeto DEMO v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root { --grafite:#2d3336; --aco:#7d8286; --papel:#f7f8f8; --fundo:#fff; --linha:#dfe3e4; --texto:#17191b; --em-dia:#2f7d4f; --atencao:#8a6d1f; --acao:#a11d1d; --acento:#1f6f8b;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-3:#8a6d1f; --fase-4:#7a4fa3; --fase-5:#b4560f; --fase-6:#1f8a8a; --fase-7:#a11d1d; --fase-8:#6b7175; --fonte:"Inter",system-ui,sans-serif; --mono:"IBM Plex Mono",monospace; color-scheme: light; }
+:root[data-theme="dark"] { --grafite:#e6e9ea; --aco:#9aa0a4; --papel:#15181a; --fundo:#1b1f21; --linha:#32383b; --texto:#e6e9ea; --em-dia:#5fbf88; --atencao:#d6b55c; --acao:#e06a6a; --acento:#5aa9c6; color-scheme: dark; }
+* { box-sizing: border-box; } body { margin:0; font-family:var(--fonte); font-size:13px; color:var(--texto); background:var(--papel); line-height:1.5; }
+main { max-width:1180px; margin:0 auto; padding:24px 22px 60px; }
+h1 { font-size:22px; margin:0; } h2 { font-size:16px; margin:26px 0 6px; padding-top:18px; border-top:1px solid var(--linha); } h3 { font-size:14px; margin:16px 0 6px; }
+p.lead { color:var(--aco); margin:4px 0 14px; max-width:820px; }
+.topo { display:flex; align-items:center; gap:14px; } .topo button { margin-left:auto; font:inherit; padding:5px 12px; border:1px solid var(--linha); background:var(--fundo); color:var(--texto); cursor:pointer; border-radius:3px; }
+.cartoes { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin:14px 0; }
+.cartao { background:var(--fundo); border:1px solid var(--linha); border-radius:6px; padding:12px 14px; } .rot { font-size:11px; color:var(--aco); text-transform:uppercase; letter-spacing:.06em; } .val { font-size:26px; font-weight:600; margin:4px 0 2px; font-variant-numeric:tabular-nums; } .nota { font-size:12px; color:var(--aco); }
+table { border-collapse:collapse; width:100%; background:var(--fundo); font-size:12.5px; } th { background:var(--grafite); color:var(--papel); text-align:left; padding:6px 8px; font-size:12px; white-space:nowrap; position:sticky; top:0; } td { padding:4px 8px; border-bottom:1px solid var(--linha); vertical-align:top; }
+td.num, th.num { text-align:right; font-family:var(--mono); font-size:11.5px; } .mono { font-family:var(--mono); font-size:11.5px; }
+tr.fase td { font-weight:600; background:color-mix(in srgb,var(--grafite) 7%,transparent); } tr.marco td { font-style:italic; }
+.rolagem { overflow:auto; max-height:70vh; border:1px solid var(--linha); border-radius:6px; }
+.passo { display:grid; grid-template-columns:44px 1fr; gap:12px; padding:12px 0; border-bottom:1px solid var(--linha); }
+.passo .n { width:34px; height:34px; border-radius:50%; background:var(--grafite); color:var(--papel); display:flex; align-items:center; justify-content:center; font-weight:600; }
+.passo h3 { margin:2px 0 4px; } .passo p { margin:0 0 6px; } .passo .como { font-size:12px; color:var(--aco); } .passo .verifica { font-size:12px; } .passo .verifica b { color:var(--em-dia); }
+.regra { border-left:3px solid var(--acento); padding:8px 12px; background:color-mix(in srgb,var(--acento) 6%,transparent); margin:10px 0; }
+.aviso { border-left:3px solid var(--acao); padding:8px 12px; background:color-mix(in srgb,var(--acao) 6%,transparent); margin:10px 0; }
+.chip { display:inline-block; width:10px; height:10px; border-radius:2px; vertical-align:-1px; margin-right:4px; }
+.gantt { position:relative; border:1px solid var(--linha); background:var(--fundo); border-radius:6px; padding:8px 0; overflow:hidden; }
+.gantt .l { position:relative; height:18px; } .gantt .b { position:absolute; height:10px; top:4px; border-radius:2px; } .gantt .t { position:absolute; left:8px; font-size:11px; color:var(--aco); top:1px; }
+.gantt .hoje { position:absolute; top:0; bottom:0; border-left:2px dashed var(--grafite); } .gantt .mes { position:absolute; top:0; font-size:10px; color:var(--aco); font-family:var(--mono); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; } @media (max-width:800px){ .grid2{grid-template-columns:1fr} }
+code { font-family:var(--mono); font-size:11.5px; background:color-mix(in srgb,var(--grafite) 8%,transparent); padding:0 4px; border-radius:3px; }
+.ok { color:var(--em-dia); } .at { color:var(--atencao); } .ac { color:var(--acao); }
+</style>
+</head>
+<body><main>
+  <div class="topo">
+    <div><h1>Projeto DEMO v2 — panorama e roteiro ponta a ponta</h1><p class="lead" style="margin:2px 0 0">GPlanSiS|Project · executado em 19/09/2026 · início do projeto 13/07/2026</p></div>
+    <button onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">tema</button>
+  </div>
+
+  <h2 id="resultado">Resultado da execução — 19/09/2026</h2>
+  <p class="lead">Semeado pela API em 19/09/2026. Contrato <code>85c74811-08b9-4fe9-b37e-a1da011857d4</code>. Data de status do roteiro: <b>19/09/2026</b> (último sábado). 18 de 18 passos PASS.</p>
+  <div class="cartoes">
+    <div class="cartao"><div class="rot">Avanço físico</div><div class="val" style="font-size:22px">11,9%</div><div class="nota">previsto 13,2% · desvio -1,3%</div></div>
+    <div class="cartao"><div class="rot">IDP · situação</div><div class="val ac" style="font-size:22px">0,90</div><div class="nota">plano de recuperacao</div></div>
+    <div class="cartao"><div class="rot">Término</div><div class="val" style="font-size:16px">BL0 30/08/2027</div><div class="nota">vigente 05/10/2027 · projetado 24/11/2027</div></div>
+    <div class="cartao"><div class="rot">EVM</div><div class="val" style="font-size:16px">IDC 0,77</div><div class="nota">ONT R$ 60.832.664 · VA R$ 5.334.601 · CR R$ 6.958.000</div></div>
+    <div class="cartao"><div class="rot">Coerência</div><div class="val" style="font-size:22px">0,86</div><div class="nota">13 achados</div></div>
+    <div class="cartao"><div class="rot">Volume</div><div class="val" style="font-size:16px">83 medições</div><div class="nota">493 apontamentos · 167 alocações · 23 recursos · 16/16 exportações</div></div>
+  </div>
+  <h3>Passos do roteiro</h3>
+  <table><thead><tr><th style="width:36px">#</th><th>Passo</th><th style="width:60px">Estado</th><th>Detalhe</th></tr></thead><tbody><tr><td class="num">0</td><td>limpar todos os contratos (usuários preservados)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">1 removidos</td></tr><tr><td class="num">1</td><td>criar contrato CT-200-COGER (13/07/2026 → 30/11/2027)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">85c74811-08b9-4fe9-b37e-a1da011857d4</td></tr><tr><td class="num">2</td><td>validar estrutura: 99 nós, 132 vínculos</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">término CPM 2027-08-30 · achados 0 · </td></tr><tr><td class="num">3</td><td>vínculo circular é recusado (INV-CRN-006)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">vínculo 1.5.2 → 1.3.1 aponta para nó que não é folha</td></tr><tr><td class="num">4</td><td>gravar estrutura (INV-EAP-001 fechada)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">87 atividades · fim 2027-08-30</td></tr><tr><td class="num">5</td><td>aprovar BL0 (LVP 0,93)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">término BL0 2027-08-30 · 60 semanas · </td></tr><tr><td class="num">6</td><td>catálogo de 23 recursos e 167 alocações</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">93.696 hh · R$ 6.880.664 · superalocações 58</td></tr><tr><td class="num">7</td><td>orçamento: 135 itens; custo em marco recusado (INV-CST-001)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px"></td></tr><tr><td class="num">8</td><td>83 medições em 10 cortes semanais; retrocesso recusado (INV-MED-003)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">até 19/09/2026</td></tr><tr><td class="num">9</td><td>replanejar 3.2 (+25 du) e aprovar BL1</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">término BL0 2027-08-30 → vigente 2027-10-05 · put 200 · bl 201 nº 1 · vigente nº 1 · </td></tr><tr><td class="num">10</td><td>491 apontamentos de horas; estorno 201, repetido 409, marco 422, futuro 422</td><td class="ok">PASS</td><td class="mono" style="font-size:11px"></td></tr><tr><td class="num">11</td><td>12 lançamentos de custo real (com correção negativa)</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">ONT R$ 60.832.664 · VA R$ 5.334.601 · CR R$ 6.958.000 · IDC 0,77</td></tr><tr><td class="num">12</td><td>cockpit na data de status</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">previsto 13,2% · real 11,9% · IDP 0,90 · PLANO_DE_RECUPERACAO · projetado 24/11/2027</td></tr><tr><td class="num">13</td><td>previsto × realizado e análise de coerência</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">índice 0.86 · 13 achados · COE-CUSTO-ACIMA-DO-VA, COE-CUSTO-SEM-AVANCO, COE-MARCO-VENCIDO, COE-PRODUTIVIDADE-BAIXA, COE-PRODUTIVIDADE-IMPROVAVEL, COE-VENCIDA</td></tr><tr><td class="num">14</td><td>status report consolidado</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">tarefas {'total': 81, 'concluidas': 6, 'andamento': 13, 'nao_iniciadas': 62, 'vencidas': 3, 'criticas': 19}</td></tr><tr><td class="num">15</td><td>painel semanal de apontamentos</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">3.947 h apontadas de 93.896 hh previstas</td></tr><tr><td class="num">16</td><td>16 exportações PDF/XLSX válidas</td><td class="ok">PASS</td><td class="mono" style="font-size:11px">salvas em demo_v2_exportacoes/ · </td></tr><tr><td class="num">17</td><td>sem token → 401; token inválido → 401</td><td class="ok">PASS</td><td class="mono" style="font-size:11px"></td></tr></tbody></table>
+  <div class="grid2" style="margin-top:14px">
+    <div><h3>Dimensões previsto × realizado</h3><table><thead><tr><th>Dimensão</th><th class="num">Previsto</th><th class="num">Realizado</th><th class="num">Índice</th><th>Leitura</th></tr></thead><tbody><tr><td>Avanço físico</td><td class="num">13,2%</td><td class="num">11,9%</td><td class="num">0,90</td><td>IDP = real ÷ previsto na data de corte</td></tr><tr><td>Prazo (dias úteis)</td><td class="num">313 dias úteis</td><td class="num">313 dias úteis</td><td class="num">1,00</td><td>término BL 05/10/2027 · vigente 05/10/2027</td></tr><tr><td>Horas de trabalho</td><td class="num">93.896 hh</td><td class="num">3.947 hh</td><td class="num">2,84</td><td>produtividade = hh previstas × avanço ÷ hh apontadas</td></tr><tr><td>Custo</td><td class="num">R$ 60.832.664</td><td class="num">R$ 6.958.000</td><td class="num">0,77</td><td>IDC = valor agregado ÷ custo real</td></tr></tbody></table></div>
+    <div><h3>Achados de coerência (RGR-COE-001)</h3><table><thead><tr><th>Regra</th><th>Sev.</th><th>EDT</th><th>Diagnóstico</th></tr></thead><tbody><tr><td class="mono">COE-MARCO-VENCIDO</td><td class="ac">alerta</td><td class="num">1.1.2</td><td>Liberação do canteiro: marco previsto para 09/09/2026 sem conclusão medida</td></tr><tr><td class="mono">COE-PRODUTIVIDADE-IMPROVAVEL</td><td class="at">atencao</td><td class="num">1.2.4</td><td>Detalhamento mecânico: 81% de avanço com 44% das horas — medição adiantada ou apontamento em atraso</td></tr><tr><td class="mono">COE-PRODUTIVIDADE-IMPROVAVEL</td><td class="at">atencao</td><td class="num">1.2.5</td><td>Detalhamento de tubulação: 49% de avanço com 24% das horas — medição adiantada ou apontamento em atraso</td></tr><tr><td class="mono">COE-VENCIDA</td><td class="ac">alerta</td><td class="num">1.3.1</td><td>Especificação e compra da caldeira: término vigente 31/08/2026 já passou e o avanço é 85%</td></tr><tr><td class="mono">COE-PRODUTIVIDADE-BAIXA</td><td class="ac">alerta</td><td class="num">1.3.2</td><td>Fabricação da caldeira (fornecedor): consumiu 9% das horas para 5% de avanço (produtividade 0.55) — projeção 2112 hh contra 1160 previstas</td></tr><tr><td class="mono">COE-CUSTO-ACIMA-DO-VA</td><td class="ac">alerta</td><td class="num">1.3.2</td><td>Fabricação da caldeira (fornecedor): custo real R$ 3.540.000 está 494% acima do valor agregado</td></tr><tr><td class="mono">COE-VENCIDA</td><td class="ac">alerta</td><td class="num">1.3.3</td><td>Especificação e compra do turbogerador: término vigente 31/08/2026 já passou e o avanço é 90%</td></tr><tr><td class="mono">COE-CUSTO-ACIMA-DO-VA</td><td class="ac">alerta</td><td class="num">1.3.4</td><td>Fabricação da turbina: custo real R$ 1.920.000 está 119% acima do valor agregado</td></tr><tr><td class="mono">COE-PRODUTIVIDADE-IMPROVAVEL</td><td class="at">atencao</td><td class="num">1.4.1</td><td>Mobilização de canteiro: 56% de avanço com 30% das horas — medição adiantada ou apontamento em atraso</td></tr><tr><td class="mono">COE-CUSTO-ACIMA-DO-VA</td><td class="ac">alerta</td><td class="num">1.4.1</td><td>Mobilização de canteiro: custo real R$ 198.000 está 89% acima do valor agregado</td></tr><tr><td class="mono">COE-CUSTO-SEM-AVANCO</td><td class="at">atencao</td><td class="num">1.4.2</td><td>Terraplenagem e drenagem: R$ 228.000 de custo real sem avanço medido (adiantamento ou medição pendente)</td></tr><tr><td class="mono">COE-VENCIDA</td><td class="ac">alerta</td><td class="num">1.8.4</td><td>Licenciamento ambiental de instalação: término vigente 08/09/2026 já passou e o avanço é 60%</td></tr><tr><td class="mono">COE-PRODUTIVIDADE-BAIXA</td><td class="ac">alerta</td><td class="num">1.8.4</td><td>Licenciamento ambiental de instalação: consumiu 99% das horas para 60% de avanço (produtividade 0.61) — projeção 527 hh contra 320 previstas</td></tr></tbody></table></div>
+  </div>
+
+  <h2>1. O que é</h2>
+  <p class="lead">Um único projeto de referência, complexo o bastante para exercitar todos os módulos, semeado <b>pela própria API</b> (não por SQL) para que o roteiro seja também o teste ponta a ponta do sistema. É o contrato padrão do sistema; o demo anterior (CT-100-ETANOL) e os contratos de teste foram removidos.</p>
+  <div class="cartoes">
+    <div class="cartao"><div class="rot">Contrato</div><div class="val" style="font-size:17px">CT-200-COGER</div><div class="nota">Unidade de Cogeração a Biomassa 24 MW · contratante Inovação Controle Novo Plan · contratada Novo Plan Engenharia</div></div>
+    <div class="cartao"><div class="rot">Nós da EAP</div><div class="val">99</div><div class="nota">raiz · 8 fases · 3 resumos internos · 81 atividades · 6 marcos · níveis 4 e 5 em fundações e montagem da caldeira</div></div>
+    <div class="cartao"><div class="rot">Prazo</div><div class="val" style="font-size:17px">13/07/2026 → 30/11/2027</div><div class="nota">término CPM 2027-10-14 · 14 feriados</div></div>
+    <div class="cartao"><div class="rot">Data de status</div><div class="val" style="font-size:17px">19/09/2026</div><div class="nota">10 semanas medidas desde 13/07/2026</div></div>
+    <div class="cartao"><div class="rot">Orçamento (ONT)</div><div class="val" style="font-size:17px">R$ 48,6 mi</div><div class="nota">itens diretos + recursos · 9 categorias</div></div>
+    <div class="cartao"><div class="rot">Recursos</div><div class="val">23</div><div class="nota">18 humanos (MOD e MOI) + 5 máquinas, com custo/hora</div></div>
+  </div>
+
+  <h2>2. Enredo do projeto (situações plantadas no realizado)</h2>
+  <p class="lead">Um projeto real tem desvios explicáveis. O realizado foi gerado semana a semana, de 13/07/2026 até a data de status, seguindo o plano com fatores por atividade:</p>
+  <ol style="line-height:1.9">
+    <li><b>Engenharia básica adiantada</b> (2.1, 2.2, 2.3 com fator 1,10–1,15): marco 1.3 "Aprovação do projeto básico" cumprido antes da BL0; detalhamentos 2.4 e 2.6 um pouco atrás (0,90).</li>
+    <li><b>Caldeira atrasada no fornecedor</b>: 3.2 avança à metade do ritmo (0,50) e, após aviso formal, a duração passa de 120 para 145 dias úteis → replanejamento gravado e <b>BL1</b> aprovada; BL0 permanece como referência da curva S. Marco 1.4 desliza.</li>
+    <li><b>Civil com horas estouradas</b>: mobilização 4.1 com 135% das horas previstas e avanço a 0,80 do plano; terraplenagem 4.2 a 0,75 → produtividade baixa e custo real acima do valor agregado (IDC &lt; 1).</li>
+    <li><b>Medição desatualizada</b>: 4.2 deixa de ser medida a partir de 22/08/2026 enquanto os apontamentos continuam → medição desatualizada e horas sem avanço.</li>
+    <li><b>Suprimentos lentos</b>: transformadores 3.6, tratamento de água 3.12 e licenciamento 8.4 abaixo do plano (0,60–0,70) → atividades vencidas e custo sem avanço nos adiantamentos.</li>
+    <li><b>Superalocação</b>: as capacidades do catálogo foram calibradas para deixar algumas semanas de pico acima da capacidade (montadores e ajudantes na montagem, maio–julho/2027) → INV-REC-001 visível em Recursos e no Status Report.</li>
+  </ol>
+  <div class="regra">Os números realmente calculados pelo sistema estão na seção <a href="#resultado">Resultado da execução</a>, acima. Eles são o oráculo vivo: rodar <code>demo_v2.py --so-roteiro</code> recalcula e regrava esta página.</div>
+
+  <h2>3. Estrutura analítica — 99 nós, 87 folhas (até o nível 5 onde a lógica do projeto pede)</h2>
+  <p class="lead">Durações em dias úteis. Predecessoras no formato <code>EDT[tipo][+lag]</code>; TI é o padrão. Recursos por sigla (seção 4). Custo em R$ mil de itens diretos (fora recursos).</p>
+  <div class="gantt" id="gantt"></div>
+  <div class="rolagem" style="margin-top:12px"><table id="eap"><thead><tr><th style="width:52px">EDT</th><th>Tarefa</th><th class="num">Dur.</th><th>Predecessoras</th><th>Recursos (qtd/dia)</th><th class="num">Itens R$ mil</th><th class="num">Peso</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>4. Recursos, custos e calendário</h2>
+  <div class="grid2">
+    <div>
+      <h3>Catálogo de recursos (18)</h3>
+      <table><thead><tr><th>Sigla</th><th>Recurso</th><th>Tipo</th><th class="num">Cap./dia</th><th class="num">R$/h</th></tr></thead><tbody id="rec"></tbody></table>
+    </div>
+    <div>
+      <h3>Categorias de custo</h3>
+      <table><thead><tr><th>Categoria</th><th>Onde entra</th><th class="num">R$ mi</th></tr></thead><tbody>
+        <tr><td>Equipamento</td><td>caldeira, turbina, gerador, trafos, painéis</td><td class="num">31,2</td></tr>
+        <tr><td>Material</td><td>tubulação, cabos, estruturas, instrumentos</td><td class="num">6,4</td></tr>
+        <tr><td>Serviço</td><td>END, isolamento, tratamento térmico</td><td class="num">1,9</td></tr>
+        <tr><td>Subcontrato</td><td>terraplenagem, pavimentação, SDCD</td><td class="num">2,7</td></tr>
+        <tr><td>Máquina</td><td>guindastes, retroescavadeiras (via recurso)</td><td class="num">1,1</td></tr>
+        <tr><td>Mão de obra</td><td>MOD e MOI via alocação × R$/h</td><td class="num">4,3</td></tr>
+        <tr><td>Logística</td><td>transporte especial da caldeira e TG</td><td class="num">0,6</td></tr>
+        <tr><td>Outro</td><td>licenças, seguros, treinamento</td><td class="num">0,4</td></tr>
+      </tbody></table>
+      <h3>Calendário</h3>
+      <p class="mono">seg–sex · feriados: 12/10, 02/11, 15/11, 25/12/2026 · 01/01, 26/03, 21/04, 01/05, 27/05, 07/09, 12/10, 02/11, 15/11, 25/12/2027 · 01/01/2028</p>
+      <h3>Linha de base</h3>
+      <p>BL0 aprovada em 25/09/2026 sobre a estrutura original. Em 01/02/2027 é aprovada a <b>BL1</b> (replanejamento após atraso da caldeira), mantendo BL0 como referência de curva S no demo, para mostrar os dois cenários no Cockpit.</p>
+    </div>
+  </div>
+
+  <h2>5. Roteiro ponta a ponta (o script executa e verifica cada passo)</h2>
+  <p class="lead">Script <code>scripts/demo_v2.py</code>. Cada passo usa a API pública com o token do admin master; nada é escrito direto no banco, exceto a limpeza inicial. Cada passo termina com uma verificação numérica (oráculo) e o panorama final grava a tabela de PASS/FAIL nesta mesma página.</p>
+  <div id="passos"></div>
+
+  <h2>6. Como o realizado foi gerado</h2>
+  <table><thead><tr><th>Registro</th><th>Regra de geração</th><th>Invariantes exercitadas</th></tr></thead><tbody>
+    <tr><td>Medições</td><td>a cada sábado desde 18/07/2026, percentual acumulado = fração de dias úteis decorridos × fator do enredo, monotônico, sem medir 4.2 após 22/08</td><td>INV-MED-003 (retrocesso recusado), INV-MED-004 (só sábado), hash encadeado</td></tr>
+    <tr><td>Apontamentos</td><td>por dia útil e por recurso alocado nas fases 2, 3, 4 e 8, horas/pessoa-dia entre 7 e 9 × fator de horas do enredo; um lançamento em duplicidade e seu estorno</td><td>INV-APT-001 (marco), INV-APT-002 (estorno único), INV-APT-004 (data futura)</td></tr>
+    <tr><td>Custo real</td><td>adiantamentos de equipamentos (30% caldeira, 20% turbina, 25% trafos), boletins de engenharia e civil, folha de MOD, taxa de licença e uma glosa negativa</td><td>INV-CST-001 (marco), INV-CST-002 (append-only)</td></tr>
+    <tr><td>Replanejamento</td><td>3.2 de 120 → 145 dias úteis pela gaveta (PUT atividade) e nova linha de base BL1 com LVP 0,90</td><td>INV-BL-003 (BL0 intocada), CPM recalculado no servidor</td></tr>
+  </tbody></table>
+  <p class="lead">Início em 13/07/2026 e data de status no último sábado: nenhum relógio fictício foi necessário; todo o realizado está no passado real.</p>
+
+  <h2>7. Módulo a módulo — o que o DEMO v2 deixa visível</h2>
+  <table><thead><tr><th>Módulo</th><th>O que aparece com o demo semeado</th><th>Enredo</th></tr></thead><tbody>
+    <tr><td>Projeto novo</td><td>contrato preenchido, estrutura de 80 linhas, BL0 e BL1 no histórico de linhas de base</td><td>replanejamento</td></tr>
+    <tr><td>Cronograma</td><td>Gantt com 8 fases coloridas, caminho crítico 3.2 → 5.1 → 5.2 → 5.9 → 7.x, marco 1.4 vencido, folga positiva na engenharia, BL0 sob as barras</td><td>1, 2</td></tr>
+    <tr><td>Linha do tempo</td><td>6 marcos: 3 cumpridos, 1 vencido, 2 futuros; fases sobre o eixo</td><td>2</td></tr>
+    <tr><td>Cockpit</td><td>curva S previsto 38% × real 33%, IDP 0,87 (atenção), 9 críticas, 3 vencidas, término projetado 25/02/2028</td><td>1, 2</td></tr>
+    <tr><td>Status Report</td><td>relatório completo com bloco de coerência (0,80), superalocação MONT, PDF retrato</td><td>todos</td></tr>
+    <tr><td>Medição</td><td>25 cortes semanais encadeados por hash; 4.5 sem medição desde 13/02/2027</td><td>4</td></tr>
+    <tr><td>Apontamentos</td><td>grade da semana 14–20/03/2027 com horas em 6 tarefas; 4.3 esforço alto (135%); 4.5 horas sem avanço; 1 estorno no ledger</td><td>3, 4</td></tr>
+    <tr><td>Previsto × Realizado</td><td>4 dimensões, 10 achados (4 alertas, 6 atenções), marcos BL × vigente × real, recursos com consumo de horas</td><td>todos</td></tr>
+    <tr><td>Importação</td><td>máscara XLSX (anexo IV) preenchida com as 80 linhas, publicada em Templates para reimportar</td><td>—</td></tr>
+    <tr><td>EAP e ponderação</td><td>pesos por fase somando a base do contrato; memória de cálculo</td><td>—</td></tr>
+    <tr><td>Recursos</td><td>23 recursos, ~120 alocações, histograma com pico de MONT em maio/2027 (INV-REC-001)</td><td>5</td></tr>
+    <tr><td>Custos</td><td>ONT R$ 48,6 mi, curva VP/VA/CR, IDC 0,96 total e 0,91 na fase 4, ledger com correção negativa</td><td>3</td></tr>
+    <tr><td>Templates</td><td>anexos do procedimento + máscara do DEMO v2 + este panorama + design system</td><td>—</td></tr>
+    <tr><td>Configurações → Base de dados</td><td>tabelas com contagens coerentes (80 atividades, medições semanais, ~1.400 apontamentos)</td><td>—</td></tr>
+  </tbody></table>
+
+  <h2>8. Marcos — BL0 × vigente × real (dados do sistema)</h2>
+  <div>
+    <table id="marcos"><thead><tr><th>Marco</th><th class="num">BL0</th><th class="num">Vigente (BL1)</th><th class="num">Real</th><th>Estado</th></tr></thead><tbody><tr><td>1.1.1 Assinatura do contrato</td><td class="num">13/07/2026</td><td class="num">13/07/2026</td><td class="num">cumprido</td><td class="ok">cumprido</td></tr><tr><td>1.1.2 Liberação do canteiro</td><td class="num">09/09/2026</td><td class="num">09/09/2026</td><td class="num">—</td><td class="ac">vencido</td></tr><tr><td>1.1.3 Aprovação do projeto básico</td><td class="num">11/08/2026</td><td class="num">11/08/2026</td><td class="num">cumprido</td><td class="ok">cumprido</td></tr><tr><td>1.1.4 Chegada da caldeira ao site</td><td class="num">31/03/2027</td><td class="num">31/03/2027</td><td class="num">—</td><td class="">no plano</td></tr><tr><td>1.1.5 Energização da subestação</td><td class="num">21/05/2027</td><td class="num">21/05/2027</td><td class="num">—</td><td class="">no plano</td></tr><tr><td>1.1.6 Aceite provisório (TAP)</td><td class="num">05/10/2027</td><td class="num">05/10/2027</td><td class="num">—</td><td class="">no plano</td></tr></tbody></table>
+  </div>
+
+  <h2>9. Limpeza executada e padrão</h2>
+  <div class="regra">O passo 0 removeu <b>todos</b> os contratos anteriores da organização (CT-100-ETANOL e contratos de teste) com seus dependentes, preservando usuários, papéis e organizações. O CT-200-COGER é o único contrato e abre por padrão.</div>
+  <pre class="mono" style="background:var(--fundo);border:1px solid var(--linha);padding:10px;border-radius:6px">PYTHONUTF8=1 python scripts/demo_v2.py --somente      # limpa, semeia via API, roda o roteiro e regrava esta página
+PYTHONUTF8=1 python scripts/demo_v2.py --so-roteiro   # só verificações, exportações e panorama sobre o demo já semeado
+PYTHONUTF8=1 python scripts/demo_v2.py --sem-limpar   # adiciona o DEMO v2 ao lado de contratos existentes</pre>
+  <h2>10. Decisões tomadas</h2>
+  <ol style="line-height:1.9">
+    <li>Início em 13/07/2026 (pedido), término contratual 30/11/2027; o CPM fecha antes disso e o replanejamento da caldeira o empurra — o Cockpit mostra o delta.</li>
+    <li>EAP com raiz única (INV-EAP-005): as 8 fases ficam no nível 2 (1.1 a 1.8); as linhas no nível 3, e só as fundações da caldeira (4.3, com a armação no nível 5) e a montagem da caldeira (5.2) descem aos níveis 4 e 5, onde o detalhe muda a forma de medir e alocar.</li>
+    <li>Atividades acima de 15 dias úteis carregam exceção contratual (INV-CRN-001) com documento CE-xxx — fabricações, fornecimentos e frentes contínuas.</li>
+    <li>Contratante Inovação Controle Novo Plan; contratada Novo Plan Engenharia; nomes do fornecedor anterior removidos do sistema.</li>
+    <li>Este panorama e o design system foram publicados em Templates.</li>
+  </ol>
+
+<script>
+// ---------- EAP: [edt, tarefa, dur, pred, recursos, itens R$ mil, peso] ; dur 0 = marco ; fase = linha sem dur
+const EAP = [
+["1","MARCOS CONTRATUAIS"],
+["1.1","Assinatura do contrato",0,"","",0,0],
+["1.2","Liberação do canteiro",0,"8.4","",0,0],
+["1.3","Aprovação do projeto básico",0,"2.1,2.2,2.3","",0,0],
+["1.4","Chegada da caldeira ao site",0,"3.2","",0,0],
+["1.5","Energização da subestação",0,"7.4","",0,0],
+["1.6","Aceite provisório (TAP)",0,"7.10","",0,0],
+["2","ENGENHARIA"],
+["2.1","Projeto básico de processo",20,"1.1","ENGP 2",180,40],
+["2.2","Projeto básico civil",15,"1.1","ENGC 2",90,25],
+["2.3","Projeto básico elétrico",15,"1.1","ENGE 1",90,25],
+["2.4","Detalhamento mecânico",30,"1.3","ENGM 2, PROJ 2",260,60],
+["2.5","Detalhamento de tubulação",35,"2.4II+10","ENGM 1, PROJ 3",240,60],
+["2.6","Detalhamento elétrico",30,"1.3","ENGE 2, PROJ 1",200,50],
+["2.7","Detalhamento de automação",25,"2.6II+5","ENGE 1, PROJ 1",160,40],
+["2.8","Lista de sobressalentes",10,"2.4,2.6","ENGM 1",20,10],
+["2.9","As-built",15,"7.9","PROJ 2",60,20],
+["2.10","Data book",15,"2.9II","ENGP 1, PROJ 1",40,20],
+["3","SUPRIMENTOS E FABRICAÇÃO"],
+["3.1","Especificação e compra da caldeira",15,"2.1","ENGP 1, SUPR 1",120,20],
+["3.2","Fabricação da caldeira (fornecedor)",120,"3.1","SUPR 1",11800,180],
+["3.3","Especificação e compra do turbogerador",15,"2.1","ENGM 1, SUPR 1",120,20],
+["3.4","Fabricação da turbina",140,"3.3","SUPR 1",9600,160],
+["3.5","Fabricação do gerador",110,"3.3","",5200,100],
+["3.6","Transformadores",90,"2.3","SUPR 1",2400,60],
+["3.7","Painéis de média tensão",80,"2.6","SUPR 1",1500,50],
+["3.8","Materiais de tubulação",45,"2.5","SUPR 1",1900,60],
+["3.9","Estruturas metálicas",60,"2.4","SUPR 1",1300,50],
+["3.10","Instrumentos e válvulas de controle",50,"2.7","SUPR 1",1100,40],
+["3.11","Cabos MT e BT",40,"2.6","",800,30],
+["3.12","Sistema de tratamento de água",70,"2.1","SUPR 1",1700,50],
+["4","OBRAS CIVIS"],
+["4.1","Mobilização de canteiro",10,"1.2","MOI 2, PEDR 4, AJUD 6, RETRO 1",120,20],
+["4.2","Terraplenagem e drenagem",20,"4.1","OPER 3, RETRO 2, CAMB 4, TOPO 1",380,40],
+["4.3","Fundações da caldeira (resumo · nível 3)",0,"","",0,0],
+["4.3.1","Escavação e lastro",6,"4.2,2.2","OPER 2, RETRO 1, AJUD 6",90,12],
+["4.3.2","Armação e formas (resumo · nível 4)",0,"","",0,0],
+["4.3.2.1","Armação bloco A (fornalha)",7,"4.3.1","ARM 4, CARP 3, AJUD 4",140,20],
+["4.3.2.2","Armação bloco B (tambor)",7,"4.3.2.1II+3","ARM 4, CARP 3, AJUD 4",130,18],
+["4.3.3","Concretagem dos blocos",6,"4.3.2.1,4.3.2.2","PEDR 8, AJUD 6, GUIN 1",200,20],
+["4.3.4","Cura e liberação para montagem",6,"4.3.3","PEDR 2, AJUD 2",60,10],
+["4.4","Fundações do turbogerador",25,"4.2,2.2","PEDR 6, ARM 6, AJUD 8, CARP 4",480,60],
+["4.5","Bases de equipamentos auxiliares",20,"4.4II+10","PEDR 4, ARM 3, AJUD 6",210,40],
+["4.6","Estrutura da casa de força",45,"4.4","MONT 8, SOLD 4, AJUD 6, GUIN 1",900,90],
+["4.7","Subestação — obras civis",20,"4.2","PEDR 4, ARM 3, AJUD 6",260,40],
+["4.8","Fundações do pipe-rack",15,"4.3.3II+5","PEDR 4, ARM 3, AJUD 4",180,30],
+["4.9","Prédio de controle e operação",40,"4.7","PEDR 6, CARP 4, AJUD 6, ELET 2",560,60],
+["4.10","Pavimentação e vias internas",15,"6.10","OPER 2, CAMB 3, AJUD 4",300,30],
+["4.11","Urbanização e paisagismo",10,"4.10","AJUD 4",60,10],
+["4.12","Desmobilização de canteiro civil",5,"4.11","MOI 1, AJUD 4",30,5],
+["5","MONTAGEM ELETROMECÂNICA"],
+["5.1","Descarga e posicionamento da caldeira",5,"1.4,4.3.4","MONT 6, GUIN 2, AJUD 6",180,20],
+["5.2","Montagem da caldeira (resumo · nível 3)",0,"","",0,0],
+["5.2.1","Estrutura e escadas da caldeira",15,"5.1","MONT 10, SOLD 4, AJUD 6, GUIN 1",350,45],
+["5.2.2","Tambor, paredes de água e superaquecedor",25,"5.2.1II+10","MONT 12, SOLD 8, AJUD 6, GUIN 1",650,80],
+["5.2.3","Grelha, alimentação de biomassa e cinzas",15,"5.2.2II+10","MONT 8, SOLD 4, AJUD 4",260,35],
+["5.2.4","Ventiladores, dutos e chaminé",12,"5.2.3II+5","MONT 6, SOLD 3, GUIN 1",140,20],
+["5.3","Montagem da turbina",30,"3.4,4.4","MONT 8, MEC 4, GUIN 1",700,90],
+["5.4","Montagem do gerador",20,"3.5,5.3II+10","MONT 6, ELET 2, GUIN 1",400,60],
+["5.5","Alinhamento do turbogerador",10,"5.3,5.4","MEC 4",90,30],
+["5.6","Condensador e sistema de vácuo",15,"4.5","MONT 6, SOLD 3",320,40],
+["5.7","Bombas e equipamentos auxiliares",15,"4.5,3.12","MONT 4, MEC 2",260,40],
+["5.8","Montagem do pipe-rack",25,"4.8,3.9","MONT 6, SOLD 3, GUIN 1",380,50],
+["5.9","Tubulação de vapor e condensado",45,"5.8,3.8,5.2.2TT","MONT 8, SOLD 8, AJUD 4",960,120],
+["5.10","Tubulação de água e utilidades",35,"5.8,3.8","MONT 6, SOLD 4",520,70],
+["5.11","Isolamento térmico",30,"5.9TT+10","ISOL 8",480,50],
+["5.12","Teste hidrostático e END",10,"5.9,5.10","MEC 2, SOLD 2",220,30],
+["6","ELÉTRICA E AUTOMAÇÃO"],
+["6.1","Montagem eletromecânica da subestação",30,"4.7,3.6","ELET 6, MONT 2, GUIN 1",420,60],
+["6.2","Instalação dos transformadores",10,"6.1TT,3.6","ELET 4, GUIN 1",120,30],
+["6.3","Painéis de média tensão",20,"4.9,3.7","ELET 6",240,40],
+["6.4","Painéis de baixa tensão e CCMs",20,"6.3II+5","ELET 6",220,40],
+["6.5","Lançamento de cabos MT",25,"6.1,3.11","ELET 8, AJUD 4",280,50],
+["6.6","Lançamento de cabos BT e controle",30,"6.4,3.11","ELET 10, AJUD 4",320,60],
+["6.7","Iluminação e tomadas industriais",20,"6.6II+10","ELET 4",110,20],
+["6.8","Instrumentação de campo",30,"5.9,3.10","INST 6",360,60],
+["6.9","SDCD e sistema de automação",25,"6.8II+10,2.7","INST 4, ENGE 1",680,60],
+["6.10","Malha de aterramento e SPDA",15,"4.2","ELET 4, AJUD 4",130,20],
+["6.11","Testes elétricos e ensaios",15,"6.5,6.6,6.2","ELET 4, INST 2",160,30],
+["7","COMISSIONAMENTO E PARTIDA"],
+["7.1","Pré-operacional mecânico",15,"5.12,5.11","MEC 4, MONT 4",180,40],
+["7.2","Pré-operacional elétrico",10,"6.11","ELET 4, INST 2",120,30],
+["7.3","Limpeza química e sopragem de vapor",10,"7.1,5.2.4","MEC 4, OPER 2",260,40],
+["7.4","Energização da subestação",5,"7.2","ELET 4, ENGE 1",60,20],
+["7.5","Comissionamento da caldeira",15,"7.3,7.4","MEC 4, INST 3, OPER 3",340,60],
+["7.6","Comissionamento do turbogerador",10,"7.5,5.5","MEC 4, INST 2, OPER 3",300,50],
+["7.7","Sincronismo com a rede",5,"7.6,1.5","ELET 2, ENGE 1, OPER 2",90,20],
+["7.8","Teste de performance (72 h)",10,"7.7","OPER 4, INST 2, ENGP 1",150,40],
+["7.9","Treinamento da operação",10,"7.6II","ENGP 1, OPER 4",80,20],
+["7.10","Entrega e termo de aceite",5,"7.8,7.9,2.10","ENGP 1, MOI 1",20,10],
+["8","GESTÃO, HSE E LICENÇAS"],
+["8.1","Plano de execução do projeto",10,"1.1","MOI 2, ENGP 1",40,10],
+["8.2","Plano de HSE e treinamentos iniciais",10,"1.1","HSE 2",50,10],
+["8.3","Plano da qualidade e inspeção",10,"1.1","MOI 1",30,10],
+["8.4","Licenciamento ambiental de instalação",40,"1.1","MOI 1",180,20],
+["8.5","Auditoria de fase — engenharia",5,"2.4,2.6","MOI 1",20,5],
+["8.6","Auditoria de fase — montagem",5,"5.12","MOI 1",20,5],
+["8.7","Desmobilização geral",10,"7.10","MOI 1, AJUD 4",60,10],
+];
+const REC = [["ENGP","Engenheiro de processo","MOI",2,180],["ENGC","Engenheiro civil","MOI",2,170],["ENGE","Engenheiro eletricista","MOI",2,170],["ENGM","Engenheiro mecânico","MOI",2,170],["PROJ","Projetista","MOI",4,95],["SUPR","Comprador técnico","MOI",2,110],["MOI","Gestão / planejamento / qualidade","MOI",3,150],["HSE","Técnico de segurança","MOI",2,80],
+["PEDR","Pedreiro","MOD",10,48],["ARM","Armador","MOD",8,50],["CARP","Carpinteiro","MOD",6,50],["AJUD","Ajudante","MOD",16,32],["MONT","Montador mecânico","MOD",12,62],["SOLD","Soldador qualificado","MOD",8,78],["MEC","Mecânico de manutenção","MOD",4,70],["ELET","Eletricista industrial","MOD",10,64],["INST","Instrumentista","MOD",6,72],["ISOL","Isolador térmico","MOD",8,55],["OPER","Operador de máquina/planta","MOD",4,58],["TOPO","Topógrafo","MOD",1,90],
+["GUIN","Guindaste 80 t","MAQUINA",2,420],["RETRO","Retroescavadeira","MAQUINA",2,160],["CAMB","Caminhão basculante","MAQUINA",4,120]];
+const tb = document.querySelector("#eap tbody"); let cnt=0;
+for (const l of EAP) {
+  const tr = document.createElement("tr");
+  if (l.length === 2) { tr.className="fase"; tr.innerHTML = `<td class="mono">${l[0]}</td><td colspan="6"><span class="chip" style="background:var(--fase-${l[0]})"></span>${l[1]}</td>`; }
+  else { const resumo = EAP.some(x => x[0].startsWith(l[0] + ".")); cnt++; if (resumo) tr.className="fase"; else if (l[2]===0) tr.className="marco"; tr.innerHTML = `<td class="mono">${l[0]}</td><td style="padding-left:${8 + (l[0].split(".").length - 1) * 12}px">${l[1]}${!resumo && l[2]===0?' <span class="at">◆ marco</span>':''}</td><td class="num">${l[2]||"—"}</td><td class="mono">${l[3]||"—"}</td><td class="mono">${l[4]||"—"}</td><td class="num">${l[5]?l[5].toLocaleString("pt-BR"):"—"}</td><td class="num">${l[6]||"—"}</td>`; }
+  tb.appendChild(tr);
+}
+document.querySelector("#eap").insertAdjacentHTML("afterend", `<p class="nota" style="margin-top:6px">${EAP.length} linhas: ${EAP.filter(l=>l.length===2).length} fases + ${cnt} atividades e marcos · peso total ${EAP.reduce((s,l)=>s+(l[6]||0),0).toLocaleString("pt-BR")} pontos · itens diretos R$ ${(EAP.reduce((s,l)=>s+(l[5]||0),0)/1000).toFixed(1).replace(".",",")} mi</p>`);
+const rb = document.querySelector("#rec"); for (const r of REC) rb.insertAdjacentHTML("beforeend", `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="num">${r[3]}</td><td class="num">${r[4]}</td></tr>`);
+// gantt de fases (aproximação visual em meses, mar/26 → jul/27 = 17 meses)
+const FASES=[["1 Marcos",0,16.3,"1"],["2 Engenharia",0,4.5,"2"],["3 Suprimentos",1,10.5,"3"],["4 Civil",1.5,9,"4"],["5 Montagem",8.5,14,"5"],["6 Elétrica/automação",8,14.5,"6"],["7 Comissionamento",13.5,16.3,"7"],["8 Gestão/HSE",0,16.3,"8"]];
+const g=document.getElementById("gantt"); const W=g.clientWidth||1100; const px=(W-160)/17;
+const meses=["jul","ago","set","out","nov","dez","jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov"];
+g.innerHTML=`<div class="l">${meses.map((m,i)=>`<span class="mes" style="left:${160+i*px}px">${m}${i<6?"/26":"/27"}</span>`).join("")}</div>`+FASES.map(f=>`<div class="l"><span class="t">${f[0]}</span><div class="b" style="left:${160+f[1]*px}px;width:${(f[2]-f[1])*px}px;background:var(--fase-${f[3]})"></div></div>`).join("")+`<div class="hoje" style="left:${160+2.2*px}px" title="data de status 19/09/2026"></div>`;
+// passos
+const P=[
+["Limpar e preparar","Remove todos os contratos da organização e seus dependentes; confirma que usuários e papéis permanecem.","SQL resetar() estendido · login do admin","<b>PASS</b> se GET /contratos devolve lista vazia e o login continua válido."],
+["Criar contrato e calendário","POST /contratos com CT-200-COGER, datas 28/09/2026–28/01/2028, 14 feriados.","Módulo Projeto novo, passo 1","<b>PASS</b> se o eixo tem 335 dias úteis e os feriados não aparecem no eixo."],
+["Gravar estrutura (80 linhas)","POST estrutura com as 8 fases, 74 atividades, 6 marcos, 111 vínculos (TI, II+lag, TT) e pesos. Testa INV-EAP-001 (soma das folhas = base) e o anti-ciclo.","Projeto novo, passo 2 · equivalente à importação da máscara XLSX","<b>PASS</b> se CPM devolve término 28/01/2028 ±0, caminho crítico passa por 3.2 → 5.1 → 5.2 → 5.9 → 7.x, e uma tentativa de vínculo circular é recusada (INV-CRN-007)."],
+["Aprovar BL0","POST /baselines com fiscal → BL0 vigente (aprovada em 25/09/2026); curva previsto_semanal gerada.","Projeto novo, passo 3","<b>PASS</b> se previsto acumulado em 20/03/2027 ≈ 38% e a curva termina em 100% na semana de 29/01/2028."],
+["Catálogo de recursos e alocações","23 recursos (18 humanos + 5 máquinas) com R$/h; alocações conforme a coluna Recursos. Uma superalocação plantada em MONT em outubro.","Módulo Recursos · gaveta → aba Recursos","<b>PASS</b> se o histograma mostra 1 achado INV-REC-001 exatamente em MONT, semanas 08/05–04/06/2027."],
+["Orçamento (itens diretos)","PUT /atividades/{id}/custos com os itens da coluna R$ mil por categoria. Marco com custo deve ser recusado.","Módulo Custos · gaveta → aba Custos","<b>PASS</b> se ONT total = itens + recursos ≈ R$ 48,6 mi e a tentativa em marco devolve 422 INV-CST-001."],
+["Medições semanais (29 cortes)","Para cada sábado de 03/10/2026 a 20/03/2027, POST medições nas atividades em curso seguindo o enredo (engenharia adiantada, caldeira atrasada, 4.5 sem medição desde 13/02/2027). Hash chain verificado ao fim.","Módulo Medição · critério de etapas","<b>PASS</b> se real acumulado em 20/03/2027 ≈ 33%, IDP ≈ 0,87 (atenção) e a cadeia de hash fecha."],
+["Replanejamento e BL1","Alterar 3.2 (+25 du) via simulação → gravar → aprovar BL1 em 01/02/2027. BL0 permanece para comparação.","Cronograma (arraste ou gaveta) · Projeto novo, passo 3","<b>PASS</b> se término vigente = 25/02/2028, BL1 vigente, e o Cockpit exibe delta vs BL0 = +20 du."],
+["Apontamentos de horas","Lançamentos diários (dom–sáb) para as atividades civis e de engenharia, com estouro plantado em 4.3 (135%) e horas sem avanço em 4.5. Um estorno e um estorno repetido.","Módulo Apontamentos · gaveta → aba Horas","<b>PASS</b> se 4.3 sai como ESFORCO_ALTO, 4.5 como HORAS_SEM_AVANCO, estorno repetido devolve 409 e marco devolve 422 (INV-APT-001)."],
+["Custo realizado","Ledger de custo real: faturas de equipamento (caldeira 40% adiantado), MOD por fase, um lançamento negativo de correção.","Módulo Custos → Realizado","<b>PASS</b> se IDC ≈ 0,96 no total e 0,91 na fase 4; correção negativa aceita e edição/exclusão recusadas (INV-CST-002)."],
+["Previsto × Realizado","GET previsto-realizado em 20/03/2027.","Módulo Previsto × Realizado","<b>PASS</b> se índice ≈ 0,80 e os achados incluem exatamente: COE-DERIVA-BL (3.2), COE-MARCO-VENCIDO (1.4), COE-HORAS-ESTOURADAS (4.3), COE-MEDICAO-DESATUALIZADA e COE-HORAS-SEM-AVANCO (4.5)."],
+["Status Report e exportações","GET status-report; exportar os 8 relatórios em PDF e XLSX; renderizar 1ª página de cada PDF para inspeção.","Módulo Status Report · botões PDF/XLSX","<b>PASS</b> se 16 arquivos válidos (%PDF / PK), cabeçalho com CT-200-COGER e nenhuma tabela cortada (verificação por pymupdf)."],
+["Segurança e multiempresa","Repetir leituras com um usuário LEITOR (sem escrita) e com organização diferente (sem dados).","Configurações → Usuários","<b>PASS</b> se LEITOR recebe 403 em POST e a outra organização vê 0 contratos (RLS)."],
+["Panorama final","Regravar esta página com os números reais obtidos, a tabela PASS/FAIL por passo e as capturas das 1ªs páginas dos PDFs.","scripts/demo_v2.py → panorama_demo.html","<b>PASS</b> se todos os passos anteriores PASS; caso contrário a página lista o que divergiu do oráculo."],
+];
+document.getElementById("passos").innerHTML = P.map((p,i)=>`<div class="passo"><div class="n">${i}</div><div><h3>${p[0]}</h3><p>${p[1]}</p><div class="como">Onde no sistema: ${p[2]}</div><div class="verifica">Verificação: ${p[3]}</div></div></div>`).join("");
+</script>
+</main></body></html>

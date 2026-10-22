@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Glossário · GPlanSiS|Project</title>
+<meta name="description" content="Glossário do GPlanSiS|Project: EAP, EDT, folha, peso, base de ponderação, CPM, folga, BL0, LVP, curva S, EVM, IDP, ledger, estorno e mais." />
+<!-- Sem script e sem rede: a CSP do sistema é script-src 'self'. O tema
+     acompanha o do aparelho e o data-theme do app. -->
+<style>
+:root{
+  --grafite:#2d3336; --aco:#7d8286; --claro:#edeff0; --papel:#f7f8f8; --fundo:#ffffff;
+  --linha:#dfe3e4; --texto:#17191b; --texto-2:#4a5054;
+  --em-dia:#2f7d4f; --atencao:#8a6d1f; --recuperacao:#b4560f; --acao:#a11d1d; --neutro:#7d8286;
+  --em-dia-f:#e7f3ec; --atencao-f:#f6efd9; --recuperacao-f:#f9e9dc; --acao-f:#f7e3e3; --neutro-f:#eef0f1;
+  --acento:#1f6f8b; --acento-f:#e4f0f4;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-4:#7a4fa3;
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --e-2:8px; --e-3:12px; --e-4:16px; --e-5:22px; --e-6:32px;
+  --r-1:3px; --r-2:6px; --r-3:10px; --r-pill:999px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+    --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+    --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+    --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+    --acento:#5aa9c6; --acento-f:#1d3038;
+    --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+  --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+  --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+  --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+  --acento:#5aa9c6; --acento-f:#1d3038;
+  --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--texto);
+  font:400 13px/1.5 var(--fonte);-webkit-text-size-adjust:100%}
+main{max-width:1000px;margin:0 auto;padding:26px var(--e-5) 72px}
+h1{font-size:28px;line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:16px;margin:var(--e-6) 0 var(--e-2);padding-top:var(--e-5);
+  border-top:1px solid var(--linha)}
+h3{font-size:14px;margin:var(--e-5) 0 var(--e-2)}
+p{margin:0 0 var(--e-3);max-width:74ch}
+a{color:var(--acento)}
+code,.mono{font-family:var(--mono);font-size:12px}
+code{background:var(--claro);border-radius:var(--r-1);padding:1px 5px}
+strong{font-weight:600}
+
+.cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--e-3);
+  margin-bottom:var(--e-2)}
+.cod{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--aco)}
+.lead{color:var(--texto-2);font-size:15px;max-width:72ch;margin:var(--e-3) 0 0}
+.selo{display:inline-block;font-family:var(--mono);font-size:11px;
+  border:1px solid var(--linha);border-radius:var(--r-pill);
+  padding:2px 9px;color:var(--aco);background:var(--fundo)}
+
+/* caminho na interface */
+.trilha{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-2);
+  font-family:var(--mono);font-size:12px;margin:var(--e-3) 0}
+.trilha span{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-1);padding:3px 9px}
+.trilha i{font-style:normal;color:var(--aco)}
+.trilha span.fim{border-color:var(--acento);background:var(--acento-f);
+  color:var(--acento);font-weight:500}
+
+/* blocos */
+.cx{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-3);padding:var(--e-5);margin:var(--e-4) 0}
+.cx > :last-child{margin-bottom:0}
+.cx h3{margin-top:0}
+.par{display:grid;gap:var(--e-4);grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.nota{border-left:3px solid var(--acento);background:var(--acento-f);
+  border-radius:0 var(--r-2) var(--r-2) 0;padding:var(--e-3) var(--e-4);
+  margin:var(--e-4) 0}
+.nota.alerta{border-left-color:var(--acao);background:var(--acao-f)}
+.nota > :last-child{margin-bottom:0}
+.nota b{display:block;margin-bottom:2px}
+
+/* passos */
+ol.passos{list-style:none;margin:var(--e-4) 0 0;padding:0;counter-reset:p}
+ol.passos > li{counter-increment:p;position:relative;
+  padding:0 0 var(--e-5) 34px;border-left:1px solid var(--linha);
+  margin-left:11px}
+ol.passos > li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.passos > li::before{content:counter(p);position:absolute;left:-11px;top:-2px;
+  width:22px;height:22px;border-radius:50%;background:var(--grafite);
+  color:var(--papel);font:500 11px/22px var(--mono);text-align:center}
+ol.passos b{display:block;margin-bottom:2px}
+ol.passos p{margin-bottom:var(--e-2)}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;margin:var(--e-3) 0;font-size:12.5px}
+caption{text-align:left;color:var(--aco);font-size:12px;padding-bottom:var(--e-2)}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--linha);
+  vertical-align:top}
+th{font-weight:600;color:var(--texto-2);font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+
+.farol{display:inline-block;border-radius:var(--r-pill);padding:1px 9px;
+  font-size:11px;font-weight:500;white-space:nowrap}
+.f-dia{background:var(--em-dia-f);color:var(--em-dia)}
+.f-at{background:var(--atencao-f);color:var(--atencao)}
+.f-rec{background:var(--recuperacao-f);color:var(--recuperacao)}
+.f-aco{background:var(--acao-f);color:var(--acao)}
+.f-nao{background:var(--neutro-f);color:var(--neutro)}
+
+ul.lista{margin:0 0 var(--e-3);padding-left:18px}
+ul.lista li{margin-bottom:5px}
+
+.criterios{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:var(--e-3) 0}
+.criterios div{font-family:var(--mono);font-size:11.5px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-1);padding:6px 9px}
+
+figure{margin:var(--e-4) 0}
+svg .d-lig{fill:none;stroke:var(--linha);stroke-width:1.5;marker-end:url(#seta)}
+svg .d-lig .d-tronco{marker-end:none}
+svg .d-cx rect,svg rect.d-ac{stroke-width:1}
+svg .d-cx rect{fill:var(--fundo);stroke:var(--linha)}
+svg rect.d-ac{fill:var(--acento-f);stroke:var(--acento)}
+svg .d-t text{font-family:var(--mono);font-size:11px;text-anchor:middle;
+  fill:var(--aco)}
+svg .d-t text.forte{font-size:12px;fill:var(--texto)}
+svg .d-t text.fraco{fill:var(--aco)}
+svg .d-t text.ac{fill:var(--acento)}
+svg .d-t text.ac.forte{font-weight:600}
+svg text.pe{font-family:var(--mono);font-size:10.5px;fill:var(--aco)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{color:var(--aco);font-size:11.5px;margin-top:var(--e-2)}
+
+.rodape{margin-top:var(--e-6);padding-top:var(--e-4);
+  border-top:1px solid var(--linha);color:var(--aco);font-size:11.5px}
+
+@media (max-width:560px){
+  main{padding:20px 16px 56px}
+  h1{font-size:23px}
+  table{font-size:12px}
+}
+@media print{
+  body{background:#fff}
+  .cx,.nota{break-inside:avoid}
+  h2{break-after:avoid}
+}
+
+.acao-bloco{border-top:1px solid var(--linha);padding-top:var(--e-5);
+  margin-top:var(--e-6)}
+.acao-bloco h3{margin-top:0;font-size:15px}
+.papel{display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;border-radius:var(--r-pill);
+  padding:2px 9px;background:var(--neutro-f);color:var(--neutro);
+  border:1px solid var(--linha);vertical-align:2px;margin-left:6px}
+.papel.pl{background:var(--acento-f);color:var(--acento);border-color:var(--acento)}
+.papel.ad{background:var(--recuperacao-f);color:var(--recuperacao);border-color:var(--recuperacao)}
+.papel.fi{background:var(--em-dia-f);color:var(--em-dia);border-color:var(--em-dia)}
+table.campos td:first-child{width:34%;font-family:var(--mono);font-size:11.5px;
+  color:var(--texto)}
+.indice{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:var(--e-4) 0}
+.indice a{display:block;padding:9px 12px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-2);text-decoration:none;
+  color:var(--texto)}
+.indice a b{display:block;font-size:13px}
+.indice a span{color:var(--aco);font-size:11.5px}
+.indice a:hover{border-color:var(--acento)}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="cab">
+    <span class="cod">GPS-GLO-v1</span>
+    <span class="selo">34 termos</span>
+  </div>
+  <h1>Glossário</h1>
+  <p class="lead">Os termos que todo o resto pressupõe — da EAP ao estorno, do lag ao IDP.</p>
+</header>
+
+<style>
+.glo{display:grid;grid-template-columns:190px 1fr;gap:var(--e-3) var(--e-4);
+  margin:var(--e-4) 0 0}
+.glo dt{font-weight:600;font-size:13px;padding-top:var(--e-3);
+  border-top:1px solid var(--linha)}
+.glo dd{margin:0;padding-top:var(--e-3);border-top:1px solid var(--linha);
+  color:var(--texto-2);max-width:70ch}
+.glo dd em{color:var(--aco);font-style:normal;display:block;margin-top:3px;
+  font-size:12px}
+@media (max-width:620px){
+  .glo{grid-template-columns:1fr;gap:0}
+  .glo dt{border-top:1px solid var(--linha)}
+  .glo dd{border-top:0;padding-top:2px;padding-bottom:var(--e-3)}
+}
+</style><p>Metade destes termos vem da obra e metade vem do planejamento.
+Quase ninguém chega sabendo os dois lados — e é onde as conversas se
+desencontram.</p><dl class="glo"><dt>EAP</dt><dd>Estrutura Analítica do Projeto: a árvore que divide o escopo em pedaços cada vez menores.</dd><dt>EDT</dt><dd>O endereço de um nó na árvore — <span class="mono">1.2.5</span>. É por ele que medição, custo, hora e importação encontram a atividade.<em>Em inglês, WBS e WBS code.</em></dd><dt>Folha</dt><dd>Nó sem filhos. É quem recebe peso, recurso, custo, hora e medição.<em>Se ganhar um filho, deixa de ser folha e o peso tem de descer.</em></dd><dt>Resumo</dt><dd>Nó com filhos. Não tem peso próprio: o dele é a soma dos que estão abaixo.</dd><dt>Marco</dt><dd>Data sem trabalho: duração zero, peso zero. Não recebe recurso, custo, hora nem medição.<em>O que um marco tem é situação declarada.</em></dd><dt>Ponto</dt><dd>A unidade de peso. Você distribui pontos entre as folhas.<em>É número absoluto — 400, 1.200.</em></dd><dt>Peso</dt><dd>A fração que a folha representa no todo: pontos ÷ base de ponderação.<em>É o ponto visto em porcentagem.</em></dd><dt>Base de ponderação</dt><dd>O total de pontos do projeto. A soma das folhas tem de fechar nela, exatamente.<em>Costuma ser 1.000, 10.000 ou o total de hh.</em></dd><dt>Memória de cálculo</dt><dd>A conta que gerou um número, escrita ao lado dele — <span class="mono">400 hh a 100 pontos/hh</span>.<em>É o que sustenta o peso numa auditoria.</em></dd><dt>CPM</dt><dd>Método do caminho crítico: calcula, a partir de durações e vínculos, quando cada atividade pode começar e terminar.<em>Roda no servidor, não no navegador.</em></dd><dt>Caminho crítico</dt><dd>A sequência de atividades com folga zero. Atrasar qualquer uma delas atrasa o projeto.</dd><dt>Folga total</dt><dd>Quanto a atividade pode atrasar sem empurrar o término do projeto.<em>Folga zero é caminho crítico.</em></dd><dt>Folga livre</dt><dd>Quanto ela pode atrasar sem empurrar a <em>próxima</em>.<em>Sempre menor ou igual à folga total.</em></dd><dt>Vínculo</dt><dd>A ligação entre duas atividades. <span class="mono">TI</span> término→início é o comum; há também <span class="mono">II</span>, <span class="mono">TT</span> e <span class="mono">IT</span>.</dd><dt>Lag</dt><dd>Espera em dias dentro de um vínculo — cura de concreto, prazo de entrega.<em>Negativo é recusado; o máximo é 21 dias.</em></dd><dt>Restrição</dt><dd>Amarra uma atividade a uma data. <span class="mono">ASAP</span> o mais breve possível, <span class="mono">SNET</span> não iniciar antes de, <span class="mono">MSO</span> deve iniciar em.<em>A terceira reprova a verificação do plano.</em></dd><dt>BL0 · linha de base</dt><dd>O plano aprovado e congelado. É contra ele que o desvio é medido.<em>Aprovar é ato de fiscal ou admin.</em></dd><dt>LVP</dt><dd>Lista de verificação do plano: a conferência antes de aprovar a linha de base.<em>O procedimento pede nota ≥ 0,85.</em></dd><dt>Data de status</dt><dd>O instante que todas as contas retratam. Fica no topo da tela, ao lado do contrato.<em>Mudá-la não altera dado nenhum — só a pergunta.</em></dd><dt>Data de corte</dt><dd>O instante de uma medição específica.<em>Na planilha em lote, precisa ser sábado.</em></dd><dt>Avanço físico</dt><dd>Quanto da obra foi feito, ponderado por peso. Vem de medição, nunca de digitação direta na tarefa.</dd><dt>Critério de etapas</dt><dd>A lista de etapas de um serviço, cada uma com seu peso — montagem sobre a base 20%, soldas 30%…<em>Etapa parcial não pontua.</em></dd><dt>Evidência</dt><dd>O documento que sustenta uma medição: RDO, relatório de END, romaneio, foto.<em>É obrigatória.</em></dd><dt>Ledger</dt><dd>Registro que só aceita inclusão. Medição, custo real e horas são ledgers.<em>Corrigir é estornar, não editar.</em></dd><dt>Estorno</dt><dd>Lançamento contrário, vinculado ao original, com justificativa.<em>Nada é apagado; a cadeia de hash continua conferindo.</em></dd><dt>Curva S</dt><dd>O avanço acumulado ao longo do tempo. Chama-se S pelo formato: devagar no começo, rápido no meio, devagar no fim.<em>Aqui ela é desenhada pelas medições, não por planilha.</em></dd><dt>Valor agregado (EVM)</dt><dd>Quanto do orçamento o trabalho já feito "valeu": orçamento × avanço.<em>Comparado ao custo real, diz se o que foi feito saiu caro.</em></dd><dt>IDP</dt><dd>Índice de desempenho de prazo. Abaixo de 1, o projeto anda mais devagar do que planejou.</dd><dt>BM · boletim de medição</dt><dd>O documento do período: o que foi medido, o saldo e quanto há a receber.</dd><dt>RDO</dt><dd>Relatório diário de obra — Anexo V. Efetivo, serviços, ocorrências e chuva do dia.<em>É a evidência mais usada nas medições.</em></dd><dt>Superalocação</dt><dd>Recurso passando da capacidade diária em alguma semana.<em>É achado, não bloqueio: nivelar ou aceitar com justificativa.</em></dd><dt>Nivelamento</dt><dd>Deslocar atividades dentro da folga para o recurso caber na capacidade.<em>O resultado vem como proposta, não como gravação.</em></dd><dt>Invariante (INV)</dt><dd>Uma regra do dado que o sistema não deixa quebrar.<em>Cada código está explicado no GPS-INV-v1.</em></dd><dt>Simulação</dt><dd>Alteração calculada e exibida sem gravar. A faixa no topo avisa.<em>Efetivar grava; reverter ao plano descarta tudo.</em></dd></dl>
+<p class="rodape">GPlanSiS|Project · o cronograma é a fonte única: CPM, ponderação, curva S, EVM, recursos, custos, horas e coerência calculam no servidor e ficam gravados com memória de cálculo. O navegador só desenha. Série GPS-ACT: <b>0</b> mapa, <b>1</b> planejar, <b>2</b> controlar, <b>3</b> reportar e administrar.</p>
+</main>
+</body>
+</html>

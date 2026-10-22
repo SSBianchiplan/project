@@ -1,0 +1,17 @@
+# Dependências de PRODUÇÃO, fixadas nas versões validadas em desenvolvimento (2026-09-19).
+# Sem pytest/mypy/ruff: a suíte roda no desenvolvimento e no CI, não no servidor.
+# Python 3.12 (o VPS tem 3.14 no sistema; o venv é criado com uv --python 3.12).
+fastapi==0.141.1
+uvicorn[standard]==0.53.0
+pydantic==2.13.5
+SQLAlchemy[asyncio]==2.0.54
+asyncpg==0.31.0
+alembic==1.20.0
+psycopg[binary]==3.3.6
+openpyxl==3.1.5
+python-multipart==0.0.32
+email-validator==2.3.0
+reportlab==5.0.1
+# Leitura de .mpp (MS Project binário): exige JVM no host (default-jre-headless).
+jpype1==1.7.1
+mpxj==16.7.0

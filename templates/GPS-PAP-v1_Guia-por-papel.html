@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Guia por papel · GPlanSiS|Project</title>
+<meta name="description" content="Guia do GPlanSiS|Project por papel: apontador de campo, planejador, fiscal, gerente e administrador — as telas de cada um e a rotina." />
+<!-- Sem script e sem rede: a CSP do sistema é script-src 'self'. O tema
+     acompanha o do aparelho e o data-theme do app. -->
+<style>
+:root{
+  --grafite:#2d3336; --aco:#7d8286; --claro:#edeff0; --papel:#f7f8f8; --fundo:#ffffff;
+  --linha:#dfe3e4; --texto:#17191b; --texto-2:#4a5054;
+  --em-dia:#2f7d4f; --atencao:#8a6d1f; --recuperacao:#b4560f; --acao:#a11d1d; --neutro:#7d8286;
+  --em-dia-f:#e7f3ec; --atencao-f:#f6efd9; --recuperacao-f:#f9e9dc; --acao-f:#f7e3e3; --neutro-f:#eef0f1;
+  --acento:#1f6f8b; --acento-f:#e4f0f4;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-4:#7a4fa3;
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --e-2:8px; --e-3:12px; --e-4:16px; --e-5:22px; --e-6:32px;
+  --r-1:3px; --r-2:6px; --r-3:10px; --r-pill:999px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+    --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+    --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+    --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+    --acento:#5aa9c6; --acento-f:#1d3038;
+    --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21;
+  --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+  --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+  --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+  --acento:#5aa9c6; --acento-f:#1d3038;
+  --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-4:#b28ad6;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--papel);color:var(--texto);
+  font:400 13px/1.5 var(--fonte);-webkit-text-size-adjust:100%}
+main{max-width:1000px;margin:0 auto;padding:26px var(--e-5) 72px}
+h1{font-size:28px;line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:16px;margin:var(--e-6) 0 var(--e-2);padding-top:var(--e-5);
+  border-top:1px solid var(--linha)}
+h3{font-size:14px;margin:var(--e-5) 0 var(--e-2)}
+p{margin:0 0 var(--e-3);max-width:74ch}
+a{color:var(--acento)}
+code,.mono{font-family:var(--mono);font-size:12px}
+code{background:var(--claro);border-radius:var(--r-1);padding:1px 5px}
+strong{font-weight:600}
+
+.cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--e-3);
+  margin-bottom:var(--e-2)}
+.cod{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--aco)}
+.lead{color:var(--texto-2);font-size:15px;max-width:72ch;margin:var(--e-3) 0 0}
+.selo{display:inline-block;font-family:var(--mono);font-size:11px;
+  border:1px solid var(--linha);border-radius:var(--r-pill);
+  padding:2px 9px;color:var(--aco);background:var(--fundo)}
+
+/* caminho na interface */
+.trilha{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-2);
+  font-family:var(--mono);font-size:12px;margin:var(--e-3) 0}
+.trilha span{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-1);padding:3px 9px}
+.trilha i{font-style:normal;color:var(--aco)}
+.trilha span.fim{border-color:var(--acento);background:var(--acento-f);
+  color:var(--acento);font-weight:500}
+
+/* blocos */
+.cx{background:var(--fundo);border:1px solid var(--linha);
+  border-radius:var(--r-3);padding:var(--e-5);margin:var(--e-4) 0}
+.cx > :last-child{margin-bottom:0}
+.cx h3{margin-top:0}
+.par{display:grid;gap:var(--e-4);grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.nota{border-left:3px solid var(--acento);background:var(--acento-f);
+  border-radius:0 var(--r-2) var(--r-2) 0;padding:var(--e-3) var(--e-4);
+  margin:var(--e-4) 0}
+.nota.alerta{border-left-color:var(--acao);background:var(--acao-f)}
+.nota > :last-child{margin-bottom:0}
+.nota b{display:block;margin-bottom:2px}
+
+/* passos */
+ol.passos{list-style:none;margin:var(--e-4) 0 0;padding:0;counter-reset:p}
+ol.passos > li{counter-increment:p;position:relative;
+  padding:0 0 var(--e-5) 34px;border-left:1px solid var(--linha);
+  margin-left:11px}
+ol.passos > li:last-child{border-left-color:transparent;padding-bottom:0}
+ol.passos > li::before{content:counter(p);position:absolute;left:-11px;top:-2px;
+  width:22px;height:22px;border-radius:50%;background:var(--grafite);
+  color:var(--papel);font:500 11px/22px var(--mono);text-align:center}
+ol.passos b{display:block;margin-bottom:2px}
+ol.passos p{margin-bottom:var(--e-2)}
+
+/* tabelas */
+table{width:100%;border-collapse:collapse;margin:var(--e-3) 0;font-size:12.5px}
+caption{text-align:left;color:var(--aco);font-size:12px;padding-bottom:var(--e-2)}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--linha);
+  vertical-align:top}
+th{font-weight:600;color:var(--texto-2);font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+
+.farol{display:inline-block;border-radius:var(--r-pill);padding:1px 9px;
+  font-size:11px;font-weight:500;white-space:nowrap}
+.f-dia{background:var(--em-dia-f);color:var(--em-dia)}
+.f-at{background:var(--atencao-f);color:var(--atencao)}
+.f-rec{background:var(--recuperacao-f);color:var(--recuperacao)}
+.f-aco{background:var(--acao-f);color:var(--acao)}
+.f-nao{background:var(--neutro-f);color:var(--neutro)}
+
+ul.lista{margin:0 0 var(--e-3);padding-left:18px}
+ul.lista li{margin-bottom:5px}
+
+.criterios{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:var(--e-3) 0}
+.criterios div{font-family:var(--mono);font-size:11.5px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-1);padding:6px 9px}
+
+figure{margin:var(--e-4) 0}
+svg .d-lig{fill:none;stroke:var(--linha);stroke-width:1.5;marker-end:url(#seta)}
+svg .d-lig .d-tronco{marker-end:none}
+svg .d-cx rect,svg rect.d-ac{stroke-width:1}
+svg .d-cx rect{fill:var(--fundo);stroke:var(--linha)}
+svg rect.d-ac{fill:var(--acento-f);stroke:var(--acento)}
+svg .d-t text{font-family:var(--mono);font-size:11px;text-anchor:middle;
+  fill:var(--aco)}
+svg .d-t text.forte{font-size:12px;fill:var(--texto)}
+svg .d-t text.fraco{fill:var(--aco)}
+svg .d-t text.ac{fill:var(--acento)}
+svg .d-t text.ac.forte{font-weight:600}
+svg text.pe{font-family:var(--mono);font-size:10.5px;fill:var(--aco)}
+figure svg{display:block;width:100%;height:auto}
+figcaption{color:var(--aco);font-size:11.5px;margin-top:var(--e-2)}
+
+.rodape{margin-top:var(--e-6);padding-top:var(--e-4);
+  border-top:1px solid var(--linha);color:var(--aco);font-size:11.5px}
+
+@media (max-width:560px){
+  main{padding:20px 16px 56px}
+  h1{font-size:23px}
+  table{font-size:12px}
+}
+@media print{
+  body{background:#fff}
+  .cx,.nota{break-inside:avoid}
+  h2{break-after:avoid}
+}
+
+.acao-bloco{border-top:1px solid var(--linha);padding-top:var(--e-5);
+  margin-top:var(--e-6)}
+.acao-bloco h3{margin-top:0;font-size:15px}
+.papel{display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;border-radius:var(--r-pill);
+  padding:2px 9px;background:var(--neutro-f);color:var(--neutro);
+  border:1px solid var(--linha);vertical-align:2px;margin-left:6px}
+.papel.pl{background:var(--acento-f);color:var(--acento);border-color:var(--acento)}
+.papel.ad{background:var(--recuperacao-f);color:var(--recuperacao);border-color:var(--recuperacao)}
+.papel.fi{background:var(--em-dia-f);color:var(--em-dia);border-color:var(--em-dia)}
+table.campos td:first-child{width:34%;font-family:var(--mono);font-size:11.5px;
+  color:var(--texto)}
+.indice{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));margin:var(--e-4) 0}
+.indice a{display:block;padding:9px 12px;background:var(--fundo);
+  border:1px solid var(--linha);border-radius:var(--r-2);text-decoration:none;
+  color:var(--texto)}
+.indice a b{display:block;font-size:13px}
+.indice a span{color:var(--aco);font-size:11.5px}
+.indice a:hover{border-color:var(--acento)}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="cab">
+    <span class="cod">GPS-PAP-v1</span>
+    <span class="selo">leitor · fiscal · planejador · admin</span>
+  </div>
+  <h1>O sistema, pelo seu papel</h1>
+  <p class="lead">Três ou quatro telas por papel, a rotina de cada um, e o que não precisa abrir.</p>
+</header>
+
+<style>
+.perfil{border:1px solid var(--linha);border-radius:var(--r-3);
+  background:var(--fundo);padding:var(--e-5);margin:var(--e-4) 0}
+.perfil > h3{margin:0;font-size:17px;display:flex;flex-wrap:wrap;
+  align-items:center;gap:8px}
+.perfil .quem{color:var(--texto-2);margin:var(--e-2) 0 var(--e-4);
+  max-width:64ch}
+.telas{display:grid;gap:var(--e-2);
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin:0 0 var(--e-4)}
+.telas div{border:1px solid var(--linha);border-radius:var(--r-2);
+  padding:9px 11px;background:var(--papel)}
+.telas b{display:block;font-size:12.5px}
+.telas span{color:var(--aco);font-size:11.5px}
+.rotina{margin:0;padding-left:18px}
+.rotina li{margin-bottom:6px}
+.naovai{margin-top:var(--e-4);font-size:12.5px;color:var(--aco);
+  border-top:1px dashed var(--linha);padding-top:var(--e-3)}
+</style><p>O sistema tem dezesseis telas, e ninguém usa as dezesseis. Cada
+papel tem três ou quatro — o resto é ruído para quem está tentando trabalhar.
+Ache o seu abaixo.</p><div class="perfil"><h3>Apontador de campo<span class="papel pl">planejador</span></h3><p class="quem">Está na obra, registra o que aconteceu no dia. Não planeja, não aprova: constata.</p><div class="telas"><div><b>RDO</b><span>o diário do dia</span></div><div><b>Apontamentos</b><span>horas por pessoa e tarefa</span></div><div><b>Medição</b><span>avanço por etapas concluídas</span></div></div><ol class="rotina"><li><b>No fim do turno:</b> abrir o RDO do dia, preencher efetivo, serviços, ocorrências e pluviometria — e emitir.</li><li><b>Ainda no fim do turno:</b> apontar as horas, inclusive as paradas e o motivo delas.</li><li><b>Quando uma etapa fecha:</b> lançar a medição, marcando as etapas concluídas e citando a evidência — quase sempre o RDO que você acabou de emitir.</li></ol><p class="naovai"><b>Não precisa abrir:</b> Cronograma, EAP, custos, recursos. Se o plano precisa mudar, isso é conversa com o planejador, não tarefa sua.</p></div><div class="perfil"><h3>Planejador<span class="papel pl">planejador</span></h3><p class="quem">Dono do plano. Monta, mantém e responde pelo que o cronograma diz.</p><div class="telas"><div><b>Projeto novo</b><span>contrato, EAP, linha de base</span></div><div><b>Cronograma</b><span>durações, rede, simulação</span></div><div><b>EAP e ponderação</b><span>pesos e memória de cálculo</span></div><div><b>Recursos e Custos</b><span>alocação, nivelamento, orçamento</span></div><div><b>Importação</b><span>MPP, XER, XML e planilhas</span></div><div><b>Cockpit</b><span>onde o projeto está doendo</span></div></div><ol class="rotina"><li><b>Na abertura:</b> contrato → EAP → pesos → durações → rede → recursos → orçamento → linha de base. O roteiro está no GPS-INI-v1.</li><li><b>Toda semana:</b> conferir o que foi medido, olhar desvio e caminho crítico no cockpit, e decidir se abre plano de ação.</li><li><b>Quando o plano muda:</b> alterar, <b>simular</b>, ler a aba Impacto — e só então efetivar.</li></ol><p class="naovai"><b>Não precisa abrir:</b> Usuários e organizações, que são do admin; e aprovar a própria linha de base, que é do fiscal.</p></div><div class="perfil"><h3>Fiscal<span class="papel fi">fiscal</span></h3><p class="quem">Verifica e aprova. Não constrói o plano — confere se ele se sustenta.</p><div class="telas"><div><b>Projeto novo → Linha de base</b><span>aprovar a BL0</span></div><div><b>Medição</b><span>conferir o que foi lançado e a evidência</span></div><div><b>Previsto × realizado</b><span>onde o discurso e o número divergem</span></div><div><b>Status Report</b><span>o relatório para levar à reunião</span></div></div><ol class="rotina"><li><b>Na aprovação da base:</b> rodar a LVP e conferir os achados — duração acima de 15 dias sem exceção, atividade sem predecessora, restrição “deve iniciar em”, peso sem memória.</li><li><b>A cada boletim:</b> conferir se cada medição tem evidência que sustenta o número, e se nada retrocedeu sem estorno justificado.</li><li><b>Quando discordar:</b> o caminho é o estorno com justificativa, que fica registrado — não a edição do número.</li></ol><p class="naovai"><b>Não precisa abrir:</b> Cronograma e EAP em modo de edição. Você lê tudo; alterar o plano é do planejador.</p></div><div class="perfil"><h3>Gerente ou cliente<span class="papel ">leitor</span></h3><p class="quem">Quer saber se vai entregar no prazo e quanto já custou. Não opera o sistema.</p><div class="telas"><div><b>Cockpit</b><span>prazo, avanço, ritmo, desvio</span></div><div><b>Status Report</b><span>PDF para a reunião</span></div><div><b>Linha do tempo</b><span>marcos e fases no eixo do tempo</span></div></div><ol class="rotina"><li><b>Antes da reunião:</b> escolher a data de status e exportar o Status Report em PDF.</li><li><b>Na reunião:</b> o cockpit responde as três perguntas de sempre — atrasou, quanto, e o que está no caminho crítico.</li><li><b>Se o farol virar:</b> “plano de recuperação” é desvio relativo acima de 4%; “plano de ação” é desvio absoluto acima de 5% — e é a mais grave.</li></ol><p class="naovai"><b>Não precisa abrir:</b> Todo o resto. Com papel <b>leitor</b> você não grava nada, e é assim que deve ser.</p></div><div class="perfil"><h3>Administrador<span class="papel ad">admin</span></h3><p class="quem">Cuida de quem entra, com qual papel, em qual organização.</p><div class="telas"><div><b>Usuários e acesso</b><span>criar, alterar, revogar papel, redefinir senha</span></div><div><b>Configurações</b><span>preferências da própria conta</span></div></div><ol class="rotina"><li><b>Ao entrar alguém novo:</b> criar com o <b>menor papel</b> que resolva o trabalho dela. Papel se aumenta quando a necessidade aparece.</li><li><b>Ao sair alguém:</b> revogar o papel. Isso tira o acesso sem apagar a pessoa nem o que ela assinou — medição, RDO e hora continuam com o nome de quem lançou.</li><li><b>De vez em quando:</b> revisar quem tem planejador e não precisa.</li></ol><p class="naovai"><b>Não precisa abrir:</b> O plano em si. Admin não é papel de planejamento — é de acesso.</p></div><div class="nota"><b>O papel é por organização, não por pessoa.</b>A mesma conta pode ser planejador numa organização e leitor em outra. O menu da conta mostra em qual você está e permite trocar — e a troca recarrega a tela, porque tudo o que está em cima muda de dono.</div>
+<p class="rodape">GPlanSiS|Project · o cronograma é a fonte única: CPM, ponderação, curva S, EVM, recursos, custos, horas e coerência calculam no servidor e ficam gravados com memória de cálculo. O navegador só desenha. Série GPS-ACT: <b>0</b> mapa, <b>1</b> planejar, <b>2</b> controlar, <b>3</b> reportar e administrar.</p>
+</main>
+</body>
+</html>

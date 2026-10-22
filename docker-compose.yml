@@ -1,0 +1,16 @@
+# Postgres 16 só para DESENVOLVIMENTO local (porta 5433 no host).
+# Credenciais fictícias de dev — nunca use em produção.
+name: gplansis
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: gps
+      POSTGRES_PASSWORD: gps
+      POSTGRES_DB: gplansis
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

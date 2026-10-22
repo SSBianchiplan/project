@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light" data-densidade="normal" data-raio="medio">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GPlanSiS · Design System v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* =====================================================================================
+   GPlanSiS|Project — DESIGN SYSTEM v2
+   1) Tokens (cor, tipo, espaço, raio, sombra, movimento, camadas, densidade)
+   2) Primitivos (botão, campo, selo, cartão, tabela, abas, menu, topo, gaveta, modal…)
+   3) Padrões de página (toolbar, síntese, analítico, ledger, gaveta, vazio, carregando)
+   4) Domínio (situação, Gantt, curva S, EVM, coerência, apontamentos)
+   Toda cor no sistema vem de :root. Componentes NUNCA usam hex.
+   ===================================================================================== */
+:root {
+  /* neutros */
+  --grafite:#2d3336; --aco:#7d8286; --claro:#edeff0; --papel:#f7f8f8; --fundo:#ffffff; --linha:#dfe3e4; --texto:#17191b; --texto-2:#4a5054;
+  /* semântica RGR-DSV-002 */
+  --em-dia:#2f7d4f; --atencao:#8a6d1f; --recuperacao:#b4560f; --acao:#a11d1d; --neutro:#7d8286;
+  --em-dia-f:#e7f3ec; --atencao-f:#f6efd9; --recuperacao-f:#f9e9dc; --acao-f:#f7e3e3; --neutro-f:#eef0f1;
+  /* acento (interação) — trocável no painel */
+  --acento:#1f6f8b; --acento-f:#e4f0f4; --acento-texto:#ffffff;
+  /* gantt */
+  --barra:#6b7175; --base:#b9bfc2; --critica:#a11d1d; --marco:#2d3336; --folga:#9aa0a4; --hoje:#2d3336; --fds:#eef0f1;
+  --fase-1:#3b6ea5; --fase-2:#2f7d4f; --fase-3:#8a6d1f; --fase-4:#7a4fa3; --fase-5:#b4560f; --fase-6:#1f8a8a; --fase-7:#a13d7a; --fase-8:#6b7175;
+  /* gráficos */
+  --g-previsto:#b9bfc2; --g-real:#a11d1d; --g-va:#2f7d4f; --g-custo:#3b6ea5; --g-grade:#e6e9ea; --g-area:.10;
+  /* tipografia */
+  --fonte:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --base-px:13px; --t-11:11px; --t-12:12px; --t-13:13px; --t-14:14px; --t-16:16px; --t-20:20px; --t-28:28px; --t-36:36px;
+  --lh:1.45; --lh-justo:1.2;
+  /* espaço (escala de 4) */
+  --e-1:4px; --e-2:8px; --e-3:12px; --e-4:16px; --e-5:22px; --e-6:32px; --e-7:48px;
+  --pad-pagina:22px; --pad-celula-y:5px; --pad-celula-x:8px; --altura-linha:28px; --altura-controle:30px;
+  /* raio */
+  --r-1:3px; --r-2:6px; --r-3:10px; --r-pill:999px;
+  /* sombra */
+  --sombra-1:0 1px 2px color-mix(in srgb,#000 8%,transparent);
+  --sombra-2:0 6px 20px color-mix(in srgb,#000 14%,transparent);
+  --sombra-3:0 18px 50px color-mix(in srgb,#000 40%,transparent);
+  /* movimento */
+  --tr-rapida:.12s ease-out; --tr:.18s ease-out; --tr-lenta:.3s cubic-bezier(.2,.8,.2,1);
+  /* camadas */
+  --z-topo:20; --z-menu:30; --z-gaveta:40; --z-popover:50; --z-modal:60; --z-toast:70;
+  /* foco */
+  --anel:0 0 0 2px var(--fundo), 0 0 0 4px var(--acento);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --grafite:#e6e9ea; --aco:#9aa0a4; --claro:#24292c; --papel:#15181a; --fundo:#1b1f21; --linha:#32383b; --texto:#e6e9ea; --texto-2:#b5babd;
+  --em-dia:#5fbf88; --atencao:#d6b55c; --recuperacao:#e08a4a; --acao:#e06a6a; --neutro:#9aa0a4;
+  --em-dia-f:#1e2f26; --atencao-f:#332d1c; --recuperacao-f:#35271c; --acao-f:#352022; --neutro-f:#23282b;
+  --acento:#5aa9c6; --acento-f:#1d3038; --acento-texto:#0f1a1e;
+  --barra:#8d9498; --base:#4b5255; --critica:#e06a6a; --marco:#e6e9ea; --folga:#6b7175; --hoje:#e6e9ea; --fds:#20252800;
+  --fase-1:#6da0d8; --fase-2:#5fbf88; --fase-3:#d6b55c; --fase-4:#b28ad6; --fase-5:#e08a4a; --fase-6:#4fb8b8; --fase-7:#d67ab0; --fase-8:#9aa0a4;
+  --g-previsto:#4b5255; --g-real:#e06a6a; --g-va:#5fbf88; --g-custo:#6da0d8; --g-grade:#2a3033;
+  --sombra-1:0 1px 2px color-mix(in srgb,#000 40%,transparent); --sombra-2:0 6px 20px color-mix(in srgb,#000 50%,transparent);
+  color-scheme: dark;
+}
+/* acentos alternativos (painel) */
+:root[data-acento="grafite"] { --acento:var(--grafite); --acento-f:color-mix(in srgb,var(--grafite) 12%,transparent); --acento-texto:var(--papel); }
+:root[data-acento="verde"] { --acento:#2f7d4f; --acento-f:#e7f3ec; } :root[data-theme="dark"][data-acento="verde"] { --acento:#5fbf88; --acento-f:#1e2f26; --acento-texto:#0f1a14; }
+:root[data-acento="ambar"] { --acento:#b4560f; --acento-f:#f9e9dc; } :root[data-theme="dark"][data-acento="ambar"] { --acento:#e08a4a; --acento-f:#35271c; --acento-texto:#1a1208; }
+:root[data-acento="violeta"] { --acento:#7a4fa3; --acento-f:#efe8f6; } :root[data-theme="dark"][data-acento="violeta"] { --acento:#b28ad6; --acento-f:#2a2233; --acento-texto:#160f1e; }
+/* densidade */
+:root[data-densidade="compacta"] { --base-px:12px; --pad-celula-y:3px; --pad-celula-x:6px; --altura-linha:24px; --altura-controle:26px; --e-3:10px; --e-4:12px; --e-5:16px; }
+:root[data-densidade="confortavel"] { --base-px:14px; --pad-celula-y:8px; --pad-celula-x:10px; --altura-linha:34px; --altura-controle:36px; --e-4:20px; --e-5:28px; }
+/* raio */
+:root[data-raio="reto"] { --r-1:0; --r-2:0; --r-3:0; } :root[data-raio="arredondado"] { --r-1:6px; --r-2:10px; --r-3:16px; }
+/* alto contraste */
+:root[data-contraste="alto"] { --linha:#9aa0a4; --aco:#4a5054; } :root[data-theme="dark"][data-contraste="alto"] { --linha:#6b7175; --aco:#c5cacd; }
+/* sem animação */
+:root[data-movimento="nenhum"] * { transition:none !important; animation:none !important; }
+
+* { box-sizing:border-box; }
+html { scrollbar-width:thin; scrollbar-color:color-mix(in srgb,var(--aco) 45%,transparent) transparent; }
+::-webkit-scrollbar { width:8px; height:8px; } ::-webkit-scrollbar-thumb { background:color-mix(in srgb,var(--aco) 45%,transparent); border-radius:8px; } ::-webkit-scrollbar-track { background:transparent; }
+body { margin:0; font-family:var(--fonte); font-size:var(--base-px); color:var(--texto); background:var(--papel); line-height:var(--lh); }
+a { color:var(--acento); } code,.mono { font-family:var(--mono); font-size:.92em; } h1,h2,h3,h4 { line-height:var(--lh-justo); }
+:focus-visible { outline:none; box-shadow:var(--anel); }
+
+/* ---------- moldura do documento ---------- */
+.ds { display:grid; grid-template-columns:230px minmax(0,1fr); min-height:100vh; }
+.ds-nav { position:sticky; top:0; height:100vh; overflow:auto; border-right:1px solid var(--linha); background:var(--fundo); padding:var(--e-4); }
+.ds-nav h1 { font-size:14px; margin:0 0 2px; } .ds-nav small { color:var(--aco); display:block; margin-bottom:var(--e-3); }
+.ds-nav a { display:block; padding:4px 8px; border-radius:var(--r-1); color:var(--texto); text-decoration:none; font-size:12.5px; } .ds-nav a:hover { background:var(--acento-f); }
+.ds-nav .grupo { font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--aco); margin:12px 8px 4px; }
+.ds-main { padding:var(--e-5) var(--e-6) var(--e-7); max-width:1240px; min-width:0; overflow-x:hidden; }
+.ds-topo { display:flex; align-items:flex-start; gap:var(--e-3); margin-bottom:var(--e-4); } .ds-topo h1 { font-size:22px; margin:0; } .ds-topo .sub { color:var(--aco); }
+section.ds-sec { padding:var(--e-5) 0; border-top:1px solid var(--linha); } section.ds-sec > h2 { font-size:17px; margin:0 0 4px; } section.ds-sec > p.lead { margin:0 0 var(--e-4); color:var(--aco); max-width:800px; }
+.ds-regra { border-left:3px solid var(--acento); padding:8px 12px; background:var(--acento-f); margin:var(--e-3) 0; border-radius:0 var(--r-1) var(--r-1) 0; } .ds-regra strong { color:var(--acento); }
+.ds-nao { border-left-color:var(--acao); background:var(--acao-f); } .ds-nao strong { color:var(--acao); }
+.ds-amostra { border:1px dashed var(--linha); padding:var(--e-4); border-radius:var(--r-2); background:var(--fundo); margin:var(--e-3) 0; position:relative; }
+.ds-amostra[data-rot]::before { content:attr(data-rot); position:absolute; top:-8px; left:10px; background:var(--fundo); color:var(--aco); font-size:10.5px; padding:0 6px; text-transform:uppercase; letter-spacing:.06em; }
+.ds-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:var(--e-3); }
+.ds-cor { border:1px solid var(--linha); border-radius:var(--r-2); overflow:hidden; background:var(--fundo); } .ds-cor .chip { height:52px; } .ds-cor .meta { padding:6px 8px; font-size:11.5px; } .ds-cor .meta b { display:block; } .ds-cor .meta code { color:var(--aco); font-size:10.5px; }
+.ds-lado { display:grid; grid-template-columns:1fr 1fr; gap:var(--e-4); } .ds-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--e-4); }
+.ds-tab { width:100%; font-size:12.5px; } .ds-tab td:first-child { font-family:var(--mono); white-space:nowrap; }
+@media (max-width:900px) { .ds { grid-template-columns:1fr; } .ds-nav { position:static; height:auto; border-right:0; border-bottom:1px solid var(--linha); } .ds-main { padding:var(--e-4); } .ds-lado,.ds-3 { grid-template-columns:1fr; } }
+
+/* ---------- painel de configurações visuais ---------- */
+.painel-visual { position:sticky; top:12px; z-index:5; background:var(--fundo); border:1px solid var(--linha); border-radius:var(--r-2); padding:10px 14px; display:flex; gap:18px; flex-wrap:wrap; align-items:center; box-shadow:var(--sombra-1); margin-bottom:var(--e-4); }
+.painel-visual label { display:flex; flex-direction:column; gap:3px; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--aco); }
+.painel-visual .seg { display:inline-flex; border:1px solid var(--linha); border-radius:var(--r-1); overflow:hidden; } .painel-visual .seg button { font:inherit; font-size:12px; padding:3px 9px; background:var(--fundo); color:var(--texto); border:0; border-right:1px solid var(--linha); cursor:pointer; text-transform:none; letter-spacing:0; } .painel-visual .seg button:last-child { border-right:0; } .painel-visual .seg button.on { background:var(--grafite); color:var(--papel); }
+.sw { width:16px; height:16px; border-radius:50%; display:inline-block; vertical-align:-3px; margin-right:4px; border:1px solid color-mix(in srgb,#000 15%,transparent); }
+
+/* =====================================================================================
+   PRIMITIVOS — mesmos seletores do estilos.css
+   ===================================================================================== */
+button { font:inherit; }
+.acao-btn { font-size:var(--t-13); height:var(--altura-controle); padding:0 14px; cursor:pointer; background:var(--grafite); color:var(--papel); border:1px solid var(--grafite); border-radius:var(--r-1); display:inline-flex; align-items:center; gap:6px; transition:filter var(--tr-rapida), background var(--tr-rapida); }
+.acao-btn:hover { filter:brightness(1.12); } .acao-btn:active { filter:brightness(.92); } .acao-btn:disabled { background:var(--aco); border-color:var(--aco); cursor:not-allowed; filter:none; }
+.acao-btn.secundario { background:var(--fundo); color:var(--texto); border-color:var(--linha); } .acao-btn.secundario:hover { background:var(--claro); filter:none; }
+.acao-btn.acento { background:var(--acento); border-color:var(--acento); color:var(--acento-texto); }
+.acao-btn.perigo { background:var(--acao); border-color:var(--acao); color:#fff; } .acao-btn.fantasma { background:none; border-color:transparent; color:var(--texto); } .acao-btn.fantasma:hover { background:var(--claro); filter:none; }
+.acao-btn.carregando { position:relative; color:transparent !important; } .acao-btn.carregando::after { content:""; position:absolute; inset:0; margin:auto; width:14px; height:14px; border:2px solid var(--papel); border-right-color:transparent; border-radius:50%; animation:gira .7s linear infinite; }
+.mini { font-size:var(--t-12); height:calc(var(--altura-controle) - 6px); padding:0 8px; cursor:pointer; background:none; border:1px solid var(--linha); color:var(--texto); border-radius:var(--r-1); display:inline-flex; align-items:center; gap:5px; }
+.mini:hover { background:var(--claro); } .mini.ativo { background:var(--grafite); color:var(--papel); border-color:var(--grafite); } .mini:disabled { opacity:.5; cursor:not-allowed; }
+.icone-btn { width:34px; height:34px; border-radius:50%; border:1px solid var(--linha); background:var(--fundo); color:var(--texto); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; } .icone-btn:hover { background:var(--claro); }
+.seg-btn { display:inline-flex; border:1px solid var(--linha); border-radius:var(--r-1); overflow:hidden; } .seg-btn button { font-size:12px; padding:0 10px; height:calc(var(--altura-controle) - 4px); background:var(--fundo); color:var(--texto); border:0; border-right:1px solid var(--linha); cursor:pointer; } .seg-btn button:last-child { border-right:0; } .seg-btn button.on { background:var(--acento-f); color:var(--acento); font-weight:600; }
+.grupo-botoes { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+
+select,input[type=date],input[type=text],input[type=number],input[type=email],input[type=password],input[type=search],textarea {
+  font:inherit; font-size:var(--t-13); height:var(--altura-controle); padding:0 8px; border:1px solid var(--linha); background:var(--fundo); color:var(--texto); border-radius:var(--r-1); }
+textarea { height:auto; padding:6px 8px; min-height:64px; } input::placeholder { color:var(--aco); }
+input:invalid, .campo.erro input, .campo.erro select { border-color:var(--acao); } .campo.erro .ajuda { color:var(--acao); } .campo.ok input { border-color:var(--em-dia); }
+label.campo { display:flex; flex-direction:column; gap:3px; font-size:var(--t-12); color:var(--aco); } label.campo > span { text-transform:uppercase; letter-spacing:.05em; font-size:var(--t-11); } .campo .ajuda { font-size:11.5px; color:var(--aco); } .campo .obrig::after { content:" *"; color:var(--acao); }
+.campo-grupo { display:flex; } .campo-grupo input { border-radius:var(--r-1) 0 0 var(--r-1); flex:1; } .campo-grupo .sufixo { border:1px solid var(--linha); border-left:0; background:var(--claro); padding:0 8px; display:flex; align-items:center; font-size:12px; color:var(--aco); border-radius:0 var(--r-1) var(--r-1) 0; font-family:var(--mono); }
+.chk { display:inline-flex; align-items:center; gap:6px; font-size:var(--t-13); } .chk input { width:15px; height:15px; accent-color:var(--acento); }
+.interruptor { width:34px; height:18px; border-radius:var(--r-pill); background:var(--aco); position:relative; display:inline-block; vertical-align:middle; cursor:pointer; transition:background var(--tr); } .interruptor::after { content:""; position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#fff; transition:left var(--tr); } .interruptor.on { background:var(--acento); } .interruptor.on::after { left:18px; }
+.grid2 { display:grid; grid-template-columns:2fr 1fr; gap:var(--e-4); } .grid-campos { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:var(--e-3); }
+.barra-ferramentas { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:10px; font-size:var(--t-13); } .barra-ferramentas .sep { width:1px; height:20px; background:var(--linha); } .barra-ferramentas .fim { margin-left:auto; }
+.obs { font-size:var(--t-12); color:var(--aco); }
+
+.cartoes { display:grid; grid-template-columns:repeat(auto-fit,minmax(165px,1fr)); gap:var(--e-3); }
+.cartao { background:var(--fundo); border:1px solid var(--linha); padding:12px 14px; border-radius:var(--r-2); position:relative; } .cartao .rot { font-size:var(--t-11); color:var(--aco); text-transform:uppercase; letter-spacing:.06em; } .cartao .val { font-size:var(--t-28); font-weight:600; margin:4px 0 2px; font-variant-numeric:tabular-nums; line-height:1.1; } .cartao .nota { font-size:var(--t-12); color:var(--aco); }
+.cartao.semaforo { border-left:4px solid var(--neutro); } .cartao.semaforo.em-dia-b { border-left-color:var(--em-dia); } .cartao.semaforo.atencao-b { border-left-color:var(--atencao); } .cartao.semaforo.acao-b { border-left-color:var(--acao); }
+.cartao .tend { position:absolute; right:12px; top:12px; font-size:11px; font-family:var(--mono); } .cartao .spark { position:absolute; right:10px; bottom:10px; opacity:.85; }
+.cartao.destaque { background:var(--grafite); color:var(--papel); border-color:var(--grafite); } .cartao.destaque .rot,.cartao.destaque .nota { color:color-mix(in srgb,var(--papel) 70%,transparent); }
+.em-dia { color:var(--em-dia); } .atencao { color:var(--atencao); } .recuperacao { color:var(--recuperacao); } .acao { color:var(--acao); } .aco { color:var(--aco); }
+
+table { border-collapse:collapse; width:100%; font-size:var(--t-13); background:var(--fundo); }
+th { background:var(--grafite); color:var(--papel); text-align:left; font-weight:600; padding:6px var(--pad-celula-x); font-size:var(--t-12); white-space:nowrap; position:sticky; top:0; }
+th.ord { cursor:pointer; } th.ord::after { content:" ↕"; opacity:.5; } th.ord.asc::after { content:" ↑"; opacity:1; } th.ord.desc::after { content:" ↓"; opacity:1; }
+td { padding:var(--pad-celula-y) var(--pad-celula-x); border-bottom:1px solid var(--linha); vertical-align:top; height:var(--altura-linha); }
+td.num,th.num { text-align:right; font-variant-numeric:tabular-nums; font-family:var(--mono); font-size:.92em; }
+tr.clicavel { cursor:pointer; } tr.clicavel:hover td { background:color-mix(in srgb,var(--grafite) 6%,transparent); } tr.sel td { background:var(--acento-f); box-shadow:inset 3px 0 0 var(--acento); }
+tr.total td { font-weight:600; border-top:2px solid var(--linha); } tr.grupo td { background:color-mix(in srgb,var(--grafite) 7%,transparent); font-weight:600; }
+tr.n1 td:nth-child(2) { font-weight:700; } tr.n2 td:nth-child(2) { font-weight:600; padding-left:calc(var(--pad-celula-x) + 12px); } tr.n3 td:nth-child(2) { padding-left:calc(var(--pad-celula-x) + 26px); }
+.rolagem { overflow-x:auto; max-width:100%; -webkit-overflow-scrolling:touch; } .tabela-fixa { max-height:360px; overflow:auto; border:1px solid var(--linha); border-radius:var(--r-1); }
+.celula-editavel { outline:1px dashed color-mix(in srgb,var(--acento) 50%,transparent); outline-offset:-3px; cursor:text; } .celula-editavel:focus-within { outline:2px solid var(--acento); }
+.zebra tbody tr:nth-child(even) td { background:color-mix(in srgb,var(--grafite) 3%,transparent); }
+.paginacao { display:flex; gap:8px; align-items:center; justify-content:flex-end; padding:8px 0; font-size:12px; color:var(--aco); }
+
+.selo { display:inline-block; font-size:10px; padding:1px 7px; border-radius:var(--r-pill); border:1px solid currentColor; line-height:1.4; white-space:nowrap; font-weight:500; }
+.selo.cheio { border-color:transparent; } .selo.cheio.em-dia { background:var(--em-dia-f); } .selo.cheio.atencao { background:var(--atencao-f); } .selo.cheio.recuperacao { background:var(--recuperacao-f); } .selo.cheio.acao { background:var(--acao-f); } .selo.cheio.aco { background:var(--neutro-f); } .selo.cheio.acento { background:var(--acento-f); color:var(--acento); }
+.selo.solido { border:0; color:#fff; } .ponto { display:inline-block; width:8px; height:8px; border-radius:50%; background:currentColor; vertical-align:middle; margin-right:5px; }
+.contador { display:inline-flex; min-width:18px; height:18px; padding:0 5px; border-radius:var(--r-pill); background:var(--acao); color:#fff; font-size:10.5px; align-items:center; justify-content:center; font-weight:600; }
+
+.barra-prog { height:6px; background:var(--claro); border-radius:var(--r-pill); overflow:hidden; position:relative; } .barra-prog > i { display:block; height:100%; background:var(--acento); border-radius:var(--r-pill); } .barra-prog > b { position:absolute; top:-2px; width:2px; height:10px; background:var(--grafite); }
+.barra-prog.fina { height:3px; } .barra-prog.grossa { height:10px; }
+.medidor { display:grid; grid-template-columns:1fr auto; gap:4px 10px; align-items:center; font-size:12px; }
+
+.faixa { padding:6px 14px; border-radius:var(--r-1); font-size:12.5px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; border:1px solid; }
+.faixa.info { background:var(--acento-f); border-color:color-mix(in srgb,var(--acento) 35%,transparent); } .faixa.atencao-f { background:var(--atencao-f); border-color:color-mix(in srgb,var(--atencao) 35%,transparent); } .faixa.acao-f { background:var(--acao-f); border-color:color-mix(in srgb,var(--acao) 40%,transparent); } .faixa.ok { background:var(--em-dia-f); border-color:color-mix(in srgb,var(--em-dia) 40%,transparent); }
+.toast { position:relative; display:inline-flex; gap:10px; align-items:center; background:var(--grafite); color:var(--papel); padding:10px 14px; border-radius:var(--r-2); box-shadow:var(--sombra-2); font-size:13px; max-width:420px; } .toast i { width:8px; height:8px; border-radius:50%; flex:none; } .toast .x { margin-left:auto; opacity:.6; cursor:pointer; }
+.tooltip { position:relative; display:inline-block; border-bottom:1px dotted var(--aco); cursor:help; } .tooltip .dica { visibility:hidden; opacity:0; position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); background:var(--grafite); color:var(--papel); font-size:11.5px; padding:5px 8px; border-radius:var(--r-1); white-space:nowrap; transition:opacity var(--tr); z-index:var(--z-popover); } .tooltip:hover .dica { visibility:visible; opacity:1; }
+.popover { display:inline-block; background:var(--fundo); border:1px solid var(--linha); border-radius:var(--r-2); box-shadow:var(--sombra-2); min-width:220px; padding:6px; } .popover button { display:flex; width:100%; gap:10px; align-items:center; padding:7px 10px; border:0; background:none; color:var(--texto); border-radius:var(--r-1); cursor:pointer; text-align:left; font-size:13px; } .popover button:hover { background:var(--claro); } .popover hr { border:0; border-top:1px solid var(--linha); margin:4px 0; } .popover .cab { padding:8px 10px; display:flex; gap:10px; align-items:center; }
+.avatar { width:30px; height:30px; border-radius:50%; background:var(--grafite); color:var(--papel); display:inline-flex; align-items:center; justify-content:center; font-weight:600; font-size:12px; flex:none; } .avatar.g { width:40px; height:40px; font-size:15px; } .avatar.p { width:22px; height:22px; font-size:10px; }
+.avatar.papel-ADMIN_MASTER { background:var(--acento); color:var(--acento-texto); } .avatar.papel-FISCAL { background:var(--atencao); color:#fff; } .avatar.papel-LEITOR { background:var(--aco); }
+
+.abas { display:flex; border-bottom:1px solid var(--linha); overflow-x:auto; gap:2px; } .abas button { background:none; border:0; border-bottom:2px solid transparent; padding:8px 12px; font-size:13px; color:var(--aco); cursor:pointer; white-space:nowrap; } .abas button.on { color:var(--texto); border-bottom-color:var(--grafite); font-weight:600; } .abas button:hover { color:var(--texto); }
+.abas.pilulas { border:0; gap:6px; } .abas.pilulas button { border:1px solid var(--linha); border-radius:var(--r-pill); padding:3px 12px; } .abas.pilulas button.on { background:var(--grafite); color:var(--papel); border-color:var(--grafite); }
+.passos { display:flex; gap:0; counter-reset:p; } .passos > div { flex:1; padding:8px 12px 8px 36px; position:relative; border-bottom:2px solid var(--linha); color:var(--aco); font-size:12.5px; } .passos > div::before { counter-increment:p; content:counter(p); position:absolute; left:8px; top:7px; width:20px; height:20px; border-radius:50%; border:1px solid var(--linha); font-size:11px; display:flex; align-items:center; justify-content:center; } .passos > div.feito { color:var(--texto); border-color:var(--em-dia); } .passos > div.feito::before { background:var(--em-dia); color:#fff; border-color:var(--em-dia); content:"✓"; } .passos > div.on { color:var(--texto); font-weight:600; border-color:var(--grafite); } .passos > div.on::before { background:var(--grafite); color:var(--papel); border-color:var(--grafite); }
+
+header.topo { background:var(--fundo); border:1px solid var(--linha); border-radius:var(--r-2); overflow:hidden; } .topo-linha1 { display:flex; align-items:center; gap:12px; padding:8px 16px; } .topo-titulo h1 { margin:0; font-size:var(--t-16); font-weight:600; } .topo-titulo p { margin:1px 0 0; font-size:var(--t-12); color:var(--aco); } .topo-acoes { margin-left:auto; display:flex; align-items:center; gap:8px; } .topo-controles { display:flex; gap:14px; align-items:center; padding:6px 16px 8px; border-top:1px solid var(--linha); flex-wrap:wrap; } .topo-controles label { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--aco); text-transform:uppercase; letter-spacing:.05em; }
+.menu { width:210px; background:var(--grafite); color:var(--papel); border-radius:var(--r-2); padding:10px 8px; transition:width var(--tr-lenta); } .menu.recolhido { width:52px; } .menu.recolhido .menu-item span { display:none; } .menu.recolhido .menu-item { justify-content:center; padding:7px 0; }
+.menu-item { display:flex; align-items:center; gap:10px; padding:7px 10px; border-radius:var(--r-1); color:inherit; font-size:var(--t-13); opacity:.8; cursor:pointer; } .menu-item:hover { opacity:1; background:color-mix(in srgb,var(--papel) 8%,transparent); } .menu-item.ativo { background:color-mix(in srgb,var(--papel) 14%,transparent); opacity:1; font-weight:600; } .menu-item i { width:16px; height:16px; border:1.5px solid currentColor; border-radius:3px; display:inline-block; flex:none; } .menu-sec { font-size:10px; text-transform:uppercase; letter-spacing:.08em; opacity:.5; margin:10px 10px 4px; }
+.gaveta-demo { border:1px solid var(--linha); border-radius:var(--r-2); background:var(--fundo); width:380px; box-shadow:var(--sombra-2); } .gaveta-cab { padding:12px 14px 0; } .gaveta-cab h3 { margin:0; font-size:14px; } .gaveta-cab p { margin:2px 0 8px; font-size:12px; color:var(--aco); } .gaveta-corpo { padding:12px 14px; } .gaveta-rodape { padding:10px 14px; border-top:1px solid var(--linha); display:flex; gap:8px; justify-content:flex-end; }
+.modal-demo { border:1px solid var(--linha); border-radius:8px; background:var(--fundo); box-shadow:var(--sombra-3); max-width:420px; } .modal-cabecalho { display:flex; gap:12px; padding:14px 18px 10px; border-bottom:1px solid var(--linha); } .modal-cabecalho h3 { margin:0; font-size:15px; } .modal-cabecalho p { margin:2px 0 0; font-size:12px; color:var(--aco); } .modal-corpo { padding:14px 18px; } .modal-rodape { display:flex; gap:8px; justify-content:flex-end; padding:10px 18px 14px; border-top:1px solid var(--linha); }
+.vazio { text-align:center; padding:28px; color:var(--aco); border:1px dashed var(--linha); border-radius:var(--r-2); } .vazio b { color:var(--texto); display:block; margin-bottom:4px; }
+.esqueleto { background:linear-gradient(90deg,var(--claro) 25%,color-mix(in srgb,var(--claro) 40%,var(--fundo)) 50%,var(--claro) 75%); background-size:200% 100%; animation:brilho 1.2s infinite; border-radius:var(--r-1); height:12px; } .esqueleto.alto { height:28px; }
+.carregando-linha { display:inline-flex; gap:4px; } .carregando-linha i { width:6px; height:6px; border-radius:50%; background:var(--aco); animation:pula .9s infinite; } .carregando-linha i:nth-child(2) { animation-delay:.15s; } .carregando-linha i:nth-child(3) { animation-delay:.3s; }
+.kbd { font-family:var(--mono); font-size:11px; border:1px solid var(--linha); border-bottom-width:2px; border-radius:4px; padding:0 5px; background:var(--fundo); }
+
+/* domínio: gantt */
+.g-wrap { position:relative; border:1px solid var(--linha); border-radius:var(--r-2); overflow:hidden; background:var(--fundo); }
+.g-escala { display:flex; background:var(--grafite); color:var(--papel); font-size:11px; } .g-escala div { border-right:1px solid color-mix(in srgb,var(--papel) 25%,transparent); padding:2px 6px; }
+.g-linha { display:flex; align-items:center; height:var(--altura-linha); position:relative; border-bottom:1px solid var(--linha); }
+.g-bar { position:absolute; height:12px; top:calc(50% - 6px); border-radius:2px; background:var(--barra); } .g-bar.crit { background:var(--critica); } .g-bar.resumo { background:var(--grafite); height:7px; top:calc(50% - 4px); } .g-bar.resumo::before,.g-bar.resumo::after { content:""; position:absolute; top:0; border:4px solid transparent; border-top:7px solid var(--grafite); } .g-bar.resumo::before { left:0; } .g-bar.resumo::after { right:0; }
+.g-marco { position:absolute; width:12px; height:12px; top:calc(50% - 6px); background:var(--marco); transform:rotate(45deg); border-radius:1px; } .g-marco.venc { background:var(--acao); }
+.g-base { position:absolute; height:4px; top:calc(50% + 8px); background:var(--base); } .g-folga { position:absolute; height:0; top:50%; border-top:2px dotted var(--folga); } .g-hoje { position:absolute; top:0; bottom:0; border-left:2px dashed var(--hoje); z-index:2; } .g-fds { position:absolute; top:0; bottom:0; background:var(--fds); }
+.g-prog { position:absolute; height:12px; top:calc(50% - 6px); background:color-mix(in srgb,#000 32%,transparent); border-radius:2px 0 0 2px; } .g-rot { position:absolute; top:calc(50% - 7px); font-size:11px; color:var(--texto-2); white-space:nowrap; } .g-rot.fora { color:var(--aco); }
+.g-link { position:absolute; border-left:1.5px solid var(--aco); border-bottom:1.5px solid var(--aco); } .g-alerta { position:absolute; width:14px; height:14px; border-radius:50%; background:var(--acao); color:#fff; font-size:9px; display:flex; align-items:center; justify-content:center; top:calc(50% - 7px); }
+.legenda { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--aco); padding:6px 10px; } .legenda i { display:inline-block; width:14px; height:8px; vertical-align:middle; margin-right:5px; border-radius:2px; }
+
+@keyframes gira { to { transform:rotate(360deg); } } @keyframes brilho { to { background-position:-200% 0; } } @keyframes pula { 0%,100% { transform:translateY(0); opacity:.5; } 50% { transform:translateY(-4px); opacity:1; } }
+.esc { font-size:11px; color:var(--aco); font-family:var(--mono); }
+</style>
+</head>
+<body>
+<div class="ds">
+  <nav class="ds-nav">
+    <h1>GPlanSiS · Design System</h1><small>v2 · proposta para padronizar todas as páginas</small>
+    <div class="grupo">Fundamentos</div>
+    <a href="#principios">0. Princípios e voz</a><a href="#config">1. Configurações visuais</a><a href="#tokens">2. Tokens de cor</a><a href="#tipo">3. Tipografia e números</a><a href="#espaco">4. Espaço, raio, sombra, movimento</a><a href="#icones">5. Iconografia</a>
+    <div class="grupo">Primitivos</div>
+    <a href="#botoes">6. Botões</a><a href="#forms">7. Campos e formulários</a><a href="#selos">8. Selos, contadores, progresso</a><a href="#cartoes">9. Cartões de indicador</a><a href="#tabelas">10. Tabelas</a><a href="#nav">11. Abas, passos, menus</a><a href="#feedback">12. Feedback: faixas, toasts, tooltips</a><a href="#estados">13. Vazio, carregando, erro</a>
+    <div class="grupo">Composição</div>
+    <a href="#shell">14. Shell: topo, menu, gaveta</a><a href="#modais">15. Modais e diálogos</a><a href="#pagina">16. Anatomia de página</a><a href="#responsivo">17. Responsivo, toque, PWA</a>
+    <div class="grupo">Domínio</div>
+    <a href="#situacao">18. Situação e semáforos</a><a href="#gantt">19. Gantt</a><a href="#graficos">20. Gráficos</a><a href="#apont">21. Grade de horas e coerência</a><a href="#recursos">21-B. Recursos e superalocação</a><a href="#teclado">21-C. Tela cheia e teclado</a><a href="#rdo-salvar">21-D. RDO, salvar e apresentação</a><a href="#pdf">22. PDF e XLSX</a>
+    <div class="grupo">Governança</div>
+    <a href="#a11y">23. Acessibilidade</a><a href="#nomes">24. Nomenclatura e código</a><a href="#aplicacao">25. Plano de aplicação</a>
+  </nav>
+
+  <main class="ds-main">
+    <div class="ds-topo"><div><h1>GPlanSiS|Project — Design System v2</h1><div class="sub">Um vocabulário visual, uma folha de tokens, zero cor solta no código. Tudo nesta página é pintado pelos tokens ao vivo: use o painel abaixo.</div></div></div>
+
+    <div class="painel-visual" id="painel">
+      <label>Tema<div class="seg" data-attr="theme"><button data-v="light" class="on">claro</button><button data-v="dark">escuro</button></div></label>
+      <label>Acento<div class="seg" data-attr="acento"><button data-v="" class="on"><i class="sw" style="background:#1f6f8b"></i>petróleo</button><button data-v="grafite"><i class="sw" style="background:#2d3336"></i>grafite</button><button data-v="verde"><i class="sw" style="background:#2f7d4f"></i>verde</button><button data-v="ambar"><i class="sw" style="background:#b4560f"></i>âmbar</button><button data-v="violeta"><i class="sw" style="background:#7a4fa3"></i>violeta</button></div></label>
+      <label>Densidade<div class="seg" data-attr="densidade"><button data-v="compacta">compacta</button><button data-v="normal" class="on">normal</button><button data-v="confortavel">confortável</button></div></label>
+      <label>Raio<div class="seg" data-attr="raio"><button data-v="reto">reto</button><button data-v="medio" class="on">médio</button><button data-v="arredondado">arredondado</button></div></label>
+      <label>Contraste<div class="seg" data-attr="contraste"><button data-v="" class="on">padrão</button><button data-v="alto">alto</button></div></label>
+      <label>Movimento<div class="seg" data-attr="movimento"><button data-v="" class="on">normal</button><button data-v="nenhum">nenhum</button></div></label>
+      <span class="esc" id="estado-attrs" style="margin-left:auto"></span>
+    </div>
+
+    <section id="principios" class="ds-sec">
+      <h2>0. Princípios e voz</h2>
+      <p class="lead">Ferramenta de trabalho para planejadores e fiscais: densidade alta, números tabulares, cor só onde carrega significado, texto em português direto.</p>
+      <div class="ds-lado">
+        <div>
+          <div class="ds-regra"><strong>Cor é semântica.</strong> Verde, âmbar, laranja e vermelho pertencem à situação do desvio (RGR-DSV-002). Fases do Gantt usam <code>--fase-n</code>. O acento marca interação. Tudo o mais é neutro.</div>
+          <div class="ds-regra"><strong>Grafite invertido é hierarquia.</strong> Cabeçalho de tabela, escala do Gantt, menu lateral e botão primário compartilham grafite sobre papel. Nunca dois destaques na mesma tela.</div>
+          <div class="ds-regra"><strong>Número é mono e tabular.</strong> Coluna numérica usa <code>.num</code>. Percentual com vírgula; moeda sem centavos em cartões; datas dd/mm/aaaa.</div>
+          <div class="ds-regra"><strong>O servidor calcula, o navegador desenha.</strong> Toda tela mostra de onde veio o número (nota de método com o código da regra).</div>
+        </div>
+        <div>
+          <div class="ds-regra"><strong>Voz:</strong> minúsculas em rótulos de estado ("em dia", "plano de ação"), verbo no botão ("Gravar", "Apontar", "Estornar"), nunca "OK"/"Sim". Erro diz o que aconteceu e o que fazer: <em>"Simulação recusada. INV-CRN-007: ciclo na rede — exibindo o último cálculo válido."</em></div>
+          <div class="ds-regra ds-nao"><strong>Não fazer:</strong> fundo colorido em célula inteira; ícone sem rótulo em ação destrutiva; <code>prompt/confirm/alert</code>; cor hex em TSX; sombra em cartão; mais de um botão primário por bloco; tabela fora de <code>.rolagem</code>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="config" class="ds-sec">
+      <h2>1. Configurações visuais do usuário</h2>
+      <p class="lead">O que o painel acima muda são atributos de <code>&lt;html&gt;</code>. Propõe-se expor em Configurações → Perfil e preferências, persistidos por navegador (como o tema hoje).</p>
+      <table class="ds-tab"><thead><tr><th>Atributo</th><th>Valores</th><th>Efeito</th><th>Padrão</th></tr></thead><tbody>
+        <tr><td>data-theme</td><td>light · dark · (sistema)</td><td>troca o conjunto inteiro de tokens de cor e <code>color-scheme</code></td><td>sistema</td></tr>
+        <tr><td>data-acento</td><td>petróleo · grafite · verde · âmbar · violeta</td><td>cor de seleção, foco, célula ativa, link, interruptor</td><td>petróleo</td></tr>
+        <tr><td>data-densidade</td><td>compacta · normal · confortável</td><td>fonte base 12/13/14, altura de linha 24/28/34, padding de célula</td><td>normal</td></tr>
+        <tr><td>data-raio</td><td>reto · médio · arredondado</td><td>raio de botões, campos, cartões, modal</td><td>médio</td></tr>
+        <tr><td>data-contraste</td><td>padrão · alto</td><td>bordas e notas mais escuras (WCAG AA em texto pequeno)</td><td>padrão</td></tr>
+        <tr><td>data-movimento</td><td>normal · nenhum</td><td>desliga transições e animações (também segue <code>prefers-reduced-motion</code>)</td><td>normal</td></tr>
+      </tbody></table>
+      <div class="ds-regra"><strong>Regra:</strong> densidade e acento são preferências do usuário; nunca são fixados por página. O PDF ignora todas elas e usa o tema claro, densidade normal e acento petróleo.</div>
+    </section>
+
+    <section id="tokens" class="ds-sec">
+      <h2>2. Tokens de cor</h2>
+      <p class="lead">Cada semântica tem a cor de texto e a cor de fundo suave (<code>-f</code>). Chips pintados ao vivo.</p>
+      <h3>Neutros e acento</h3><div class="ds-grid" id="neutros"></div>
+      <h3>Semântica de situação (texto e fundo suave)</h3><div class="ds-grid" id="semantica"></div>
+      <h3>Gantt</h3><div class="ds-grid" id="gantt-tk"></div>
+      <h3>Fases (8) e gráficos</h3><div class="ds-grid" id="fases"></div>
+      <div class="ds-regra"><strong>Contraste mínimo:</strong> texto em <code>--texto</code> sobre <code>--fundo</code> ≥ 12:1; notas em <code>--aco</code> ≥ 4.5:1; semântica sobre fundo suave ≥ 4.5:1. Pares abaixo disso não entram no sistema.</div>
+    </section>
+
+    <section id="tipo" class="ds-sec">
+      <h2>3. Tipografia e formatos numéricos</h2>
+      <p class="lead">Inter para texto; IBM Plex Mono para números, EDT, códigos e datas em tabela. A fonte base acompanha a densidade.</p>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="escala">
+          <div style="font-size:var(--t-36);font-weight:600;line-height:1">62,5% <span class="esc">--t-36 · KPI hero</span></div>
+          <div style="font-size:var(--t-28);font-weight:600;margin-top:8px">0,87 <span class="esc">--t-28 · valor de cartão</span></div>
+          <div style="font-size:var(--t-20);font-weight:600;margin-top:8px">Título de página <span class="esc">--t-20/600</span></div>
+          <div style="font-size:var(--t-16);font-weight:600;margin-top:6px">Título de seção (h2) <span class="esc">--t-16/600</span></div>
+          <div style="font-size:var(--t-14);font-weight:600;margin-top:6px">Subtítulo, nome de tarefa na gaveta <span class="esc">--t-14/600</span></div>
+          <div style="font-size:var(--t-13);margin-top:6px">Corpo, célula, rótulo de formulário <span class="esc">--t-13/400</span></div>
+          <div style="font-size:var(--t-12);color:var(--aco);margin-top:6px">Nota, observação, unidade <span class="esc">--t-12 em --aco</span></div>
+          <div style="font-size:var(--t-11);color:var(--aco);text-transform:uppercase;letter-spacing:.06em;margin-top:6px">Rótulo de cartão · caixa alta · .06em <span class="esc" style="text-transform:none;letter-spacing:0">--t-11</span></div>
+        </div>
+        <div>
+          <table class="ds-tab"><thead><tr><th>Grandeza</th><th>Formato</th><th>Exemplo</th></tr></thead><tbody>
+            <tr><td>percentual</td><td>vírgula, 1 casa (tabela) · 0 casas (cartão) · sinal em desvio</td><td class="num">61,5% · 62% · −3,8%</td></tr>
+            <tr><td>índice (IDP, IDC, coerência)</td><td>2 casas, vírgula</td><td class="num">0,87 · 1,04</td></tr>
+            <tr><td>moeda</td><td>R$, milhar com ponto, sem centavos em cartão; "mi"/"mil" só em gráfico</td><td class="num">R$ 33.600 · R$ 48,6 mi</td></tr>
+            <tr><td>horas</td><td>"hh" para homem-hora previsto, "h" para apontado; 1 casa se fração</td><td class="num">2.600 hh · 6,5 h</td></tr>
+            <tr><td>data</td><td>dd/mm/aaaa; dd/mm em eixo; "sáb 19/09" em grade semanal</td><td class="num">19/09/2026 · 19/09 · sáb 19/09</td></tr>
+            <tr><td>duração / folga</td><td>dias úteis com sufixo "du" ou "d" na coluna Folga</td><td class="num">20 du · 3d · +25 du</td></tr>
+            <tr><td>EDT</td><td>mono, alinhado à esquerda, indentado por nível</td><td class="num" style="text-align:left">1.3.2</td></tr>
+            <tr><td>vazio / não aplicável</td><td>travessão; nunca zero falso</td><td class="num">—</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <section id="espaco" class="ds-sec">
+      <h2>4. Espaço, raio, sombra, movimento e camadas</h2>
+      <div class="ds-3">
+        <div class="ds-amostra" data-rot="espaço"><div class="mono">--e-1 4 · --e-2 8 · --e-3 12 · --e-4 16 · --e-5 22 · --e-6 32 · --e-7 48</div><p class="obs">Página 22 (web) / 12 (mobile). Gap de cartões 12. Entre seções 22. Toolbar 14. Campos 12. Altura de controle 30 (normal).</p>
+          <div style="display:flex;gap:4px;align-items:flex-end;margin-top:8px"><i style="width:4px;height:4px;background:var(--acento);display:block"></i><i style="width:8px;height:8px;background:var(--acento);display:block"></i><i style="width:12px;height:12px;background:var(--acento);display:block"></i><i style="width:16px;height:16px;background:var(--acento);display:block"></i><i style="width:22px;height:22px;background:var(--acento);display:block"></i><i style="width:32px;height:32px;background:var(--acento);display:block"></i></div></div>
+        <div class="ds-amostra" data-rot="raio e sombra"><div class="mono">--r-1 controles · --r-2 cartões/modal · --r-3 folha mobile · --r-pill selos</div><div style="display:flex;gap:12px;margin-top:10px"><div style="width:70px;height:44px;border:1px solid var(--linha);border-radius:var(--r-1);background:var(--fundo)"></div><div style="width:70px;height:44px;border:1px solid var(--linha);border-radius:var(--r-2);box-shadow:var(--sombra-1);background:var(--fundo)"></div><div style="width:70px;height:44px;border-radius:var(--r-2);box-shadow:var(--sombra-2);background:var(--fundo)"></div><div style="width:70px;height:44px;border-radius:var(--r-2);box-shadow:var(--sombra-3);background:var(--fundo)"></div></div><p class="obs">Sombra 1: popover do avatar. 2: gaveta, toast, popover. 3: modal. Cartão e tabela: borda, sem sombra.</p></div>
+        <div class="ds-amostra" data-rot="movimento e camadas"><div class="mono">--tr-rapida .12s (hover) · --tr .18s (abrir) · --tr-lenta .3s (menu recolher, gaveta)</div><div class="mono" style="margin-top:6px">z: topo 20 · menu 30 · gaveta 40 · popover 50 · modal 60 · toast 70</div><p class="obs">Nada anima por mais de 300 ms. Entrada de modal: fade + 8 px para cima. Barras do Gantt não animam ao recalcular (evita "dança" de dados).</p></div>
+      </div>
+    </section>
+
+    <section id="icones" class="ds-sec">
+      <h2>5. Iconografia</h2>
+      <p class="lead">lucide-react, traço 1.75, tamanhos 13 (dentro de .mini), 15 (menu, popover), 16 (modal fechar), 22 (diálogo). Sempre com rótulo de texto, exceto ícones de topo com <code>title</code>.</p>
+      <table class="ds-tab"><thead><tr><th>Módulo / ação</th><th>Ícone lucide</th><th>Módulo / ação</th><th>Ícone lucide</th></tr></thead><tbody>
+        <tr><td>Projeto novo</td><td>FolderPlus</td><td>Cronograma</td><td>GanttChartSquare</td></tr>
+        <tr><td>Linha do tempo</td><td>Milestone</td><td>Cockpit</td><td>Gauge</td></tr>
+        <tr><td>Status Report</td><td>FileBarChart2</td><td>Medição</td><td>ClipboardCheck</td></tr>
+        <tr><td>Importação</td><td>Upload</td><td>EAP</td><td>ListTree</td></tr>
+        <tr><td>Recursos</td><td>Wrench</td><td>Custos</td><td>Coins</td></tr>
+        <tr><td>Apontamentos</td><td>Clock</td><td>Previsto × Realizado</td><td>Scale</td></tr>
+        <tr><td>Templates</td><td>Library</td><td>Configurações · Usuários</td><td>Settings · ShieldCheck</td></tr>
+        <tr><td>Exportar PDF · XLSX</td><td>FileText · FileSpreadsheet</td><td>Ver · Abrir</td><td>Eye</td></tr>
+        <tr><td>Hoje / centralizar</td><td>CalendarCheck</td><td>Expandir · Recolher</td><td>ChevronsDown · ChevronsUp</td></tr>
+        <tr><td>Tema claro · escuro · sistema</td><td>Sun · Moon · Monitor</td><td>Sair</td><td>LogOut</td></tr>
+        <tr><td>Aviso · Perigo · Pergunta · Info</td><td>AlertTriangle · OctagonAlert · HelpCircle · Info</td><td>Crítico · Marco</td><td>Flame · Diamond</td></tr>
+        <tr><td>Estornar</td><td>Undo2</td><td>Apontar horas (célula)</td><td>Plus</td></tr>
+      </tbody></table>
+    </section>
+
+    <section id="botoes" class="ds-sec">
+      <h2>6. Botões</h2>
+      <p class="lead">Seis variantes e cinco estados. Um primário por bloco. Perigo só em ação irreversível. Acento só em "gravar/aplicar" dentro de fluxo de edição (gaveta, wizard).</p>
+      <div class="ds-amostra" data-rot="variantes"><div class="grupo-botoes">
+        <button class="acao-btn">Primário · Gravar</button><button class="acao-btn acento">Acento · Aplicar simulação</button><button class="acao-btn secundario">Secundário · Cancelar</button><button class="acao-btn fantasma">Fantasma · Ver detalhes</button><button class="acao-btn perigo">Perigo · Estornar</button><span class="icone-btn" title="tema">☼</span></div></div>
+      <div class="ds-amostra" data-rot="estados"><div class="grupo-botoes">
+        <button class="acao-btn">normal</button><button class="acao-btn" style="filter:brightness(1.12)">hover</button><button class="acao-btn" style="box-shadow:var(--anel)">foco</button><button class="acao-btn carregando">gravando</button><button class="acao-btn" disabled>desabilitado</button></div>
+        <p class="obs">Desabilitado sempre com <code>title</code> explicando o motivo ("exige papel PLANEJADOR", "marco não recebe horas").</p></div>
+      <div class="ds-amostra" data-rot="mini e segmentado"><div class="grupo-botoes">
+        <button class="mini">mini</button><button class="mini ativo">mini ativo</button><button class="mini">▤ PDF</button><button class="mini">▦ XLSX</button><button class="mini" disabled>indisponível</button>
+        <span class="seg-btn"><button class="on">dia</button><button>semana</button><button>mês</button></span>
+        <span class="seg-btn"><button class="on">todas (28)</button><button>prazo (12)</button><button>esforço (9)</button><button>custo (7)</button></span></div>
+        <p class="obs">Segmentado substitui <code>&lt;select&gt;</code> quando há até 5 opções mutuamente exclusivas (escala, filtro por dimensão, tema).</p></div>
+      <div class="ds-regra"><strong>Toolbar</strong> (<code>.barra-ferramentas</code>) em ordem fixa: escala/segmentado → checkboxes → <span class="esc">sep</span> → ações de estado (hoje, expandir, recolher, reverter) → <span class="esc">sep</span> → exportar → nota de versão da regra à direita (<code>.fim</code>).</div>
+      <div class="ds-amostra" data-rot="toolbar padrão"><div class="barra-ferramentas" style="margin:0"><span class="seg-btn"><button>dia</button><button class="on">semana</button><button>mês</button></span><label class="chk"><input type="checkbox"> só o caminho crítico</label><label class="chk"><input type="checkbox" checked> folga total</label><label class="chk"><input type="checkbox" checked> linha de base BL0</label><span class="sep"></span><button class="mini">◷ hoje</button><button class="mini">expandir tudo</button><button class="mini">recolher tudo</button><button class="mini">reverter ao plano</button><span class="sep"></span><button class="mini">▤ PDF</button><button class="mini">▦ XLSX</button><span class="obs fim">RGR-CPM-001/1 · servidor</span></div></div>
+    </section>
+
+    <section id="forms" class="ds-sec">
+      <h2>7. Campos e formulários</h2>
+      <p class="lead">Rótulo em caixa alta pequena acima. Ajuda abaixo. Validação inline no blur, erro em vermelho com a regra citada. Nunca modal de erro para validação.</p>
+      <div class="ds-amostra" data-rot="estados de campo"><div class="grid-campos">
+        <label class="campo"><span class="obrig">Data</span><input type="date" value="2026-09-19"><span class="ajuda">não pode ser futura (INV-APT-004)</span></label>
+        <label class="campo ok"><span>Horas</span><div class="campo-grupo"><input type="number" value="8" step="0.5"><span class="sufixo">h</span></div><span class="ajuda">entre 0,5 e 24</span></label>
+        <label class="campo erro"><span class="obrig">Duração</span><div class="campo-grupo"><input type="number" value="0"><span class="sufixo">du</span></div><span class="ajuda">duração mínima 1 dia útil (INV-CRN-006)</span></label>
+        <label class="campo"><span>Recurso</span><select><option>MONT — Montador mecânico</option><option>SOLD — Soldador</option></select></label>
+        <label class="campo"><span>Descrição</span><input type="text" placeholder="frente, turno, o que foi feito"></label>
+        <label class="campo"><span>Custo unitário</span><div class="campo-grupo"><input type="number" value="18000"><span class="sufixo">R$</span></div></label>
+        <label class="campo"><span>Restrição</span><select><option>nenhuma</option><option>não iniciar antes de (SNET)</option><option>deve iniciar em (MSO)</option></select></label>
+        <label class="campo"><span>Somente leitura</span><input type="text" readonly value="1.3.2 · calculado pelo servidor" style="background:var(--claro);color:var(--aco)"></label>
+      </div></div>
+      <div class="ds-amostra" data-rot="controles booleanos e busca"><div class="grupo-botoes" style="gap:22px">
+        <label class="chk"><input type="checkbox" checked> folga total</label><label class="chk"><input type="radio" name="r" checked> TI</label><label class="chk"><input type="radio" name="r"> II</label><label class="chk"><input type="radio" name="r"> TT</label>
+        <span><span class="interruptor on"></span> <span style="font-size:13px;vertical-align:middle">simulação ativa</span></span>
+        <input type="search" placeholder="⌕ filtrar tarefas (EDT, nome, responsável)" style="width:280px"></div></div>
+      <div class="ds-regra"><strong>Gaveta de edição:</strong> campos em 2 colunas (<code>.grid-campos</code>), rodapé fixo com "Cancelar" e "Aplicar" (acento). Alteração não gravada mostra faixa "simulação ativa — nada gravado" no topo da página.</div>
+    </section>
+
+    <section id="selos" class="ds-sec">
+      <h2>8. Selos, contadores e progresso</h2>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="selos"><div class="grupo-botoes">
+          <span class="selo acao">crítica</span><span class="selo aco">marco</span><span class="selo em-dia">medido</span><span class="selo atencao">BL1</span>
+          <span class="selo cheio em-dia">em dia</span><span class="selo cheio atencao">atenção</span><span class="selo cheio recuperacao">recuperação</span><span class="selo cheio acao">plano de ação</span><span class="selo cheio aco">não iniciado</span><span class="selo cheio acento">simulado</span>
+          <span class="selo solido" style="background:var(--grafite);color:var(--papel)">BL0</span><span class="selo solido" style="background:var(--acento);color:var(--acento-texto)">vigente</span></div>
+          <p class="obs">Contorno: atributo. Cheio: situação. Sólido: versão/identidade (baseline, organização).</p>
+          <div class="grupo-botoes" style="margin-top:8px"><span>Achados <span class="contador">7</span></span><span>Superalocações <span class="contador" style="background:var(--atencao)">2</span></span><span><span class="ponto em-dia"></span>em dia</span><span><span class="ponto acao"></span>vencida</span></div></div>
+        <div class="ds-amostra" data-rot="progresso"><div class="medidor">
+          <span>Engenharia · 97%</span><span class="num">400 / 400 hh</span><div class="barra-prog" style="grid-column:1/3"><i style="width:97%"></i><b style="left:100%"></b></div>
+          <span>Fabricação · 85% <span class="aco">(previsto 100%)</span></span><span class="num acao">14 / 2.600 hh</span><div class="barra-prog" style="grid-column:1/3"><i style="width:85%;background:var(--atencao)"></i><b style="left:100%"></b></div>
+          <span>Fundações · 100%</span><span class="num acao">135% das hh</span><div class="barra-prog grossa" style="grid-column:1/3"><i style="width:100%;background:var(--em-dia)"></i></div>
+          <span class="obs" style="grid-column:1/3">Marcador preto = previsto na data de corte. Cor da barra segue a situação, não o acento, quando há semáforo.</span></div></div>
+      </div>
+    </section>
+
+    <section id="cartoes" class="ds-sec">
+      <h2>9. Cartões de indicador</h2>
+      <p class="lead">Rótulo · valor · nota. Quatro variantes: simples, semáforo (borda esquerda), com tendência e sparkline, destaque (grafite).</p>
+      <div class="cartoes">
+        <div class="cartao"><div class="rot">Avanço físico</div><div class="val">61,5%</div><div class="nota">previsto 100,0% · desvio <span class="acao">−38,5%</span></div></div>
+        <div class="cartao semaforo acao-b"><div class="rot">IDP · ritmo de prazo</div><div class="val acao">0,62</div><div class="nota">VA ÷ VP · plano de ação</div></div>
+        <div class="cartao semaforo em-dia-b"><div class="rot">IDC · eficiência de custo</div><div class="val em-dia">1,04</div><div class="nota">CR R$ 31.200</div><span class="tend em-dia">▲ +0,03</span><svg class="spark" width="70" height="22"><polyline fill="none" stroke="var(--em-dia)" stroke-width="1.5" points="0,18 10,16 20,17 30,12 40,13 50,9 60,8 70,5"/></svg></div>
+        <div class="cartao semaforo atencao-b"><div class="rot">Índice de coerência</div><div class="val atencao">0,72</div><div class="nota">3 alertas · 5 atenções</div><span class="tend acao">▼ −0,08</span></div>
+        <div class="cartao destaque"><div class="rot">Término projetado</div><div class="val" style="font-size:19px">28/07/2027</div><div class="nota">+20 du vs BL0 · pelo ritmo (RGR-IDP-001)</div></div>
+        <div class="cartao"><div class="rot">Horas na semana</div><div class="val">24</div><div class="nota">14/09 a 20/09 · 3 recursos</div><div class="barra-prog fina" style="margin-top:8px"><i style="width:40%"></i></div></div>
+      </div>
+      <div class="ds-regra"><strong>Regra:</strong> o primeiro cartão é sempre o indicador principal do módulo. Valor com semáforo pinta o número e a borda; nota explica origem. Máximo 6 cartões por linha; no mobile, 2 e depois 1.</div>
+    </section>
+
+    <section id="tabelas" class="ds-sec">
+      <h2>10. Tabelas</h2>
+      <p class="lead">Cabeçalho grafite fixo, números mono à direita, hierarquia por indentação, linha selecionada com filete de acento. Sempre dentro de <code>.rolagem</code>.</p>
+      <div class="rolagem"><table>
+        <thead><tr><th style="width:60px">EDT</th><th class="ord asc">Tarefa</th><th class="num">Dur.</th><th class="num ord">Início</th><th class="num">Término</th><th class="num">Folga</th><th class="num">%</th><th class="num">hh prev.</th><th class="num">hh apont.</th><th>Situação</th><th style="width:90px"></th></tr></thead>
+        <tbody>
+          <tr class="grupo n1"><td class="num">1</td><td>ÁREA 100 — PLANTA</td><td class="num"></td><td class="num">22/09/2026</td><td class="num">27/01/2027</td><td class="num"></td><td class="num">62%</td><td class="num">9.380</td><td class="num">39</td><td></td><td></td></tr>
+          <tr class="grupo n2"><td class="num">1.2</td><td>ENGENHARIA</td><td class="num"></td><td class="num">22/09/2026</td><td class="num">26/10/2026</td><td class="num"></td><td class="num">97%</td><td class="num">800</td><td class="num">0</td><td></td><td></td></tr>
+          <tr class="clicavel n3"><td class="num">1.2.1</td><td>Engenharia básica</td><td class="num">10</td><td class="num">22/09/2026</td><td class="num">05/10/2026</td><td class="num acao">0d</td><td class="num">97%</td><td class="num">400</td><td class="num">0</td><td><span class="selo cheio em-dia">em dia</span></td><td class="acoes-linha"><button class="mini">abrir</button></td></tr>
+          <tr class="clicavel n3 sel"><td class="num">1.3.2</td><td>Fabricação <span class="selo acao">crítica</span></td><td class="num">20</td><td class="num">22/10/2026</td><td class="num">18/11/2026</td><td class="num">3d</td><td class="num celula-editavel" contenteditable="true">85%</td><td class="num">2.600</td><td class="num">14</td><td><span class="selo cheio atencao">atenção</span></td><td class="acoes-linha"><button class="mini">abrir</button></td></tr>
+          <tr class="clicavel n3"><td class="num">1.5.1</td><td>Montagem de equipamentos</td><td class="num">15</td><td class="num">04/12/2026</td><td class="num">24/12/2026</td><td class="num acao">0d</td><td class="num">0%</td><td class="num">480</td><td class="num acao">9</td><td><span class="selo cheio acao">plano de ação</span></td><td class="acoes-linha"><button class="mini">abrir</button></td></tr>
+          <tr class="total"><td></td><td>Total</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">62%</td><td class="num">9.380</td><td class="num">39</td><td></td><td></td></tr>
+        </tbody>
+      </table></div>
+      <div class="paginacao"><button class="mini" disabled>‹ anterior</button><span>página 1 de 3 · 250 linhas</span><button class="mini">próxima ›</button></div>
+      <h3>Hierarquia por nível (EAP até 5 níveis)</h3>
+      <div class="ds-amostra" data-rot="grade do gantt: n1 raiz · n2 fase · n3 pacote/resumo · n4 e n5 detalhe">
+        <table style="font-size:12.5px"><thead><tr><th style="width:70px">EDT</th><th>Tarefa</th><th class="num">Dur.</th><th class="num">%</th><th class="num">Peso</th></tr></thead><tbody>
+          <tr style="background:color-mix(in srgb,var(--grafite) 14%,transparent);font-weight:700"><td class="num">1</td><td>UNIDADE DE COGERAÇÃO A BIOMASSA 24 MW</td><td class="num"></td><td class="num">12%</td><td class="num">3.325</td></tr>
+          <tr style="background:color-mix(in srgb,var(--grafite) 8%,transparent);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.02em"><td class="num">1.4</td><td style="padding-left:22px">Obras civis</td><td class="num"></td><td class="num">9%</td><td class="num">505</td></tr>
+          <tr style="background:color-mix(in srgb,var(--grafite) 4%,transparent);font-weight:600"><td class="num">1.4.3</td><td style="padding-left:36px">▾ Fundações da caldeira</td><td class="num"></td><td class="num">0%</td><td class="num">80</td></tr>
+          <tr><td class="num">1.4.3.1</td><td style="padding-left:50px;color:var(--texto-2)">— Escavação</td><td class="num">8</td><td class="num">0%</td><td class="num">30</td></tr>
+          <tr><td class="num">1.4.3.2</td><td style="padding-left:50px;color:var(--texto-2)">▾ Armação e formas</td><td class="num"></td><td class="num">0%</td><td class="num">50</td></tr>
+          <tr><td class="num">1.4.3.2.1</td><td style="padding-left:64px;color:var(--aco);font-size:12px">— Armação bloco A</td><td class="num">6</td><td class="num">0%</td><td class="num">25</td></tr>
+          <tr style="background:var(--acento-f);box-shadow:inset 3px 0 0 var(--acento)"><td class="num">1.4.3.2.2</td><td style="padding-left:64px;color:var(--aco);font-size:12px">— Armação bloco B <span class="selo aco">selecionada</span></td><td class="num">6</td><td class="num">0%</td><td class="num">25</td></tr>
+          <tr><td class="num">1.4.4</td><td style="padding-left:36px;font-style:italic">◆ Bases concluídas (marco)</td><td class="num">—</td><td class="num">0%</td><td class="num">0</td></tr>
+        </tbody></table>
+        <p class="obs">Fundo grafite 14% / 8% / 4% para raiz, fase e resumo; níveis 4 e 5 sem fundo, com recuo de 14 px por nível, traço de guia e texto secundário. Selecionada: fundo de acento com filete. Marco em itálico com losango. Nunca cor de situação no fundo da linha.</p>
+      </div>
+      <h3>Menu de contexto (botão direito na linha do Gantt)</h3>
+      <div class="ds-amostra ds-lado" data-rot="funções do sistema sobre a tarefa">
+        <div class="popover" style="min-width:280px"><div class="cab" style="font-family:var(--mono);font-size:11px;color:var(--aco)">1.4.3.2 · Armação e formas</div><hr>
+          <button>▭ Abrir na gaveta</button><hr>
+          <button>＋ Nova tarefa abaixo</button><button>↳ Nova subtarefa</button><button>◆ Novo marco abaixo</button><hr>
+          <button>» Indentar (vira filha do irmão acima) <kbd class="kbd" style="margin-left:auto">Tab</kbd></button><button>« Recuar (sobe um nível) <kbd class="kbd" style="margin-left:auto">Shift+Tab</kbd></button><hr>
+          <button style="color:var(--acao)">🗑 Excluir tarefa</button></div>
+        <div>
+          <div class="ds-regra"><strong>Regras do servidor</strong> (RGR-EAP-EDIT-001..004): profundidade máxima 5; folha só vira resumo se não tiver peso, medição, vínculo, alocação, custo nem horas; resumo que fica vazio volta a ser atividade; só se exclui folha sem dados. Toda operação renumera a EAP e recalcula o CPM no servidor.</div>
+          <div class="ds-regra"><strong>Comportamento:</strong> item desabilitado mostra o motivo no <code>title</code>; ação destrutiva pede confirmação no diálogo do sistema; sucesso vira toast; recusa vira aviso com a regra citada. O menu fecha com Esc, clique fora ou rolagem.</div>
+        </div>
+      </div>
+      <div class="ds-3">
+        <div class="ds-regra"><strong>Variantes:</strong> <code>.zebra</code> em ledgers longos; <code>.tabela-fixa</code> (altura limitada, cabeçalho preso) em modais e gavetas; <code>.celula-editavel</code> com contorno tracejado só onde se digita na própria célula (grade de horas, EAP pesos).</div>
+        <div class="ds-regra"><strong>Ledger append-only:</strong> lançamento negativo (estorno/correção) em vermelho, com ícone Undo2 e referência ao original. Nunca botão "excluir" em ledger.</div>
+        <div class="ds-regra"><strong>Estados por linha:</strong> hover 6% grafite; selecionada acento suave + filete; grupo 7% grafite negrito; total borda dupla. Linha clicável sempre tem cursor pointer e abre gaveta ou navega.</div>
+      </div>
+    </section>
+
+    <section id="nav" class="ds-sec">
+      <h2>11. Abas, passos e menus</h2>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="abas de gaveta"><div class="abas"><button>Geral</button><button>Datas</button><button>Rede</button><button>Restrições</button><button class="on">Recursos</button><button>Custos</button><button>Horas</button><button>Peso e medição</button><button>Impacto</button></div><p class="obs">Sublinhado grafite. Rolagem horizontal quando não cabem. Aba com pendência ganha <span class="contador" style="background:var(--atencao)">2</span>.</p>
+          <div class="abas pilulas" style="margin-top:12px"><button class="on">todas (28)</button><button>prazo (12)</button><button>avanço (2)</button><button>esforço (9)</button><button>custo (5)</button></div><p class="obs">Pílulas para filtros com contagem.</p></div>
+        <div class="ds-amostra" data-rot="passos do wizard"><div class="passos"><div class="feito">Contrato e calendário</div><div class="feito">Estrutura e vínculos</div><div class="on">Linha de base</div><div>Recursos e custos</div></div><p class="obs">Projeto novo. Passo concluído com check verde; atual em grafite; futuro em cinza. Clicável só para trás.</p></div>
+      </div>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="menu lateral (largo e recolhido)"><div style="display:flex;gap:12px"><div class="menu"><div class="menu-sec">Planejar</div><div class="menu-item"><i></i><span>Projeto novo</span></div><div class="menu-item ativo"><i></i><span>Cronograma</span></div><div class="menu-item"><i></i><span>Linha do tempo</span></div><div class="menu-item"><i></i><span>EAP e ponderação</span></div><div class="menu-item"><i></i><span>Recursos</span></div><div class="menu-item"><i></i><span>Custos</span></div><div class="menu-sec">Controlar</div><div class="menu-item"><i></i><span>Medição</span></div><div class="menu-item"><i></i><span>Apontamentos</span></div><div class="menu-item"><i></i><span>Previsto × Realizado</span></div><div class="menu-sec">Reportar</div><div class="menu-item"><i></i><span>Cockpit</span></div><div class="menu-item"><i></i><span>Status Report</span></div><div class="menu-item"><i></i><span>Templates</span></div></div><div class="menu recolhido"><div class="menu-item"><i></i></div><div class="menu-item ativo"><i></i></div><div class="menu-item"><i></i></div><div class="menu-item"><i></i></div><div class="menu-item"><i></i></div><div class="menu-item"><i></i></div><div class="menu-item"><i></i></div></div></div><p class="obs"><b>Proposta:</b> agrupar o menu em Planejar / Controlar / Reportar (hoje é uma lista única de 13 itens). Importação vai para dentro de Projeto novo e de Cronograma como ação.</p></div>
+        <div class="ds-amostra" data-rot="popover do avatar"><div class="popover"><div class="cab"><span class="avatar g papel-ADMIN_MASTER">A</span><div><b>Administrador</b><br><span class="obs">admin@exemplo.com · Admin Master</span></div></div><hr><div style="padding:4px 10px" class="obs">Organização</div><button>▣ Novo Plan — demonstração ✓</button><hr><div style="padding:4px 10px" class="obs">Tema</div><div style="display:flex;gap:4px;padding:0 6px 6px"><button class="mini ativo" style="flex:1;justify-content:center">☼ claro</button><button class="mini" style="flex:1;justify-content:center">☾ escuro</button><button class="mini" style="flex:1;justify-content:center">▭ sistema</button></div><hr><button>⚙ Configurações</button><button>⛨ Usuários e acesso</button><button>⇥ Sair</button></div><p class="obs">Avatar colorido por papel: Admin Master acento, Fiscal âmbar, Leitor aço, Planejador/Admin grafite.</p></div>
+      </div>
+    </section>
+
+    <section id="feedback" class="ds-sec">
+      <h2>12. Feedback: faixas, toasts, tooltips</h2>
+      <div class="ds-amostra" data-rot="faixas (persistentes, no topo do conteúdo)">
+        <div class="faixa atencao-f">simulação ativa — nada gravado · <button class="mini">reverter ao plano</button><button class="mini ativo">gravar como replanejamento</button></div>
+        <div class="faixa acao-f" style="margin-top:8px"><b>Simulação recusada.</b> INV-CRN-007: ciclo na rede (1.3.2 → 1.5.1 → 1.3.2) — exibindo o último cálculo válido.</div>
+        <div class="faixa info" style="margin-top:8px">Linha de base BL1 aprovada em 03/08/2026 por Fiscal · BL0 permanece como referência da curva S.</div>
+        <div class="faixa ok" style="margin-top:8px">Medição gravada · hash <code>9f3a…c21</code> encadeado · Cockpit e Status Report recalculados.</div>
+      </div>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="toasts (4 s, canto inferior direito)"><div class="toast"><i style="background:var(--em-dia)"></i>6,5 h apontadas em 19/09/2026 (1.3.2)<span class="x">✕</span></div><br><br><div class="toast"><i style="background:var(--acao)"></i>Estorno recusado: apontamento já estornado (409)<span class="x">✕</span></div><p class="obs">Só para confirmação de ação concluída; erro de validação fica no campo; erro de API fica em faixa.</p></div>
+        <div class="ds-amostra" data-rot="tooltip e atalhos"><p>IDP é <span class="tooltip">valor agregado ÷ valor planejado<span class="dica">RGR-IDP-001 · calculado no servidor</span></span>. Passe o mouse.</p><p class="obs">Atalhos previstos: <span class="kbd">Esc</span> fecha gaveta/modal · <span class="kbd">H</span> hoje no Gantt · <span class="kbd">←</span><span class="kbd">→</span> semana anterior/próxima nos Apontamentos · <span class="kbd">/</span> foca a busca.</p></div>
+      </div>
+    </section>
+
+    <section id="estados" class="ds-sec">
+      <h2>13. Vazio, carregando e erro</h2>
+      <div class="ds-3">
+        <div class="ds-amostra" data-rot="vazio"><div class="vazio"><b>Nenhum apontamento nesta semana</b>Clique numa célula da grade ou use "Lançar horas".<br><button class="acao-btn secundario" style="margin-top:10px">Lançar horas</button></div></div>
+        <div class="ds-amostra" data-rot="carregando"><div class="esqueleto alto" style="width:40%"></div><div class="esqueleto" style="margin-top:8px"></div><div class="esqueleto" style="margin-top:6px;width:80%"></div><div class="esqueleto" style="margin-top:6px;width:60%"></div><p class="obs" style="margin-top:10px">Recalculando CPM no servidor <span class="carregando-linha"><i></i><i></i><i></i></span></p><p class="obs">Esqueleto na primeira carga; dados anteriores permanecem (placeholderData) nas seguintes, com "recalculando…" na toolbar.</p></div>
+        <div class="ds-amostra" data-rot="erro"><div class="faixa acao-f"><b>API indisponível.</b> Falha ao conectar em localhost:8001 — tentando de novo em 5 s.</div><p class="obs" style="margin-top:8px">Erro de permissão: "Esta ação exige papel PLANEJADOR. Você é LEITOR." Erro 404 de contrato: volta para o primeiro contrato da lista.</p></div>
+      </div>
+    </section>
+
+    <section id="shell" class="ds-sec">
+      <h2>14. Shell: topo em duas barras, menu, gaveta</h2>
+      <p class="lead">Barra 1: título + contexto à esquerda, tema e avatar à direita. Barra 2: contrato e data de status. Gaveta à direita sobre o conteúdo (380 px), com abas e rodapé fixo.</p>
+      <div class="ds-amostra" style="display:grid;grid-template-columns:210px 1fr 380px;gap:12px;align-items:start">
+        <div class="menu"><div class="menu-item"><i></i><span>Projeto novo</span></div><div class="menu-item ativo"><i></i><span>Cronograma</span></div><div class="menu-item"><i></i><span>Linha do tempo</span></div><div class="menu-item"><i></i><span>Cockpit</span></div><div class="menu-item"><i></i><span>Apontamentos</span></div></div>
+        <div><header class="topo"><div class="topo-linha1"><div class="topo-titulo"><h1>Cronograma</h1><p>CT-200-COGER · Unidade de Cogeração 24 MW · Inovação Controle Novo Plan</p></div><div class="topo-acoes"><span class="icone-btn">☼</span><span class="avatar papel-ADMIN_MASTER">A</span><span style="font-size:12px"><b>Administrador</b><br><span class="aco">Admin Master</span></span></div></div><div class="topo-controles"><label>Contrato <select><option>CT-200-COGER — Cogeração 24 MW</option></select></label><label>Data de status <input type="date" value="2027-03-20"></label><span class="selo solido" style="background:var(--acento);color:var(--acento-texto);margin-left:auto">BL1 vigente</span></div></header>
+          <div class="faixa atencao-f" style="margin-top:8px">simulação ativa — nada gravado · <button class="mini">reverter ao plano</button></div>
+          <div class="cartoes" style="margin-top:8px"><div class="cartao"><div class="rot">Término</div><div class="val" style="font-size:18px">28/01/2028</div></div><div class="cartao semaforo atencao-b"><div class="rot">IDP</div><div class="val atencao" style="font-size:22px">0,87</div></div><div class="cartao"><div class="rot">Críticas</div><div class="val" style="font-size:22px">9</div></div></div></div>
+        <div class="gaveta-demo"><div class="gaveta-cab"><h3>3.2 Fabricação da caldeira <span class="selo acao">crítica</span></h3><p>120 du · 03/11/2026 → 27/05/2027 · fornecedor · fase Suprimentos</p><div class="abas"><button>Geral</button><button class="on">Datas</button><button>Rede</button><button>Recursos</button><button>Custos</button><button>Horas <span class="contador" style="background:var(--atencao)">1</span></button></div></div><div class="gaveta-corpo"><div class="grid-campos"><label class="campo"><span>Início</span><input type="date" value="2026-11-03"></label><label class="campo"><span>Duração</span><div class="campo-grupo"><input type="number" value="145"><span class="sufixo">du</span></div></label><label class="campo"><span>Restrição</span><select><option>não iniciar antes de (SNET)</option></select></label><label class="campo"><span>Data</span><input type="date" value="2026-11-03"></label></div><div class="faixa info" style="margin-top:10px">Impacto: término do projeto +20 du · 4 sucessoras movem · marco 1.4 vence.</div></div><div class="gaveta-rodape"><button class="acao-btn secundario">Cancelar</button><button class="acao-btn acento">Aplicar simulação</button></div></div>
+      </div>
+    </section>
+
+    <section id="modais" class="ds-sec">
+      <h2>15. Modais e diálogos</h2>
+      <p class="lead">Um componente <code>Modal</code>; <code>Dialogos</code> cobre pergunta (texto/número), confirmação e aviso. Fundo 55% preto com blur. No mobile, folha inferior.</p>
+      <div class="ds-3">
+        <div class="modal-demo"><div class="modal-cabecalho"><div><h3>Horas em 16/09/2026</h3></div></div><div class="modal-corpo" style="display:flex;gap:14px"><span class="aco" style="font-size:22px">?</span><div style="flex:1"><p style="margin:0 0 10px">Já há 8 h neste dia. Informe o total desejado; a diferença vira um novo lançamento.</p><div class="campo-grupo"><input type="number" value="8" style="font-size:15px"><span class="sufixo">h</span></div></div></div><div class="modal-rodape"><button class="acao-btn secundario">Cancelar</button><button class="acao-btn">Apontar</button></div></div>
+        <div class="modal-demo"><div class="modal-cabecalho"><div><h3>Estornar apontamento</h3><p>1.3.2 Fabricação · 6,5 h em 19/09/2026</p></div></div><div class="modal-corpo" style="display:flex;gap:14px"><span class="acao" style="font-size:22px">⚠</span><div><p style="margin:0 0 8px">O estorno gera um lançamento negativo vinculado e não pode ser desfeito (INV-APT-002).</p><label class="campo"><span class="obrig">Justificativa</span><input type="text" placeholder="mínimo 5 caracteres"></label></div></div><div class="modal-rodape"><button class="acao-btn secundario">Cancelar</button><button class="acao-btn perigo">Estornar</button></div></div>
+        <div class="modal-demo"><div class="modal-cabecalho"><div><h3>plan.atividade</h3><p>15 linhas visíveis · 30 colunas</p></div><span style="margin-left:auto" class="aco">✕</span></div><div class="modal-corpo" style="padding:0"><div class="tabela-fixa" style="max-height:110px;border:0"><table class="zebra" style="font-size:11px"><thead><tr><th>#</th><th>id</th><th>edt</th><th>duracao_dias</th></tr></thead><tbody><tr><td class="num">1</td><td class="mono">201ac7…</td><td class="mono">1.2.1</td><td class="num">10</td></tr><tr><td class="num">2</td><td class="mono">0a8afe…</td><td class="mono">1.2.2</td><td class="num">15</td></tr><tr><td class="num">3</td><td class="mono">7c11d0…</td><td class="mono">1.3.1</td><td class="num">10</td></tr></tbody></table></div></div><div class="modal-rodape"><input type="search" placeholder="filtrar nesta página" style="margin-right:auto;width:150px"><button class="mini" disabled>‹</button><span class="obs">1 de 1</span><button class="mini" disabled>›</button></div></div>
+      </div>
+      <div class="ds-regra"><strong>Tamanhos:</strong> diálogo 420 · formulário 560 · dados <code>min(1200px, 96vw)</code>. Ação destrutiva exige justificativa quando a regra pede (estorno). <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela, foco preso dentro.</div>
+    </section>
+
+    <section id="pagina" class="ds-sec">
+      <h2>16. Anatomia de página de módulo</h2>
+      <ol style="line-height:1.9;margin:0;padding-left:22px">
+        <li><b>Cartões de síntese</b> — 4 a 6; o primeiro é o indicador principal do módulo.</li>
+        <li><b>Toolbar</b> — ordem fixa da seção 6.</li>
+        <li><b>Faixas</b> de estado (simulação, erro) entre toolbar e visual.</li>
+        <li><b>Visual principal</b> — Gantt, gráfico ou grade, largura total.</li>
+        <li><b>Tabelas analíticas</b> — <code>h2</code> antes de cada uma; pares em <code>.grid2</code> só acima de 1100 px.</li>
+        <li><b>Formulário de lançamento</b> à esquerda + ledger à direita (Medição, Apontamentos, Custos).</li>
+        <li><b>Nota de método</b> — origem dos números e código da regra.</li>
+      </ol>
+      <div class="ds-regra"><strong>Gaveta × modal:</strong> gaveta para editar um item mantendo o contexto visível (atividade, recurso); modal para pergunta pontual, confirmação ou visualizar dados. Nunca modal sobre gaveta.</div>
+    </section>
+
+    <section id="responsivo" class="ds-sec">
+      <h2>17. Responsivo, toque e PWA</h2>
+      <div class="ds-lado">
+        <table class="ds-tab"><thead><tr><th>Largura</th><th>O que muda</th></tr></thead><tbody><tr><td>&gt; 1100</td><td>layout completo, grid2 em duas colunas, gaveta lateral 380</td></tr><tr><td>≤ 1100</td><td>grid2 em uma coluna; Gantt grade/tempo empilhados</td></tr><tr><td>≤ 900</td><td>menu vira gaveta (hambúrguer); barra 2 em grade 2×; nome do usuário oculto</td></tr><tr><td>≤ 700</td><td>subtítulo do topo oculto; modal vira folha inferior; gaveta em tela cheia</td></tr><tr><td>≤ 480</td><td>barra 2 e cartões em 1 coluna; toolbar em 2 linhas</td></tr></tbody></table>
+        <div><div class="ds-regra"><strong>Toque</strong> (<code>pointer: coarse</code>): alvos ≥ 38 px; <code>.mini</code> com padding 6/12; arraste no Gantt substituído por gaveta de datas; célula de horas abre modal numérico com teclado numérico.</div><div class="ds-regra"><strong>PWA:</strong> shell cacheado, API nunca; ícone Gantt + curva S; safe-area do iOS no topo; instalável; offline mostra a última tela com faixa "sem conexão".</div></div>
+      </div>
+    </section>
+
+    <section id="situacao" class="ds-sec">
+      <h2>18. Situação e semáforos (domínio)</h2>
+      <table class="ds-tab"><thead><tr><th>Indicador</th><th>em dia</th><th>atenção</th><th>recuperação / ação</th><th>Regra</th></tr></thead><tbody>
+        <tr><td>Desvio de avanço (real − previsto)</td><td class="em-dia">≥ −2 p.p.</td><td class="atencao">−2 a −5 p.p.</td><td><span class="recuperacao">−5 a −10</span> · <span class="acao">&lt; −10 p.p.</span></td><td>RGR-DSV-002</td></tr>
+        <tr><td>IDP</td><td class="em-dia">≥ 1,00</td><td class="atencao">0,96 – 0,99</td><td class="acao">&lt; 0,96</td><td>RGR-IDP-001</td></tr>
+        <tr><td>IDC</td><td class="em-dia">≥ 1,00</td><td class="atencao">0,95 – 0,99</td><td class="acao">&lt; 0,95</td><td>RGR-CST-001</td></tr>
+        <tr><td>Índice de coerência</td><td class="em-dia">≥ 0,85</td><td class="atencao">0,60 – 0,84</td><td class="acao">&lt; 0,60</td><td>RGR-COE-001</td></tr>
+        <tr><td>Produtividade (avanço ÷ fração de horas)</td><td class="em-dia">0,80 – 1,25 no ritmo</td><td class="atencao">&gt; 1,25 esforço baixo</td><td class="acao">&lt; 0,80 esforço alto</td><td>RGR-APT-001</td></tr>
+        <tr><td>Folga total</td><td class="em-dia">&gt; 5 du</td><td class="atencao">1 – 5 du</td><td class="acao">0 du (crítica)</td><td>RGR-CPM-001</td></tr>
+        <tr><td>Consumo de horas (apontado ÷ previsto)</td><td class="em-dia">≤ 100%</td><td class="atencao">100 – 120%</td><td class="acao">&gt; 120% estouradas</td><td>COE-HORAS-ESTOURADAS</td></tr>
+      </tbody></table>
+      <div class="ds-regra"><strong>Semáforo sempre acompanhado do valor.</strong> Cor nunca é o único canal: o texto da situação aparece ao lado ("0,87 · atenção") e o ícone ● reforça em telas monocromáticas.</div>
+    </section>
+
+    <section id="gantt" class="ds-sec">
+      <h2>19. Gantt</h2>
+      <p class="lead">Barra por fase, crítica em vermelho, resumo grafite com pontas, marco losango (vermelho se vencido), linha de base abaixo, folga pontilhada, progresso como sombra interna, rótulo à direita da barra, vínculo em L, alerta de coerência na barra.</p>
+      <div class="g-wrap">
+        <div class="g-escala"><div style="width:120px">set/2026</div><div style="width:120px">out/2026</div><div style="width:120px">nov/2026</div><div style="width:120px">dez/2026</div><div style="width:120px">jan/2027</div></div>
+        <div style="position:relative">
+          <div class="g-fds" style="left:110px;width:14px"></div><div class="g-fds" style="left:230px;width:14px"></div><div class="g-fds" style="left:350px;width:14px"></div>
+          <div class="g-hoje" style="left:200px" title="data de status"></div>
+          <div class="g-linha"><div class="g-bar resumo" style="left:20px;width:520px"></div><span class="g-rot fora" style="left:548px">1 ÁREA 100 · 62%</span></div>
+          <div class="g-linha"><div class="g-marco" style="left:14px"></div><span class="g-rot" style="left:34px">1.1.1 Notificação de início · 100%</span></div>
+          <div class="g-linha"><div class="g-bar" style="left:20px;width:110px;background:var(--fase-2)"></div><div class="g-prog" style="left:20px;width:105px"></div><div class="g-base" style="left:20px;width:100px"></div><span class="g-rot" style="left:136px">1.2.1 Engenharia básica · ENGP · 97%</span></div>
+          <div class="g-linha"><div class="g-link" style="left:130px;top:-14px;width:10px;height:28px"></div><div class="g-bar crit" style="left:140px;width:180px"></div><div class="g-prog" style="left:140px;width:76px"></div><div class="g-base" style="left:120px;width:170px"></div><div class="g-alerta" style="left:300px" title="COE-DERIVA-BL">!</div><span class="g-rot" style="left:326px">1.3.2 Fabricação · 85% <span class="acao">+25 du vs BL</span></span></div>
+          <div class="g-linha"><div class="g-bar" style="left:320px;width:120px;background:var(--fase-5)"></div><div class="g-folga" style="left:440px;width:40px"></div><div class="g-base" style="left:300px;width:120px"></div><span class="g-rot" style="left:486px">1.5.1 Montagem · MONT 6 · 0% · folga 8d</span></div>
+          <div class="g-linha"><div class="g-marco venc" style="left:214px"></div><span class="g-rot acao" style="left:234px">1.4 Chegada da caldeira · vencido</span></div>
+        </div>
+        <div class="legenda"><span><i style="background:var(--barra)"></i>atividade</span><span><i style="background:var(--critica)"></i>caminho crítico</span><span><i style="background:var(--grafite)"></i>resumo</span><span><i style="background:var(--base);height:4px"></i>linha de base</span><span><i style="border-top:2px dotted var(--folga);height:0"></i>folga total</span><span><i style="background:var(--marco);width:8px;transform:rotate(45deg)"></i>marco</span><span><i style="border-left:2px dashed var(--hoje);width:0"></i>data de status</span><span class="fim">arraste move (vira SNET) · borda direita redimensiona</span></div>
+      </div>
+      <div class="ds-3">
+        <div class="ds-regra"><strong>Escalas:</strong> dia 26 px · semana 11 px · mês 5 px por dia útil. Horizonte = último evento + 65/100/130 du. Abre centralizado na data de status; botão "hoje" recentraliza.</div>
+        <div class="ds-regra"><strong>Rótulo na barra</strong> (novo): "EDT descrição · recurso principal · %" à direita; se não couber, à esquerda; nunca dentro. Cor <code>--texto-2</code>.</div>
+        <div class="ds-regra"><strong>Alerta na barra</strong> (novo): círculo vermelho "!" com título da regra COE ativa na atividade; clique abre a gaveta na aba Impacto.</div>
+      </div>
+    </section>
+
+    <section id="graficos" class="ds-sec">
+      <h2>20. Gráficos</h2>
+      <p class="lead">SVG na largura do contêiner, grade sutil, área sob a série de realizado, marcador na data de corte, legenda HTML abaixo. Paleta fixa: previsto cinza, realizado vermelho, VA verde, custo azul; fases com <code>--fase-n</code>.</p>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="curva S">
+          <svg viewBox="0 0 600 170" width="100%" height="170" style="display:block"><g stroke="var(--g-grade)" stroke-width="1"><line x1="40" y1="20" x2="590" y2="20"/><line x1="40" y1="75" x2="590" y2="75"/><line x1="40" y1="130" x2="590" y2="130"/></g><path d="M40 130 C 200 125, 330 60, 590 22" fill="none" stroke="var(--g-previsto)" stroke-width="2.5"/><path d="M40 130 C 150 128, 250 100, 330 70 L 330 130 Z" fill="var(--g-real)" opacity="var(--g-area)"/><path d="M40 130 C 150 128, 250 100, 330 70" fill="none" stroke="var(--g-real)" stroke-width="2.5"/><path d="M330 70 C 400 55, 500 40, 590 30" fill="none" stroke="var(--g-real)" stroke-width="1.5" stroke-dasharray="4 3"/><line x1="330" y1="14" x2="330" y2="130" stroke="var(--grafite)" stroke-dasharray="4 3"/><circle cx="330" cy="70" r="3.5" fill="var(--g-real)"/><text x="334" y="26" font-size="10" fill="var(--aco)" font-family="var(--mono)">corte 20/03 · real 33% · prev 38%</text><text x="8" y="24" font-size="10" fill="var(--aco)" font-family="var(--mono)">100%</text><text x="14" y="78" font-size="10" fill="var(--aco)" font-family="var(--mono)">50%</text><text x="20" y="133" font-size="10" fill="var(--aco)" font-family="var(--mono)">0%</text><text x="40" y="150" font-size="10" fill="var(--aco)" font-family="var(--mono)">set/26</text><text x="560" y="150" font-size="10" fill="var(--aco)" font-family="var(--mono)">jan/28</text></svg>
+          <div class="legenda" style="padding:4px 0"><span><i style="background:var(--g-previsto)"></i>previsto (BL0)</span><span><i style="background:var(--g-real)"></i>realizado</span><span><i style="border-top:2px dashed var(--g-real);height:0"></i>projeção pelo ritmo</span></div></div>
+        <div class="ds-amostra" data-rot="barras por fase · rosca · histograma">
+          <svg viewBox="0 0 600 170" width="100%" height="170"><g font-size="10" fill="var(--aco)" font-family="var(--mono)"><text x="0" y="22">Eng.</text><text x="0" y="46">Supr.</text><text x="0" y="70">Civil</text><text x="0" y="94">Mont.</text></g><g><rect x="50" y="12" width="200" height="12" fill="var(--g-previsto)"/><rect x="50" y="12" width="194" height="12" fill="var(--fase-2)"/><rect x="50" y="36" width="140" height="12" fill="var(--g-previsto)"/><rect x="50" y="36" width="90" height="12" fill="var(--fase-3)"/><rect x="50" y="60" width="180" height="12" fill="var(--g-previsto)"/><rect x="50" y="60" width="160" height="12" fill="var(--fase-4)"/><rect x="50" y="84" width="60" height="12" fill="var(--g-previsto)"/><rect x="50" y="84" width="6" height="12" fill="var(--fase-5)"/></g><g transform="translate(340,60)"><circle r="40" fill="none" stroke="var(--g-grade)" stroke-width="14"/><circle r="40" fill="none" stroke="var(--fase-3)" stroke-width="14" stroke-dasharray="160 251" transform="rotate(-90)"/><circle r="40" fill="none" stroke="var(--fase-1)" stroke-width="14" stroke-dasharray="40 251" stroke-dashoffset="-160" transform="rotate(-90)"/><text text-anchor="middle" y="4" font-size="14" font-weight="600" fill="var(--texto)">R$ 48,6 mi</text></g><g transform="translate(420,20)"><rect x="0" y="80" width="12" height="30" fill="var(--fase-5)"/><rect x="16" y="60" width="12" height="50" fill="var(--fase-5)"/><rect x="32" y="40" width="12" height="70" fill="var(--fase-5)"/><rect x="48" y="30" width="12" height="80" fill="var(--acao)"/><rect x="64" y="50" width="12" height="60" fill="var(--fase-5)"/><line x1="0" y1="34" x2="80" y2="34" stroke="var(--grafite)" stroke-dasharray="3 2"/><text x="84" y="37" font-size="9" fill="var(--aco)" font-family="var(--mono)">cap. 12</text></g><g font-size="10" fill="var(--aco)" font-family="var(--mono)"><text x="50" y="125">avanço por fase (prev × real)</text><text x="300" y="125">custo por categoria</text><text x="420" y="145">carga MONT · pico em vermelho</text></g></svg></div>
+      </div>
+      <div class="ds-regra"><strong>Regras:</strong> eixo Y começa em zero; percentual vai a 100; moeda em "mil"/"mi" só no eixo; máximo 4 séries por gráfico; tooltip por ponto com data, valor e regra; o mesmo gráfico no PDF usa a mesma paleta em hex do tema claro.</div>
+    </section>
+
+    <section id="apont" class="ds-sec">
+      <h2>21. Grade de horas e análise de coerência</h2>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="grade semanal (Apontamentos)"><div class="rolagem"><table style="font-size:12px"><thead><tr><th>EDT</th><th>Tarefa</th><th class="num" style="background:color-mix(in srgb,var(--grafite) 80%,var(--aco))">dom<br>14/9</th><th class="num">seg<br>15/9</th><th class="num">ter<br>16/9</th><th class="num">qua<br>17/9</th><th class="num">qui<br>18/9</th><th class="num">sex<br>19/9</th><th class="num" style="background:color-mix(in srgb,var(--grafite) 80%,var(--aco))">sáb<br>20/9</th><th class="num">Sem.</th><th class="num">Prev.</th></tr></thead><tbody>
+          <tr><td class="num">1.3.1</td><td>Aquisição</td><td class="num" style="background:var(--fds)"></td><td class="num celula-editavel"></td><td class="num celula-editavel" style="color:var(--acento);font-weight:600;background:var(--acento-f)">8</td><td class="num celula-editavel"></td><td class="num celula-editavel"></td><td class="num celula-editavel" style="color:var(--acento);font-weight:600;background:var(--acento-f)">8</td><td class="num" style="background:var(--fds)"></td><td class="num">16</td><td class="num aco">1.200</td></tr>
+          <tr><td class="num">1.3.2</td><td>Fabricação</td><td class="num" style="background:var(--fds)"></td><td class="num celula-editavel"></td><td class="num celula-editavel"></td><td class="num celula-editavel"></td><td class="num celula-editavel"></td><td class="num celula-editavel" style="color:var(--acento);font-weight:600;background:var(--acento-f)">6,5</td><td class="num celula-editavel" style="background:var(--fds)">1</td><td class="num">7,5</td><td class="num aco">2.600</td></tr>
+          <tr class="total"><td></td><td>Total do dia</td><td class="num"></td><td class="num">0</td><td class="num">8</td><td class="num">0</td><td class="num">0</td><td class="num">14,5</td><td class="num">1</td><td class="num">23,5</td><td></td></tr></tbody></table></div>
+          <p class="obs">Célula vazia tracejada = clicável; com valor = acento. Fim de semana com <code>.dia-fds</code>. Total do dia &gt; 10 h fica em âmbar; &gt; 12 h em vermelho (novo).</p></div>
+        <div class="ds-amostra" data-rot="achados de coerência"><table style="font-size:12px"><thead><tr><th>Regra</th><th>Sev.</th><th>EDT</th><th>Dimensão</th><th>Diagnóstico</th></tr></thead><tbody>
+          <tr class="clicavel"><td class="mono">COE-DERIVA-BL</td><td><span class="selo cheio acao">alerta</span></td><td class="num">3.2</td><td><span class="selo aco">prazo</span></td><td>término vigente 27/05/2027 está 25 du além da BL0</td></tr>
+          <tr class="clicavel"><td class="mono">COE-HORAS-ESTOURADAS</td><td><span class="selo cheio acao">alerta</span></td><td class="num">4.3</td><td><span class="selo aco">esforço</span></td><td>135% das hh previstas com 100% de avanço</td></tr>
+          <tr class="clicavel"><td class="mono">COE-MEDICAO-DESATUALIZADA</td><td><span class="selo cheio atencao">atenção</span></td><td class="num">4.5</td><td><span class="selo aco">avanço</span></td><td>horas apontadas até 19/03, última medição em 13/02</td></tr>
+          <tr class="clicavel"><td class="mono">COE-MARCO-ANTECIPADO</td><td><span class="selo cheio aco">info</span></td><td class="num">1.3</td><td><span class="selo aco">prazo</span></td><td>marco cumprido 8 du antes da BL0</td></tr></tbody></table>
+          <p class="obs">Severidade com selo cheio; dimensão com selo contorno; regra em mono; linha clicável abre a atividade no Gantt. Filtro por dimensão em pílulas com contagem.</p></div>
+      </div>
+    </section>
+
+    <section id="recursos" class="ds-sec">
+      <h2>21-B. Recursos: superalocação, heatmap e histograma geral</h2>
+      <p class="lead">Módulo em abas (Visão geral · Carga de trabalho · Histograma por recurso · Alocações · Catálogo). O cartão "Superalocações" é um botão: abre o modal de tratamento. A lista de achados não fica mais solta na página.</p>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="heatmap compacto (carga de trabalho)">
+          <table style="font-size:11px"><thead><tr><th rowspan="2" style="min-width:150px">Recurso</th><th colspan="4" style="text-align:center">nov/26</th><th colspan="4" style="text-align:center">dez/26</th></tr><tr><th class="num" style="font-size:9.5px;padding:0">07</th><th class="num" style="font-size:9.5px;padding:0">14</th><th class="num" style="font-size:9.5px;padding:0">21</th><th class="num" style="font-size:9.5px;padding:0">28</th><th class="num" style="font-size:9.5px;padding:0">05</th><th class="num" style="font-size:9.5px;padding:0">12</th><th class="num" style="font-size:9.5px;padding:0">19</th><th class="num" style="font-size:9.5px;padding:0">26</th></tr></thead>
+            <tbody>
+              <tr><td style="height:18px;padding:1px 3px"><b>PEDR</b> <span class="aco">Pedreiro</span> <span class="obs">· cap. 24</span></td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 15%,transparent);padding:1px 3px">8</td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 30%,transparent);padding:1px 3px">16</td><td class="num" style="background:color-mix(in srgb,var(--acao) 28%,transparent);color:var(--acao);font-weight:600;padding:1px 3px">26</td><td class="num" style="background:color-mix(in srgb,var(--atencao) 30%,transparent);color:var(--atencao);font-weight:600;padding:1px 3px">28</td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 40%,transparent);padding:1px 3px">22</td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 25%,transparent);padding:1px 3px">14</td><td class="num" style="background:color-mix(in srgb,var(--aco) 6%,transparent);padding:1px 3px"></td><td class="num" style="background:color-mix(in srgb,var(--aco) 6%,transparent);padding:1px 3px"></td></tr>
+              <tr><td style="height:18px;padding:1px 3px"><b>MONT</b> <span class="aco">Montador</span> <span class="obs">· cap. 20</span></td><td class="num" style="background:color-mix(in srgb,var(--aco) 6%,transparent);padding:1px 3px"></td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 20%,transparent);padding:1px 3px">8</td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 35%,transparent);padding:1px 3px">14</td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 45%,transparent);padding:1px 3px">20</td><td class="num" style="background:color-mix(in srgb,var(--acao) 28%,transparent);color:var(--acao);font-weight:600;padding:1px 3px">26</td><td class="num" style="background:color-mix(in srgb,var(--acao) 28%,transparent);color:var(--acao);font-weight:600;padding:1px 3px">26</td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 40%,transparent);padding:1px 3px">18</td><td class="num" style="background:color-mix(in srgb,var(--em-dia) 25%,transparent);padding:1px 3px">10</td></tr>
+            </tbody></table>
+          <p class="obs">Linhas de 18 px, células de 24 px. Verde com intensidade = uso/capacidade; vermelho acima da capacidade; âmbar acima mas aceita com justificativa; cinza sem alocação. Tooltip nativo com semana, pico, capacidade, %, unidade-dia e atividades.</p>
+        </div>
+        <div>
+          <div class="ds-regra"><strong>Tratamento de superalocação (modal):</strong> abas pendentes / aceitas; por linha: <b>nivelar</b> (só aquele recurso), <b>aceitar…</b> (justificativa com 10 caracteres ou mais, vira exceção INV-REC-001 auditável), <b>reabrir</b>. No rodapé: <b>Nivelar tudo (sem críticas)</b> em acento e <b>Nivelar incluindo críticas</b> secundário, com aviso de que estende o término. A faixa de resultado mostra adiamentos, superalocações antes e depois e término antes e depois.</div>
+          <div class="ds-regra"><strong>RGR-REC-002 — nivelamento por adiamento:</strong> semana a semana, a atividade estourada com mais folga sobrante é adiada para a segunda-feira seguinte via restrição SNET com justificativa; sem autorização só se adia dentro da folga total, então o término não muda. Críticas ou sem folga ficam como "não resolvidas" para aceite ou replanejamento.</div>
+          <div class="ds-regra"><strong>Histograma geral:</strong> barras empilhadas por recurso (paleta de fases), contorno vermelho no segmento acima da capacidade, linha tracejada na semana com pendência, tooltip flutuante (<code>.g-dica</code>) com a composição da semana ordenada por pico.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="teclado" class="ds-sec">
+      <h2>21-C. Tela cheia e teclado no Gantt</h2>
+      <div class="ds-lado">
+        <div class="ds-regra"><strong>Tela cheia</strong> (<code>.gantt-tela-cheia</code>): botão na toolbar ou <kbd class="kbd">F</kbd>; o Gantt ocupa a viewport com uma toolbar reduzida (contrato, período, escala, hoje, dica de atalhos, sair). <kbd class="kbd">Esc</kbd> sai. É CSS, não a Fullscreen API: funciona no PWA e no iOS.</div>
+        <div class="ds-regra"><strong>Foco de teclado</strong> (<code>.foco</code>): contorno de 2 px em acento na linha, separado da seleção (que abre a gaveta). <kbd class="kbd">↑↓</kbd> movem o foco e rolam a linha para a vista; <kbd class="kbd">Enter</kbd> abre; <kbd class="kbd">Tab</kbd>/<kbd class="kbd">Shift+Tab</kbd> indentam/recuam; <kbd class="kbd">Ins</kbd>/<kbd class="kbd">Shift+Ins</kbd> nova tarefa/subtarefa; <kbd class="kbd">Del</kbd> exclui com confirmação; <kbd class="kbd">H</kbd> hoje; <kbd class="kbd">+</kbd>/<kbd class="kbd">−</kbd> expandir/recolher; <kbd class="kbd">?</kbd> lista. Os atalhos aparecem em três lugares: legenda do Gantt, toolbar da tela cheia e o botão "atalhos", que abre o modal.</div>
+      </div>
+    </section>
+
+    <section id="rdo-salvar" class="ds-sec">
+      <h2>21-D. RDO, salvar global e apresentação</h2>
+      <div class="ds-3">
+        <div class="ds-regra"><strong>RDO (anexo V):</strong> lista com selo de estado (emitido · aprovação do planejamento · aprovação da gerência · aprovado · reprovado), emissão em modal com abas (identificação, jornada e clima, efetivo, serviços, ocorrências) pré-preenchida pelo cronograma do dia; detalhe com histórico de eventos e PDF retrato. Ações de aprovação só aparecem para quem pode (RGR-RDO-001).</div>
+        <div class="ds-regra"><strong>Salvar alterações (topo):</strong> botão em acento com contador quando há pendências (gaveta, simulação, custos, alocações); sem pendência vira "Sincronizado" secundário que recarrega do servidor. Popover lista cada pendência com gravação individual; fechar a aba com pendência pede confirmação do navegador.</div>
+        <div class="ds-regra"><strong>Apresentação (marketing):</strong> página antes do login com hero animado (Gantt three.js), CTA em acento com sombra, janela de prints reais alternando telas, faixa grafite com a frase do MS Project, grade de módulos com print e ícone, método, segurança e CTA final. Prints gerados por <code>frontend/scripts/capturar_telas.mjs</code>.</div>
+      </div>
+    </section>
+
+    <section id="pdf" class="ds-sec">
+      <h2>22. PDF e XLSX</h2>
+      <div class="ds-lado">
+        <div class="ds-amostra" data-rot="cabeçalho e rodapé do PDF"><div style="display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--linha);padding-bottom:8px"><div style="width:36px;height:36px;background:var(--grafite);border-radius:4px"></div><div style="font-size:12px"><b>GPlanSiS|Project</b><br><span class="aco">PRO-GPS-PLN-001 · Planejamento e Controle de Projetos</span></div><div style="margin-left:auto;text-align:right;font-size:11px"><b>Previsto × Realizado e análise de coerência</b><br><span class="aco">CT-200-COGER · Cogeração 24 MW · Inovação Controle Novo Plan</span><br><span class="aco">Contratante Inovação Controle Novo Plan · Contratada Novo Plan Engenharia · corte 20/03/2027</span></div></div><div style="font-size:10px;color:var(--aco);display:flex;justify-content:space-between;margin-top:8px"><span>Emitido por Administrador em 20/03/2027 14:02 · documento gerado pelo sistema; números reproduzíveis pela memória de cálculo</span><span>página 1</span></div></div>
+        <div><table class="ds-tab"><thead><tr><th>Relatório</th><th>Orientação</th><th>Seções</th></tr></thead><tbody><tr><td>status-report</td><td>retrato</td><td>síntese, curva S, fases, custos, coerência, vencidas, críticas, marcos, recursos, achados, medições</td></tr><tr><td>cronograma · eap · medicoes</td><td>paisagem</td><td>tabelas largas com cabeçalho repetido</td></tr><tr><td>recursos · custos</td><td>paisagem</td><td>catálogo, alocação, carga; EVM, por nó, categoria, itens, ledger</td></tr><tr><td>apontamentos · previsto-realizado</td><td>paisagem</td><td>síntese + gráfico, grade da semana, produtividade, ledger; curva S, barras por fase e por dimensão, coerência, marcos, recursos, atividades</td></tr><tr><td>cronograma</td><td>paisagem</td><td>Gantt desenhado (barras por fase, crítica, avanço, marcador de status) em fatias de 36 linhas + EAP completa</td></tr><tr><td>RDO</td><td>retrato</td><td>identificação, prazo (snapshot), jornada, efetivo, equipamentos, serviços, ocorrências, aprovação</td></tr></tbody></table><p class="obs">Fonte Helvetica 8–9 em tabela; cartões em 4 a 6 colunas; gráfico 100% da largura útil; tabela &gt; 8 linhas flui entre páginas; célula longa cortada com "…". XLSX: capa + uma aba por seção, números como números, datas sem fuso.</p></div>
+      </div>
+    </section>
+
+    <section id="a11y" class="ds-sec">
+      <h2>23. Acessibilidade</h2>
+      <div class="ds-3">
+        <div class="ds-regra"><strong>Teclado:</strong> tudo alcançável por Tab; foco visível com anel duplo; Esc fecha camadas; Enter confirma modal; setas navegam segmentados e abas.</div>
+        <div class="ds-regra"><strong>Leitores de tela:</strong> <code>role="dialog" aria-modal</code>; tabela com <code>&lt;th scope&gt;</code>; ícone só decorativo com <code>aria-hidden</code>; situação sempre em texto além da cor; barra de progresso com <code>role="progressbar"</code>.</div>
+        <div class="ds-regra"><strong>Contraste:</strong> AA em texto pequeno nos dois temas; modo alto contraste no painel; <code>prefers-reduced-motion</code> respeitado; nada pisca.</div>
+      </div>
+    </section>
+
+    <section id="nomes" class="ds-sec">
+      <h2>24. Nomenclatura e código</h2>
+      <table class="ds-tab"><thead><tr><th>Camada</th><th>Convenção</th><th>Exemplo</th></tr></thead><tbody>
+        <tr><td>tokens</td><td>português, kebab, prefixo por família</td><td>--em-dia · --fase-3 · --g-real · --e-4 · --r-2 · --z-modal</td></tr>
+        <tr><td>classes</td><td>português, kebab, sem BEM; variante como segunda classe</td><td>.acao-btn.secundario · .selo.cheio.atencao · .cartao.semaforo.acao-b</td></tr>
+        <tr><td>componentes React</td><td>PascalCase em português; um por arquivo; props em português</td><td>Modal · Dialogos · TabelaPrevia · HorasAtividade</td></tr>
+        <tr><td>estado</td><td>zustand em <code>estado/</code>; hook <code>useX</code>; ações verbo</td><td>useDialogo · dialogo.perguntar()</td></tr>
+        <tr><td>regras citadas na UI</td><td>código da spec entre parênteses na nota ou no erro</td><td>(INV-APT-001) · RGR-COE-001</td></tr>
+        <tr><td>proibido</td><td>hex em TSX; <code>style=</code> com cor; prompt/confirm/alert; classe <code>.fds</code> fora do Gantt</td><td>—</td></tr>
+      </tbody></table>
+    </section>
+
+    <section id="aplicacao" class="ds-sec">
+      <h2>25. Plano de aplicação (após aprovação)</h2>
+      <ol style="line-height:1.9;margin:0;padding-left:22px">
+        <li><b>Tokens</b> — substituir o topo de <code>estilos.css</code> pelo bloco desta página (fundos suaves <code>-f</code>, <code>--texto-2</code>, <code>--fase-7/8</code>, <code>--g-*</code>, escala de espaço, densidade, raio, camadas, anel de foco).</li>
+        <li><b>Preferências</b> — aba Perfil: acento, densidade, raio, contraste, movimento; persistidas em localStorage; aplicadas em <code>&lt;html&gt;</code> como o tema.</li>
+        <li><b>Botões e toolbar</b> — variantes acento/fantasma/carregando; segmentado para escala e filtros; ordem fixa em todas as páginas.</li>
+        <li><b>Tabelas</b> — hierarquia n1…n5 no Cronograma (aplicado) e EAP; selo cheio para situação; sem fundo colorido de célula; paginação padrão.</li>
+        <li><b>Cartões</b> — semáforo por borda + tendência + sparkline no Cockpit e Status Report.</li>
+        <li><b>Gantt</b> — rolagem única (aplicado), níveis coloridos e menu de contexto com nova tarefa / indentar / recuar / excluir (aplicado); rótulo à direita da barra, alerta COE na barra, pontas no resumo (pendentes).</li>
+        <li><b>Feedback</b> — toasts para ações concluídas; faixas por tipo; vazio/esqueleto em todos os módulos.</li>
+        <li><b>Menu</b> — grupos Planejar / Controlar / Reportar.</li>
+        <li><b>Gráficos e PDF</b> — trocar hex por tokens em <code>Graficos.tsx</code> e mapa de cores em <code>exportar.py</code>.</li>
+        <li><b>Templates</b> — publicar este arquivo na aba "Design system".</li>
+      </ol>
+    </section>
+  </main>
+</div>
+<script>
+const TOK={neutros:[["--grafite","grafite · th, menu, primário"],["--aco","aço · notas"],["--texto-2","texto secundário"],["--claro","claro · hover"],["--papel","papel · fundo da página"],["--fundo","fundo · superfícies"],["--linha","linha · bordas"],["--texto","texto"],["--acento","acento · interação"],["--acento-f","acento suave"]],
+semantica:[["--em-dia","em dia"],["--em-dia-f","em dia · fundo"],["--atencao","atenção"],["--atencao-f","atenção · fundo"],["--recuperacao","recuperação"],["--recuperacao-f","recuperação · fundo"],["--acao","plano de ação / crítico"],["--acao-f","ação · fundo"],["--neutro","neutro"],["--neutro-f","neutro · fundo"]],
+"gantt-tk":[["--barra","barra padrão"],["--critica","crítica"],["--marco","marco"],["--base","linha de base"],["--folga","folga"],["--hoje","data de status"],["--fds","fim de semana"]],
+fases:[["--fase-1","fase 1"],["--fase-2","fase 2"],["--fase-3","fase 3"],["--fase-4","fase 4"],["--fase-5","fase 5"],["--fase-6","fase 6"],["--fase-7","fase 7"],["--fase-8","fase 8"],["--g-previsto","gráfico previsto"],["--g-real","gráfico realizado"],["--g-va","gráfico VA"],["--g-custo","gráfico custo"],["--g-grade","grade do gráfico"]]};
+function pintar(){const cs=getComputedStyle(document.documentElement);for(const k in TOK){document.getElementById(k).innerHTML=TOK[k].map(([v,d])=>`<div class="ds-cor"><div class="chip" style="background:var(${v})"></div><div class="meta"><b>${d}</b><code>${v} ${cs.getPropertyValue(v).trim()}</code></div></div>`).join("");}
+ const r=document.documentElement; document.getElementById("estado-attrs").textContent=["theme","acento","densidade","raio","contraste","movimento"].map(a=>`${a}=${r.dataset[a]||"padrão"}`).join(" · ");}
+document.querySelectorAll(".painel-visual .seg").forEach(seg=>{seg.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const a=seg.dataset.attr,v=b.dataset.v;if(v)document.documentElement.dataset[a]=v;else delete document.documentElement.dataset[a];seg.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));pintar();}));});
+pintar();
+</script>
+</body>
+</html>
